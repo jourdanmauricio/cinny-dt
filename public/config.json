@@ -1,5 +1,6 @@
 {
   "defaultHomeserver": 0,
   "homeserverList": ["https://chatdtapi.lumau.com.ar"],
-  "allowCustomHomeservers": false
+  "allowCustomHomeservers": false,
+  "registerUrl": "https://dtapprove.lumau.com.ar/register"
 }

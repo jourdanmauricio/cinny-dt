@@ -18,6 +18,7 @@ export type ClientConfig = {
   };
 
   hashRouter?: HashRouterConfig;
+  registerUrl?: string;
 };
 
 const ClientConfigContext = createContext<ClientConfig | null>(null);

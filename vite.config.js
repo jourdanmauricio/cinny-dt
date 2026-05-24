@@ -27,7 +27,8 @@ const copyFiles = {
       dest: '',
     },
     {
-      src: 'config.json',
+      //src: 'config.json',
+      src: 'public/config.json',
       dest: '',
     },
     {

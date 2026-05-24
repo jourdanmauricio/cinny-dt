@@ -36,7 +36,7 @@ const useLoginSearchParams = (searchParams: URLSearchParams): LoginPathSearchPar
 
 export function Login() {
   const server = useAuthServer();
-  const { hashRouter } = useClientConfig();
+  const { hashRouter, registerUrl } = useClientConfig();
   const { loginFlows } = useAuthFlows();
   const [searchParams] = useSearchParams();
   const loginSearchParams = useLoginSearchParams(searchParams);
@@ -92,7 +92,10 @@ export function Login() {
         </>
       )}
       <Text align="Center">
-        Do not have an account? <Link to={getRegisterPath(server)}>Register</Link>
+        Do not have an account?{' '}
+        <a href={registerUrl} style={{ color: color.Primary.Main }}>
+          Register
+        </a>
       </Text>
     </Box>
   );
