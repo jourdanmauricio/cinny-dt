@@ -16,7 +16,7 @@ import App from './app/pages/App';
 // import i18n (needs to be bundled ;))
 import './app/i18n';
 import { pushSessionToSW } from './sw-session';
-import { getFallbackSession } from './app/state/sessions';
+import { getFallbackSession, setFallbackSession } from './app/state/sessions';
 
 document.body.classList.add(configClass, varsClass);
 
@@ -56,4 +56,24 @@ const mountApp = () => {
   root.render(<App />);
 };
 
-mountApp();
+async function init() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+
+  if (code) {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/matrix/exchange?code=${code}`);
+      if (res.ok) {
+        const data = await res.json();
+        setFallbackSession(data.token, data.deviceId, data.userId, data.homeserver);
+      }
+    } catch {
+      // continue normally
+    }
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+
+  mountApp();
+}
+
+init();
