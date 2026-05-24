@@ -32,3 +32,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ghcr.io/jourdanmauricio/cinny-dt:latest
+
+      - name: Trigger Dokploy deploy
+        run: |
+          curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}"
