@@ -7,6 +7,8 @@ COPY .npmrc package.json package-lock.json /src/
 RUN npm ci
 COPY . /src/
 ENV NODE_OPTIONS=--max_old_space_size=4096
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
 
