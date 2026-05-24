@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "/home/mauricio/sites/dulce-terciopelo/apps/api/src/matrix"
+    ]
+  }
+}
