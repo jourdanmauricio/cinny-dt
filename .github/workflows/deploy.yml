@@ -32,6 +32,8 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ghcr.io/jourdanmauricio/cinny-dt:latest
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
 
       - name: Trigger Dokploy deploy
         run: |
