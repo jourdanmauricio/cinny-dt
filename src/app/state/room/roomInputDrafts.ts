@@ -9,6 +9,7 @@ import { createListAtom } from '../list';
 
 export type TUploadMetadata = {
   markedAsSpoiler: boolean;
+  audioDurationMs?: number;
 };
 
 export type TUploadItem = {

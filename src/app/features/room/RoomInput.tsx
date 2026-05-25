@@ -117,6 +117,7 @@ import { useTheme } from '../../hooks/useTheme';
 import { useRoomCreatorsTag } from '../../hooks/useRoomCreatorsTag';
 import { usePowerLevelTags } from '../../hooks/usePowerLevelTags';
 import { useComposingCheck } from '../../hooks/useComposingCheck';
+import { useMediaRecorder } from '../../hooks/useMediaRecorder';
 
 interface RoomInputProps {
   editor: Editor;
@@ -177,7 +178,7 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
     const sendTypingStatus = useTypingStatusUpdater(mx, roomId);
 
     const handleFiles = useCallback(
-      async (files: File[]) => {
+      async (files: File[], extraMetadata?: Partial<TUploadMetadata>) => {
         setUploadBoard(true);
         const safeFiles = files.map(safeFile);
         const fileItems: TUploadItem[] = [];
@@ -191,6 +192,7 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
               ...ef,
               metadata: {
                 markedAsSpoiler: false,
+                ...extraMetadata,
               },
             })
           );
@@ -202,6 +204,7 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
               encInfo: undefined,
               metadata: {
                 markedAsSpoiler: false,
+                ...extraMetadata,
               },
             })
           );
@@ -217,6 +220,21 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
     const handlePaste = useFilePasteHandler(handleFiles);
     const dropZoneVisible = useFileDropZone(fileDropContainerRef, handleFiles);
     const [hideStickerBtn, setHideStickerBtn] = useState(document.body.clientWidth < 500);
+
+    const handleVoiceStop = useCallback(
+      ({ blob, durationMs, mimeType }: { blob: Blob; durationMs: number; mimeType: string }) => {
+        const ext = mimeType.startsWith('audio/ogg')
+          ? 'ogg'
+          : mimeType.startsWith('audio/mp4')
+          ? 'mp4'
+          : 'webm';
+        const file = new File([blob], `voice-message.${ext}`, { type: mimeType });
+        handleFiles([file], { audioDurationMs: durationMs });
+      },
+      [handleFiles]
+    );
+
+    const { recordingState, startRecording, stopRecording } = useMediaRecorder(handleVoiceStop);
 
     const isComposing = useComposingCheck();
 
@@ -669,6 +687,23 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
                   </PopOut>
                 )}
               </UseStateProvider>
+              <IconButton
+                onClick={recordingState === 'recording' ? stopRecording : startRecording}
+                variant={recordingState === 'recording' ? 'Critical' : 'SurfaceVariant'}
+                size="300"
+                radii="300"
+                aria-label={recordingState === 'recording' ? 'Stop recording' : 'Record voice message'}
+                title={
+                  recordingState === 'denied'
+                    ? 'Microphone access denied'
+                    : recordingState === 'recording'
+                    ? 'Stop recording'
+                    : 'Record voice message'
+                }
+                disabled={recordingState === 'denied'}
+              >
+                <Icon src={recordingState === 'denied' ? Icons.MicMute : Icons.Mic} />
+              </IconButton>
               <IconButton onClick={submit} variant="SurfaceVariant" size="300" radii="300">
                 <Icon src={Icons.Send} />
               </IconButton>
