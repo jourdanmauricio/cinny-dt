@@ -12,12 +12,12 @@ import {
   HomeTab,
   SpaceTabs,
   InboxTab,
-  ExploreTab,
+  // ExploreTab,
   SettingsTab,
   UnverifiedTab,
   SearchTab,
 } from './sidebar';
-import { CreateTab } from './sidebar/CreateTab';
+// import { CreateTab } from './sidebar/CreateTab';
 
 export function SidebarNav() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -32,11 +32,11 @@ export function SidebarNav() {
               <DirectTab />
             </SidebarStack>
             <SpaceTabs scrollRef={scrollRef} />
-            <SidebarStackSeparator />
+            {/* <SidebarStackSeparator />
             <SidebarStack>
               <ExploreTab />
               <CreateTab />
-            </SidebarStack>
+            </SidebarStack> */}
           </Scroll>
         }
         sticky={

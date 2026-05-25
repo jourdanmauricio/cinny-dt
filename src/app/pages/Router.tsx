@@ -9,7 +9,11 @@ import {
 } from 'react-router-dom';
 
 import { ClientConfig } from '../hooks/useClientConfig';
-import { AuthLayout, Login, Register, ResetPassword } from './auth';
+import {
+  AuthLayout,
+  Login, // Register
+  ResetPassword,
+} from './auth';
 import {
   DIRECT_PATH,
   EXPLORE_PATH,
@@ -32,7 +36,7 @@ import {
 } from './paths';
 import {
   getAppPathFromHref,
-  getExploreFeaturedPath,
+  // getExploreFeaturedPath,
   getHomePath,
   getInboxNotificationsPath,
   getLoginPath,
@@ -64,7 +68,7 @@ import { SpaceSettingsRenderer } from '../features/space-settings';
 import { UserRoomProfileRenderer } from '../components/UserRoomProfileRenderer';
 import { CreateRoomModalRenderer } from '../features/create-room';
 import { HomeCreateRoom } from './client/home/CreateRoom';
-import { Create } from './client/create';
+// import { Create } from './client/create';
 import { CreateSpaceModalRenderer } from '../features/create-space';
 import { SearchModalRenderer } from '../features/search';
 import { getFallbackSession } from '../state/sessions';
@@ -258,7 +262,7 @@ export const createRouter = (clientConfig: ClientConfig, screenSize: ScreenSize)
             }
           />
         </Route>
-        <Route
+        {/* <Route
           path={EXPLORE_PATH}
           element={
             <PageRoot
@@ -281,8 +285,10 @@ export const createRouter = (clientConfig: ClientConfig, screenSize: ScreenSize)
           )}
           <Route path={_FEATURED_PATH} element={<FeaturedRooms />} />
           <Route path={_SERVER_PATH} element={<PublicRooms />} />
-        </Route>
-        <Route path={CREATE_PATH} element={<Create />} />
+        </Route> */}
+        <Route path={EXPLORE_PATH} loader={() => redirect(getHomePath())} element={null} />
+        {/* <Route path={CREATE_PATH} element={<Create />} /> */}
+        <Route path={CREATE_PATH} loader={() => redirect(getHomePath())} element={null} />
         <Route
           path={INBOX_PATH}
           element={
