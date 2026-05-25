@@ -1,6 +1,6 @@
 {
   "defaultHomeserver": 0,
-  "homeserverList": ["https://chatdtapi.lumau.com.ar"],
+  "homeserverList": ["https://synapse.dulceterciopelo.com"],
   "allowCustomHomeservers": false,
   "registerUrl": "https://dulceterciopelo.com/register"
 }
