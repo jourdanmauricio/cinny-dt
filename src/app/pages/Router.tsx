@@ -102,7 +102,19 @@ export const createRouter = (clientConfig: ClientConfig, screenSize: ScreenSize)
         }
       >
         <Route path={LOGIN_PATH} element={<Login />} />
-        <Route path={REGISTER_PATH} element={<Register />} />
+        {/* <Route path={REGISTER_PATH} element={<Register />} /> */}
+        <Route
+          path={REGISTER_PATH}
+          loader={() => {
+            const registerUrl = clientConfig.registerUrl;
+            if (registerUrl) {
+              window.location.href = registerUrl;
+              return null;
+            }
+            return redirect(getLoginPath());
+          }}
+          element={null}
+        />
         <Route path={RESET_PASSWORD_PATH} element={<ResetPassword />} />
       </Route>
 
