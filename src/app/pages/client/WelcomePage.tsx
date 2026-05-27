@@ -31,6 +31,7 @@ export function WelcomePage() {
           >
             <Box justifyContent="Center">
               <Box grow="Yes" style={{ maxWidth: toRem(300) }} direction="Column" gap="300">
+                {/* DT: Source Code - oculto para rol user
                 <Button
                   as="a"
                   href="https://github.com/cinnyapp/cinny"
@@ -42,6 +43,8 @@ export function WelcomePage() {
                     Source Code
                   </Text>
                 </Button>
+                */}
+                {/* DT: Support - oculto para rol user
                 <Button
                   as="a"
                   href="https://cinny.in/#sponsor"
@@ -54,6 +57,7 @@ export function WelcomePage() {
                     Support
                   </Text>
                 </Button>
+                */}
               </Box>
             </Box>
           </PageHero>

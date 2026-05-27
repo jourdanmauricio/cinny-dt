@@ -45,7 +45,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
         baseUrl: dtRes.homeserver,
         response: {
           access_token: dtRes.token,
-          device_id: `DT_${Date.now()}`,
+          device_id: dtRes.deviceId,
           user_id: dtRes.userId,
         } as any,
       };

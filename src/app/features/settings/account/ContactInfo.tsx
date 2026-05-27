@@ -30,14 +30,17 @@ export function ContactInformation() {
         gap="400"
       >
         <SettingTile title="Email Address" description="Email address attached to your account.">
-          <Box>
+          {/* DT: Email Address - solo lectura; gestionado por el backend de DT */}
+          <Box style={{ opacity: 0.6, pointerEvents: 'none' }}>
             {emailIds?.map((email) => (
               <Chip key={email.address} as="span" variant="Secondary" radii="Pill">
                 <Text size="T200">{email.address}</Text>
               </Chip>
             ))}
           </Box>
-          {/* <Input defaultValue="" variant="Secondary" radii="300" /> */}
+          {/* DT: Agregar Email - oculto para todos los roles; email gestionado por DT
+          <Input defaultValue="" variant="Secondary" radii="300" />
+          */}
         </SettingTile>
       </SequenceCard>
     </Box>

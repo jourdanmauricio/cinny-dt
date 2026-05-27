@@ -101,6 +101,7 @@ export function AllMessagesNotifications() {
           after={<AllMessagesModeSwitcher pushRules={pushRules} ruleId={RuleId.DM} oneToOne />}
         />
       </SequenceCard>
+      {/* DT: 1-to-1 Chats (Encrypted) - oculto para todos los roles; no se usa encryption en DT
       <SequenceCard
         className={SequenceCardStyle}
         variant="SurfaceVariant"
@@ -119,6 +120,7 @@ export function AllMessagesNotifications() {
           }
         />
       </SequenceCard>
+      */}
       <SequenceCard
         className={SequenceCardStyle}
         variant="SurfaceVariant"
@@ -130,6 +132,7 @@ export function AllMessagesNotifications() {
           after={<AllMessagesModeSwitcher pushRules={pushRules} ruleId={RuleId.Message} />}
         />
       </SequenceCard>
+      {/* DT: Rooms (Encrypted) - oculto para todos los roles; no se usa encryption en DT
       <SequenceCard
         className={SequenceCardStyle}
         variant="SurfaceVariant"
@@ -147,6 +150,7 @@ export function AllMessagesNotifications() {
           }
         />
       </SequenceCard>
+      */}
     </Box>
   );
 }

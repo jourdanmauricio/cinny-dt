@@ -77,6 +77,7 @@ export const RoomIntro = as<'div', RoomIntroProps>(({ room, ...props }, ref) => 
           )}
         </Box>
         <Box gap="200" wrap="Wrap">
+          {/* DT: Invite Member - oculto para rol user
           <Button onClick={() => setInvitePrompt(true)} variant="Secondary" size="300" radii="300">
             <Text size="B300">Invite Member</Text>
           </Button>
@@ -84,6 +85,7 @@ export const RoomIntro = as<'div', RoomIntroProps>(({ room, ...props }, ref) => 
           {invitePrompt && (
             <InviteUserPrompt room={room} requestClose={() => setInvitePrompt(false)} />
           )}
+          */}
           {typeof prevRoomId === 'string' &&
             (mx.getRoom(prevRoomId)?.getMyMembership() === Membership.Join ? (
               <Button

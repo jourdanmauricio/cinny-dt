@@ -37,6 +37,7 @@ export function Notifications({ requestClose }: NotificationsProps) {
               <AllMessagesNotifications />
               <SpecialMessagesNotifications />
               <KeywordMessagesNotifications />
+              {/* DT: Block Messages - oculto para todos los roles; Blocked Users ya está comentado en Account
               <Box direction="Column" gap="100">
                 <Text size="L400">Block Messages</Text>
                 <SequenceCard
@@ -50,6 +51,7 @@ export function Notifications({ requestClose }: NotificationsProps) {
                   />
                 </SequenceCard>
               </Box>
+              */}
             </Box>
           </PageContent>
         </Scroll>

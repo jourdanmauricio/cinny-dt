@@ -72,9 +72,7 @@ async function init() {
         if (dtToken) {
           localStorage.setItem('dt_access_token', dtToken);
         }
-        // El endpoint /matrix/exchange no devuelve deviceId → generamos uno local
-        const deviceId = `DT_${Date.now()}`;
-        setFallbackSession(data.token, deviceId, data.userId, data.homeserver);
+        setFallbackSession(data.token, data.deviceId, data.userId, data.homeserver);
       }
     } catch {
       // continue normally

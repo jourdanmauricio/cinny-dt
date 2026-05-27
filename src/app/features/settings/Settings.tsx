@@ -68,21 +68,24 @@ const useSettingsMenuItems = (): SettingsMenuItem[] =>
         name: 'Notifications',
         icon: Icons.Bell,
       },
-      {
-        page: SettingsPages.DevicesPage,
-        name: 'Devices',
-        icon: Icons.Monitor,
-      },
-      {
-        page: SettingsPages.EmojisStickersPage,
-        name: 'Emojis & Stickers',
-        icon: Icons.Smile,
-      },
-      {
-        page: SettingsPages.DeveloperToolsPage,
-        name: 'Developer Tools',
-        icon: Icons.Terminal,
-      },
+      // DT: Devices - oculto para todos los roles; relacionado con encryption que no se usa en DT
+      // {
+      //   page: SettingsPages.DevicesPage,
+      //   name: 'Devices',
+      //   icon: Icons.Monitor,
+      // },
+      // DT: Emojis & Stickers - oculto para todos los roles
+      // {
+      //   page: SettingsPages.EmojisStickersPage,
+      //   name: 'Emojis & Stickers',
+      //   icon: Icons.Smile,
+      // },
+      // DT: Developer Tools - oculto para todos los roles
+      // {
+      //   page: SettingsPages.DeveloperToolsPage,
+      //   name: 'Developer Tools',
+      //   icon: Icons.Terminal,
+      // },
       {
         page: SettingsPages.AboutPage,
         name: 'About',
@@ -219,15 +222,21 @@ export function Settings({ initialPage, requestClose }: SettingsProps) {
       {activePage === SettingsPages.NotificationPage && (
         <Notifications requestClose={handlePageRequestClose} />
       )}
+      {/* DT: Devices - oculto para todos los roles; relacionado con encryption que no se usa en DT
       {activePage === SettingsPages.DevicesPage && (
         <Devices requestClose={handlePageRequestClose} />
       )}
+      */}
+      {/* DT: Emojis & Stickers - oculto para todos los roles
       {activePage === SettingsPages.EmojisStickersPage && (
         <EmojisStickers requestClose={handlePageRequestClose} />
       )}
+      */}
+      {/* DT: Developer Tools - oculto para todos los roles
       {activePage === SettingsPages.DeveloperToolsPage && (
         <DeveloperTools requestClose={handlePageRequestClose} />
       )}
+      */}
       {activePage === SettingsPages.AboutPage && <About requestClose={handlePageRequestClose} />}
     </PageRoot>
   );

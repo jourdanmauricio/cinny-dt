@@ -78,7 +78,9 @@ export function Inbox() {
                 </NavItemContent>
               </NavLink>
             </NavItem>
+            {/* DT: Invites - oculto para todos los roles; usuarios se agregan a salas automáticamente
             <InvitesNavItem />
+            */}
           </NavCategory>
         </Box>
       </PageNavContent>

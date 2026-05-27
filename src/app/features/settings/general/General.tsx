@@ -906,6 +906,7 @@ function Messages() {
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile title="Message Spacing" after={<SelectMessageSpacing />} />
       </SequenceCard>
+      {/* DT: Legacy Username Color - oculto para todos los roles
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Legacy Username Color"
@@ -918,6 +919,8 @@ function Messages() {
           }
         />
       </SequenceCard>
+      */}
+      {/* DT: Hide Membership Change - oculto para todos los roles; valor forzado a true en settings.ts
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Hide Membership Change"
@@ -930,6 +933,7 @@ function Messages() {
           }
         />
       </SequenceCard>
+      */}
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Hide Profile Change"
@@ -960,12 +964,15 @@ function Messages() {
           after={<Switch variant="Primary" value={urlPreview} onChange={setUrlPreview} />}
         />
       </SequenceCard>
+      {/* DT: Url Preview in Encrypted Room - oculto para todos los roles
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Url Preview in Encrypted Room"
           after={<Switch variant="Primary" value={encUrlPreview} onChange={setEncUrlPreview} />}
         />
       </SequenceCard>
+      */}
+      {/* DT: Show Hidden Events - oculto para todos los roles
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Show Hidden Events"
@@ -974,6 +981,7 @@ function Messages() {
           }
         />
       </SequenceCard>
+      */}
     </Box>
   );
 }

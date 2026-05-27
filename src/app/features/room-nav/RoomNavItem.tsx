@@ -28,7 +28,7 @@ import { nameInitials } from '../../utils/common';
 import { useMatrixClient } from '../../hooks/useMatrixClient';
 import { useRoomUnread } from '../../state/hooks/unread';
 import { roomToUnreadAtom } from '../../state/room/roomToUnread';
-import { getPowersLevelFromMatrixEvent, usePowerLevels } from '../../hooks/usePowerLevels';
+import { getPowersLevelFromMatrixEvent, readPowerLevel, usePowerLevels } from '../../hooks/usePowerLevels';
 import { copyToClipboard } from '../../utils/dom';
 import { markAsRead } from '../../utils/notifications';
 import { UseStateProvider } from '../../components/UseStateProvider';
@@ -77,6 +77,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
 
     const permissions = useRoomPermissions(creators, powerLevels);
     const canInvite = permissions.action('invite', mx.getSafeUserId());
+    const isAdmin = readPowerLevel.user(powerLevels, mx.getSafeUserId()) >= 100;
     const openRoomSettings = useOpenRoomSettings();
     const space = useSpaceOptionally();
 
@@ -150,6 +151,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
         </Box>
         <Line variant="Surface" size="300" />
         <Box direction="Column" gap="100" style={{ padding: config.space.S100 }}>
+          {/* DT: Invite - oculto para todos los roles
           <MenuItem
             onClick={handleInvite}
             variant="Primary"
@@ -164,6 +166,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
               Invite
             </Text>
           </MenuItem>
+          */}
           <MenuItem
             onClick={handleCopyLink}
             size="300"
@@ -174,17 +177,21 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
               Copy Link
             </Text>
           </MenuItem>
-          <MenuItem
-            onClick={handleRoomSettings}
-            size="300"
-            after={<Icon size="100" src={Icons.Setting} />}
-            radii="300"
-          >
-            <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-              Room Settings
-            </Text>
-          </MenuItem>
+          {/* DT: Room Settings - visible solo para admin */}
+          {isAdmin && (
+            <MenuItem
+              onClick={handleRoomSettings}
+              size="300"
+              after={<Icon size="100" src={Icons.Setting} />}
+              radii="300"
+            >
+              <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
+                Room Settings
+              </Text>
+            </MenuItem>
+          )}
         </Box>
+        {/* DT: Leave Room - oculto para rol user
         <Line variant="Surface" size="300" />
         <Box direction="Column" gap="100" style={{ padding: config.space.S100 }}>
           <UseStateProvider initial={false}>
@@ -214,6 +221,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
             )}
           </UseStateProvider>
         </Box>
+        */}
       </Menu>
     );
   }

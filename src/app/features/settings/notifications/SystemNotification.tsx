@@ -145,6 +145,7 @@ export function SystemNotification() {
           after={<Switch value={isNotificationSounds} onChange={setIsNotificationSounds} />}
         />
       </SequenceCard>
+      {/* DT: Email Notification - oculto para todos los roles; no aplica para DT
       <SequenceCard
         className={SequenceCardStyle}
         variant="SurfaceVariant"
@@ -153,6 +154,7 @@ export function SystemNotification() {
       >
         <EmailNotification />
       </SequenceCard>
+      */}
     </Box>
   );
 }

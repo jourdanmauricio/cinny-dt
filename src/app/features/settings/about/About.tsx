@@ -49,6 +49,7 @@ export function About({ requestClose }: AboutProps) {
                     </Box>
                   </Box>
 
+                  {/* DT: Source Code / Support - ocultos para todos los roles
                   <Box gap="200" wrap="Wrap">
                     <Button
                       as="a"
@@ -77,6 +78,7 @@ export function About({ requestClose }: AboutProps) {
                       <Text size="B300">Support</Text>
                     </Button>
                   </Box>
+                  */}
                 </Box>
               </Box>
               <Box direction="Column" gap="100">

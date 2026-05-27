@@ -41,7 +41,7 @@ import { getCanonicalAliasOrRoomId, isRoomAlias, mxcUrlToHttp } from '../../util
 import { _SearchPathSearchParams } from '../../pages/paths';
 import * as css from './RoomViewHeader.css';
 import { useRoomUnread } from '../../state/hooks/unread';
-import { usePowerLevelsContext } from '../../hooks/usePowerLevels';
+import { readPowerLevel, usePowerLevelsContext } from '../../hooks/usePowerLevels';
 import { markAsRead } from '../../utils/notifications';
 import { roomToUnreadAtom } from '../../state/room/roomToUnread';
 import { copyToClipboard } from '../../utils/dom';
@@ -86,6 +86,7 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
 
   const permissions = useRoomPermissions(creators, powerLevels);
   const canInvite = permissions.action('invite', mx.getSafeUserId());
+  const isAdmin = readPowerLevel.user(powerLevels, mx.getSafeUserId()) >= 100;
   const notificationPreferences = useRoomsNotificationPreferencesContext();
   const notificationMode = getRoomNotificationMode(notificationPreferences, room.roomId);
   const { navigateRoom } = useRoomNavigate();
@@ -162,6 +163,7 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
       </Box>
       <Line variant="Surface" size="300" />
       <Box direction="Column" gap="100" style={{ padding: config.space.S100 }}>
+        {/* DT: Invite - oculto para todos los roles
         <MenuItem
           onClick={handleInvite}
           variant="Primary"
@@ -176,6 +178,7 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
             Invite
           </Text>
         </MenuItem>
+        */}
         <MenuItem
           onClick={handleCopyLink}
           size="300"
@@ -186,16 +189,19 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
             Copy Link
           </Text>
         </MenuItem>
-        <MenuItem
-          onClick={handleOpenSettings}
-          size="300"
-          after={<Icon size="100" src={Icons.Setting} />}
-          radii="300"
-        >
-          <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-            Room Settings
-          </Text>
-        </MenuItem>
+        {/* DT: Room Settings - visible solo para admin */}
+        {isAdmin && (
+          <MenuItem
+            onClick={handleOpenSettings}
+            size="300"
+            after={<Icon size="100" src={Icons.Setting} />}
+            radii="300"
+          >
+            <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
+              Room Settings
+            </Text>
+          </MenuItem>
+        )}
         <UseStateProvider initial={false}>
           {(promptJump, setPromptJump) => (
             <>
@@ -224,6 +230,7 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
           )}
         </UseStateProvider>
       </Box>
+      {/* DT: Leave Room - oculto para rol user
       <Line variant="Surface" size="300" />
       <Box direction="Column" gap="100" style={{ padding: config.space.S100 }}>
         <UseStateProvider initial={false}>
@@ -253,6 +260,7 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
           )}
         </UseStateProvider>
       </Box>
+      */}
     </Menu>
   );
 });

@@ -241,6 +241,7 @@ export function Home() {
         <PageNavContent scrollRef={scrollRef}>
           <Box direction="Column" gap="300">
             <NavCategory>
+              {/* DT: Create Room - oculto para rol user
               <NavItem variant="Background" radii="400" aria-selected={createRoomSelected}>
                 <NavButton onClick={() => navigate(getHomeCreatePath())}>
                   <NavItemContent>
@@ -257,6 +258,8 @@ export function Home() {
                   </NavItemContent>
                 </NavButton>
               </NavItem>
+              */}
+              {/* DT: Join with Address - oculto para rol user
               <UseStateProvider initial={false}>
                 {(open, setOpen) => (
                   <>
@@ -295,6 +298,7 @@ export function Home() {
                   </>
                 )}
               </UseStateProvider>
+              */}
               <NavItem variant="Background" radii="400" aria-selected={searchSelected}>
                 <NavLink to={getHomeSearchPath()}>
                   <NavItemContent>

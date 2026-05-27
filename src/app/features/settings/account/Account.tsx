@@ -32,9 +32,13 @@ export function Account({ requestClose }: AccountProps) {
           <PageContent>
             <Box direction="Column" gap="700">
               <Profile />
+              {/* DT: Matrix ID - oculto para todos los roles; expone el ID interno de Matrix
               <MatrixId />
+              */}
               <ContactInformation />
+              {/* DT: Blocked Users - oculto para todos los roles; no aplica para DT
               <IgnoredUserList />
+              */}
               <ChangePassword />
             </Box>
           </PageContent>
