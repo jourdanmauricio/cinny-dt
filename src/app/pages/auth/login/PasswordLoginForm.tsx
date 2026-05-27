@@ -37,6 +37,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
     setError(null);
     try {
       const dtRes = await dtLogin(email, password);
+      localStorage.setItem('dt_access_token', dtRes.dtToken);
       const data: CustomLoginResponse = {
         baseUrl: dtRes.homeserver,
         response: {

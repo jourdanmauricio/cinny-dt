@@ -62,7 +62,7 @@ async function init() {
 
   if (code) {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/matrix/exchange?code=${code}`);
+      const res = await fetch(`${import.meta.env.VITE_DT_API_URL}/matrix/exchange?code=${code}`);
       if (res.ok) {
         const data = await res.json();
         setFallbackSession(data.token, data.deviceId, data.userId, data.homeserver);

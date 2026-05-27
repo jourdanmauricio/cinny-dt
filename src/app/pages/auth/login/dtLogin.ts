@@ -1,5 +1,6 @@
 export type DtLoginResponse = {
   token: string;
+  dtToken: string;
   userId: string;
   homeserver: string;
 };
