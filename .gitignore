@@ -7,3 +7,5 @@ devAssets
 .idea
 .env*
 !.env.example
+
+public/config.local.json

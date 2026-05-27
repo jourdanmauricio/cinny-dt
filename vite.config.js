@@ -11,6 +11,8 @@ import fs from 'fs';
 import path from 'path';
 import buildConfig from './build.config';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const copyFiles = {
   targets: [
     {
@@ -26,10 +28,15 @@ const copyFiles = {
       src: 'netlify.toml',
       dest: '',
     },
+    // {
+    //   //src: 'config.json',
+    //   src: 'public/config.json',
+    //   dest: '',
+    // },
     {
-      //src: 'config.json',
-      src: 'public/config.json',
+      src: isDev ? 'public/config.local.json' : 'public/config.json',
       dest: '',
+      rename: 'config.json',
     },
     {
       src: 'public/manifest.json',
