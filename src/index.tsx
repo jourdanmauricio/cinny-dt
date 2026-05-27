@@ -16,7 +16,7 @@ import App from './app/pages/App';
 // import i18n (needs to be bundled ;))
 import './app/i18n';
 import { pushSessionToSW } from './sw-session';
-import { getFallbackSession, setFallbackSession } from './app/state/sessions';
+import { clearPreviousSessionData, getFallbackSession, setFallbackSession } from './app/state/sessions';
 
 document.body.classList.add(configClass, varsClass);
 
@@ -59,13 +59,22 @@ const mountApp = () => {
 async function init() {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
+  const dtToken = params.get('dtToken');
 
   if (code) {
     try {
       const res = await fetch(`${import.meta.env.VITE_DT_API_URL}/matrix/exchange?code=${code}`);
       if (res.ok) {
         const data = await res.json();
-        setFallbackSession(data.token, data.deviceId, data.userId, data.homeserver);
+        // Limpiar datos de sesión anterior antes de guardar los nuevos tokens
+        clearPreviousSessionData();
+        // Guardar el DT JWT si viene en la URL (flujo Google OAuth)
+        if (dtToken) {
+          localStorage.setItem('dt_access_token', dtToken);
+        }
+        // El endpoint /matrix/exchange no devuelve deviceId → generamos uno local
+        const deviceId = `DT_${Date.now()}`;
+        setFallbackSession(data.token, deviceId, data.userId, data.homeserver);
       }
     } catch {
       // continue normally

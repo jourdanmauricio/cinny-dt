@@ -45,6 +45,25 @@ export const removeFallbackSession = () => {
   localStorage.removeItem('cinny_user_id');
   localStorage.removeItem('cinny_device_id');
   localStorage.removeItem('cinny_access_token');
+  // DT JWT — must stay in sync with PasswordLoginForm's localStorage.setItem('dt_access_token')
+  localStorage.removeItem('dt_access_token');
+};
+
+/**
+ * Limpia credenciales de sesión anterior antes de guardar las nuevas.
+ * Debe llamarse en cualquier punto de entrada al login (login custom y OAuth exchange)
+ * para evitar estado cruzado entre sesiones.
+ *
+ * NO usa localStorage.clear() para no afectar otras apps en el mismo dominio.
+ * NO borra 'settings' (preferencias de UI, intencional entre sesiones).
+ * NO borra claves con sufijo userId (navToActivePath, closedNavCategories, etc.)
+ * porque esas usan el userId del nuevo usuario como key y arrancan vacías solas.
+ */
+export const clearPreviousSessionData = () => {
+  // Credenciales Matrix + DT JWT
+  removeFallbackSession();
+  // Estado UI global sin userId-suffix: puede contener rooms del usuario anterior
+  localStorage.removeItem('spaceRooms');
 };
 export const getFallbackSession = (): Session | undefined => {
   const baseUrl = localStorage.getItem('cinny_hs_base_url');
