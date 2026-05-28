@@ -67,7 +67,7 @@ function SuggestMenuItem({
       disabled={toggleState.status === AsyncStatus.Loading}
     >
       <Text as="span" size="T300" truncate>
-        {content.suggested ? 'Unset Suggested' : 'Set Suggested'}
+        {content.suggested ? 'Quitar sugerencia' : 'Marcar como sugerida'}
       </Text>
     </MenuItem>
   );
@@ -111,7 +111,7 @@ function RemoveMenuItem({
       disabled={removeState.status === AsyncStatus.Loading}
     >
       <Text as="span" size="T300" truncate>
-        Remove
+        Eliminar
       </Text>
     </MenuItem>
   );
@@ -146,7 +146,7 @@ function InviteMenuItem({
         disabled={disabled || !room}
       >
         <Text as="span" size="T300" truncate>
-          Invite
+          Invitar
         </Text>
       </MenuItem>
       {invitePrompt && room && (
@@ -187,7 +187,7 @@ function SettingsMenuItem({
   return (
     <MenuItem onClick={handleSettings} size="300" radii="300" disabled={disabled}>
       <Text as="span" size="T300" truncate>
-        Settings
+        Configuración
       </Text>
     </MenuItem>
   );
@@ -274,7 +274,7 @@ export function HierarchyItemMenu({
                         }}
                       >
                         <Text as="span" size="T300" truncate>
-                          {pinned ? 'Unpin from Sidebar' : 'Pin to Sidebar'}
+                          {pinned ? 'Desanclar de la barra lateral' : 'Anclar en la barra lateral'}
                         </Text>
                       </MenuItem>
                     )}
@@ -297,7 +297,7 @@ export function HierarchyItemMenu({
                             aria-pressed={promptLeave}
                           >
                             <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-                              Leave
+                              Salir
                             </Text>
                           </MenuItem>
                           {promptLeave &&

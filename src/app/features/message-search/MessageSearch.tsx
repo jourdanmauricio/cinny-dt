@@ -198,7 +198,7 @@ export function MessageSearch({
           radii="Pill"
           outlined
           size="300"
-          aria-label="Scroll to Top"
+          aria-label="Ir al inicio"
         >
           <Icon src={Icons.ChevronTop} size="300" />
         </IconButton>
@@ -229,8 +229,8 @@ export function MessageSearch({
           <PageHeroSection>
             <PageHero
               icon={<Icon size="600" src={Icons.Message} />}
-              title="Search Messages"
-              subTitle="Find helpful messages in your community by searching with related keywords."
+              title="Buscar mensajes"
+              subTitle="Encuentra mensajes útiles en tu comunidad buscando por palabras clave."
             />
           </PageHeroSection>
         </PageHeroEmpty>
@@ -245,7 +245,7 @@ export function MessageSearch({
         >
           <Icon size="200" src={Icons.Info} />
           <Text>
-            No results found for <b>{`"${msgSearchParams.term}"`}</b>
+            Sin resultados para <b>{`"${msgSearchParams.term}"`}</b>
           </Text>
         </Box>
       )}
@@ -262,7 +262,7 @@ export function MessageSearch({
       {vItems.length > 0 && (
         <Box direction="Column" gap="300">
           <Box direction="Column" gap="200">
-            <Text size="H5">{`Results for "${msgSearchParams.term}"`}</Text>
+            <Text size="H5">{`Resultados para "${msgSearchParams.term}"`}</Text>
             <Line size="300" variant="Surface" />
           </Box>
           <div

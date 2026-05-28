@@ -20,7 +20,7 @@ export function About({ requestClose }: AboutProps) {
         <Box grow="Yes" gap="200">
           <Box grow="Yes" alignItems="Center" gap="200">
             <Text size="H3" truncate>
-              About
+              Acerca de
             </Text>
           </Box>
           <Box shrink="No">
@@ -39,7 +39,7 @@ export function About({ requestClose }: AboutProps) {
                   <img
                     style={{ width: toRem(60), height: toRem(60) }}
                     src={CinnySVG}
-                    alt="Dulce Terciopelo logo"
+                    alt="Logo de Dulce Terciopelo"
                   />
                 </Box>
                 <Box direction="Column" gap="300">
@@ -82,7 +82,7 @@ export function About({ requestClose }: AboutProps) {
                 </Box>
               </Box>
               <Box direction="Column" gap="100">
-                <Text size="L400">Options</Text>
+                <Text size="L400">Opciones</Text>
                 <SequenceCard
                   className={SequenceCardStyle}
                   variant="SurfaceVariant"
@@ -90,8 +90,8 @@ export function About({ requestClose }: AboutProps) {
                   gap="400"
                 >
                   <SettingTile
-                    title="Clear Cache & Reload"
-                    description="Clear all your locally stored data and reload from server."
+                    title="Limpiar caché y recargar"
+                    description="Elimina todos los datos almacenados localmente y recarga desde el servidor."
                     after={
                       <Button
                         onClick={() => clearCacheAndReload(mx)}
@@ -101,14 +101,14 @@ export function About({ requestClose }: AboutProps) {
                         radii="300"
                         outlined
                       >
-                        <Text size="B300">Clear Cache</Text>
+                        <Text size="B300">Limpiar caché</Text>
                       </Button>
                     }
                   />
                 </SequenceCard>
               </Box>
               <Box direction="Column" gap="100">
-                <Text size="L400">Credits</Text>
+                <Text size="L400">Créditos</Text>
                 <SequenceCard
                   className={SequenceCardStyle}
                   variant="SurfaceVariant"

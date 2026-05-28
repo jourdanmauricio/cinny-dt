@@ -92,7 +92,7 @@ const HomeMenu = forwardRef<HTMLDivElement, HomeMenuProps>(({ requestClose }, re
           aria-disabled={!unread}
         >
           <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-            Mark as Read
+            Marcar como leído
           </Text>
         </MenuItem>
       </Box>
@@ -117,7 +117,7 @@ function HomeHeader() {
         <Box alignItems="Center" grow="Yes" gap="300">
           <Box grow="Yes">
             <Text size="H4" truncate>
-              Home
+              Inicio
             </Text>
           </Box>
           <Box>
@@ -161,19 +161,19 @@ function HomeEmpty() {
         icon={<Icon size="600" src={Icons.Hash} />}
         title={
           <Text size="H5" align="Center">
-            No Rooms
+            Sin salas
           </Text>
         }
         content={
           <Text size="T300" align="Center">
-            You do not have any rooms yet.
+            Aún no tienes ninguna sala.
           </Text>
         }
         options={
           <>
             <Button onClick={() => navigate(getHomeCreatePath())} variant="Secondary" size="300">
               <Text size="B300" truncate>
-                Create Room
+                Crear sala
               </Text>
             </Button>
             <Button
@@ -183,7 +183,7 @@ function HomeEmpty() {
               size="300"
             >
               <Text size="B300" truncate>
-                Explore Community Rooms
+                Explorar salas de la comunidad
               </Text>
             </Button>
           </>
@@ -251,7 +251,7 @@ export function Home() {
                       </Avatar>
                       <Box as="span" grow="Yes">
                         <Text as="span" size="Inherit" truncate>
-                          Create Room
+                          Crear sala
                         </Text>
                       </Box>
                     </Box>
@@ -308,7 +308,7 @@ export function Home() {
                       </Avatar>
                       <Box as="span" grow="Yes">
                         <Text as="span" size="Inherit" truncate>
-                          Message Search
+                          Buscar mensajes
                         </Text>
                       </Box>
                     </Box>
@@ -323,7 +323,7 @@ export function Home() {
                   data-category-id={DEFAULT_CATEGORY_ID}
                   onClick={handleCategoryClick}
                 >
-                  Rooms
+                  Salas
                 </RoomNavCategoryButton>
               </NavCategoryHeader>
               <div

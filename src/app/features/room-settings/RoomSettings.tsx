@@ -34,22 +34,22 @@ const useRoomSettingsMenuItems = (): RoomSettingsMenuItem[] =>
       },
       {
         page: RoomSettingsPage.MembersPage,
-        name: 'Members',
+        name: 'Miembros',
         icon: Icons.User,
       },
       {
         page: RoomSettingsPage.PermissionsPage,
-        name: 'Permissions',
+        name: 'Permisos',
         icon: Icons.Lock,
       },
       {
         page: RoomSettingsPage.EmojisStickersPage,
-        name: 'Emojis & Stickers',
+        name: 'Emojis y stickers',
         icon: Icons.Smile,
       },
       {
         page: RoomSettingsPage.DeveloperToolsPage,
-        name: 'Developer Tools',
+        name: 'Herramientas de desarrollador',
         icon: Icons.Terminal,
       },
     ],

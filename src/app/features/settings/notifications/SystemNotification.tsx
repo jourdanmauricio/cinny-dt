@@ -98,7 +98,7 @@ export function SystemNotification() {
 
   return (
     <Box direction="Column" gap="100">
-      <Text size="L400">System</Text>
+      <Text size="L400">Sistema</Text>
       <SequenceCard
         className={SequenceCardStyle}
         variant="SurfaceVariant"
@@ -106,22 +106,22 @@ export function SystemNotification() {
         gap="400"
       >
         <SettingTile
-          title="Desktop Notifications"
+          title="Notificaciones de escritorio"
           description={
             notifPermission === 'denied' ? (
               <Text as="span" style={{ color: color.Critical.Main }} size="T200">
                 {'Notification' in window
-                  ? 'Notification permission is blocked. Please allow notification permission from browser address bar.'
-                  : 'Notifications are not supported by the system.'}
+                  ? 'El permiso de notificaciones está bloqueado. Habilítalo desde la barra de direcciones del navegador.'
+                  : 'Las notificaciones no son compatibles con este sistema.'}
               </Text>
             ) : (
-              <span>Show desktop notifications when message arrive.</span>
+              <span>Mostrar notificaciones de escritorio al recibir mensajes.</span>
             )
           }
           after={
             notifPermission === 'prompt' ? (
               <Button size="300" radii="300" onClick={requestNotificationPermission}>
-                <Text size="B300">Enable</Text>
+                <Text size="B300">Activar</Text>
               </Button>
             ) : (
               <Switch
@@ -140,8 +140,8 @@ export function SystemNotification() {
         gap="400"
       >
         <SettingTile
-          title="Notification Sound"
-          description="Play sound when new message arrive."
+          title="Sonido de notificación"
+          description="Reproducir sonido al recibir mensajes nuevos."
           after={<Switch value={isNotificationSounds} onChange={setIsNotificationSounds} />}
         />
       </SequenceCard>

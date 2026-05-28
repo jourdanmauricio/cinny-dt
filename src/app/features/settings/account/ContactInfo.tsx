@@ -22,14 +22,14 @@ export function ContactInformation() {
 
   return (
     <Box direction="Column" gap="100">
-      <Text size="L400">Contact Information</Text>
+      <Text size="L400">Información de contacto</Text>
       <SequenceCard
         className={SequenceCardStyle}
         variant="SurfaceVariant"
         direction="Column"
         gap="400"
       >
-        <SettingTile title="Email Address" description="Email address attached to your account.">
+        <SettingTile title="Correo electrónico" description="Correo electrónico vinculado a tu cuenta.">
           {/* DT: Email Address - solo lectura; gestionado por el backend de DT */}
           <Box style={{ opacity: 0.6, pointerEvents: 'none' }}>
             {emailIds?.map((email) => (

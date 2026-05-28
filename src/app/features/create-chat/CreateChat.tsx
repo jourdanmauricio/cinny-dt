@@ -75,7 +75,7 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
   return (
     <Box as="form" onSubmit={handleSubmit} grow="Yes" direction="Column" gap="500">
       <Box direction="Column" gap="100">
-        <Text size="L400">User ID</Text>
+        <Text size="L400">ID de usuario</Text>
         <Input
           defaultValue={defaultUserId}
           placeholder="@username:server"
@@ -92,13 +92,13 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
           <Box style={{ color: color.Critical.Main }} alignItems="Center" gap="100">
             <Icon src={Icons.Warning} filled size="50" />
             <Text size="T200" style={{ color: color.Critical.Main }}>
-              <b>Please enter a valid User ID.</b>
+              <b>Ingresa un ID de usuario válido.</b>
             </Text>
           </Box>
         )}
       </Box>
       <Box shrink="No" direction="Column" gap="100">
-        <Text size="L400">Options</Text>
+        <Text size="L400">Opciones</Text>
         <SequenceCard
           style={{ padding: config.space.S300 }}
           variant="SurfaceVariant"
@@ -106,8 +106,8 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
           gap="500"
         >
           <SettingTile
-            title="End-to-End Encryption"
-            description="Once this feature is enabled, it can't be disabled after the room is created."
+            title="Cifrado de extremo a extremo"
+            description="Una vez activada esta función no se puede desactivar después de crear la sala."
             after={
               <Switch
                 variant="Primary"
@@ -142,7 +142,7 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
           disabled={disabled}
           before={loading && <Spinner variant="Primary" fill="Solid" size="200" />}
         >
-          <Text size="B500">Create</Text>
+          <Text size="B500">Crear</Text>
         </Button>
       </Box>
     </Box>

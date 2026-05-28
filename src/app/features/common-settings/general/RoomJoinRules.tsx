@@ -127,11 +127,11 @@ export function RoomJoinRules({ permissions }: RoomJoinRulesProps) {
       gap="400"
     >
       <SettingTile
-        title={room.isSpaceRoom() ? 'Space Access' : 'Room Access'}
+        title={room.isSpaceRoom() ? 'Acceso al espacio' : 'Acceso a la sala'}
         description={
           room.isSpaceRoom()
-            ? 'Change how people can join the space.'
-            : 'Change how people can join the room.'
+            ? 'Cambia cómo las personas pueden unirse al espacio.'
+            : 'Cambia cómo las personas pueden unirse a la sala.'
         }
         after={
           <JoinRulesSwitcher

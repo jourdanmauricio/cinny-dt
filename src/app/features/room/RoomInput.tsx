@@ -515,9 +515,9 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
               >
                 <Icon size="600" src={Icons.File} />
                 <Text size="H4" align="Center">
-                  {`Drop Files in "${room?.name || 'Room'}"`}
+                  {`Suelta archivos en "${room?.name || 'la sala'}"`}
                 </Text>
-                <Text align="Center">Drag and drop files here or click for selection dialog</Text>
+                <Text align="Center">Arrastra archivos aquí o haz clic para seleccionarlos</Text>
               </Box>
             </Dialog>
           </OverlayCenter>
@@ -557,7 +557,7 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
         <CustomEditor
           editableName="RoomInput"
           editor={editor}
-          placeholder="Send a message..."
+          placeholder="Escribe un mensaje..."
           onKeyDown={handleKeyDown}
           onKeyUp={handleKeyUp}
           onPaste={handlePaste}
@@ -692,13 +692,13 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
                 variant={recordingState === 'recording' ? 'Critical' : 'SurfaceVariant'}
                 size="300"
                 radii="300"
-                aria-label={recordingState === 'recording' ? 'Stop recording' : 'Record voice message'}
+                aria-label={recordingState === 'recording' ? 'Detener grabación' : 'Grabar mensaje de voz'}
                 title={
                   recordingState === 'denied'
-                    ? 'Microphone access denied'
+                    ? 'Acceso al micrófono denegado'
                     : recordingState === 'recording'
-                    ? 'Stop recording'
-                    : 'Record voice message'
+                    ? 'Detener grabación'
+                    : 'Grabar mensaje de voz'
                 }
                 disabled={recordingState === 'denied'}
               >

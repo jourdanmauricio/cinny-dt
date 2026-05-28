@@ -160,7 +160,7 @@ export function RoomProfileEdit({
                 disabled={!canEditAvatar || submitting}
                 onClick={() => pickFile('image/*')}
               >
-                <Text size="B300">Upload</Text>
+                <Text size="B300">Subir</Text>
               </Button>
               {!roomAvatar && avatar && (
                 <Button
@@ -172,7 +172,7 @@ export function RoomProfileEdit({
                   disabled={!canEditAvatar || submitting}
                   onClick={() => setRoomAvatar(avatar)}
                 >
-                  <Text size="B300">Reset</Text>
+                  <Text size="B300">Restablecer</Text>
                 </Button>
               )}
               {roomAvatar && (
@@ -185,7 +185,7 @@ export function RoomProfileEdit({
                   disabled={!canEditAvatar || submitting}
                   onClick={() => setRoomAvatar(undefined)}
                 >
-                  <Text size="B300">Remove</Text>
+                  <Text size="B300">Eliminar</Text>
                 </Button>
               )}
             </Box>
@@ -210,7 +210,7 @@ export function RoomProfileEdit({
         </Box>
       </Box>
       <Box direction="Inherit" gap="100">
-        <Text size="L400">Name</Text>
+        <Text size="L400">Nombre</Text>
         <Input
           name="nameInput"
           defaultValue={name}
@@ -220,7 +220,7 @@ export function RoomProfileEdit({
         />
       </Box>
       <Box direction="Inherit" gap="100">
-        <Text size="L400">Topic</Text>
+        <Text size="L400">Tema</Text>
         <TextArea
           name="topicTextArea"
           defaultValue={topic}
@@ -243,7 +243,7 @@ export function RoomProfileEdit({
           disabled={uploadingAvatar || submitting}
           before={submitting && <Spinner size="100" variant="Success" fill="Solid" />}
         >
-          <Text size="B300">Save</Text>
+          <Text size="B300">Guardar</Text>
         </Button>
         <Button
           type="reset"
@@ -253,7 +253,7 @@ export function RoomProfileEdit({
           size="300"
           radii="300"
         >
-          <Text size="B300">Cancel</Text>
+          <Text size="B300">Cancelar</Text>
         </Button>
       </Box>
     </Box>
@@ -289,7 +289,7 @@ export function RoomProfile({ permissions }: RoomProfileProps) {
 
   return (
     <Box direction="Column" gap="100">
-      <Text size="L400">Profile</Text>
+      <Text size="L400">Perfil</Text>
       <SequenceCard
         className={SequenceCardStyle}
         variant="SurfaceVariant"
@@ -329,7 +329,7 @@ export function RoomProfile({ permissions }: RoomProfileProps) {
                     onClick={() => setEdit(true)}
                     outlined
                   >
-                    <Text size="B300">Edit</Text>
+                    <Text size="B300">Editar</Text>
                   </Chip>
                 </Box>
               )}

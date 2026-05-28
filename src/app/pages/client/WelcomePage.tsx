@@ -15,10 +15,10 @@ export function WelcomePage() {
         <PageHeroSection>
           <PageHero
             icon={<img width="70" height="70" src={CinnySVG} alt="Cinny Logo" />}
-            title="Welcome to Cinny"
+            title="Bienvenido a Dulce Terciopelo"
             subTitle={
               <span>
-                Yet another matrix client.{' '}
+                Tu espacio de chat.{' '}
                 <a
                   href="https://github.com/cinnyapp/cinny/releases"
                   target="_blank"

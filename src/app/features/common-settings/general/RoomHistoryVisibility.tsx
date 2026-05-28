@@ -29,10 +29,10 @@ import { RoomPermissionsAPI } from '../../../hooks/useRoomPermissions';
 const useVisibilityStr = () =>
   useMemo(
     () => ({
-      [HistoryVisibility.Invited]: 'After Invite',
-      [HistoryVisibility.Joined]: 'After Join',
-      [HistoryVisibility.Shared]: 'All Messages',
-      [HistoryVisibility.WorldReadable]: 'All Messages (Guests)',
+      [HistoryVisibility.Invited]: 'Desde la invitación',
+      [HistoryVisibility.Joined]: 'Desde que se unió',
+      [HistoryVisibility.Shared]: 'Todos los mensajes',
+      [HistoryVisibility.WorldReadable]: 'Todos los mensajes (invitados)',
     }),
     []
   );
@@ -96,8 +96,8 @@ export function RoomHistoryVisibility({ permissions }: RoomHistoryVisibilityProp
       gap="400"
     >
       <SettingTile
-        title="Message History Visibility"
-        description="Changes to history visibility will only apply to future messages. The visibility of existing history will have no effect."
+        title="Visibilidad del historial de mensajes"
+        description="Los cambios en la visibilidad del historial solo se aplicarán a mensajes futuros."
         after={
           <PopOut
             anchor={menuAnchor}

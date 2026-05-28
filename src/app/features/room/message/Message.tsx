@@ -176,7 +176,7 @@ export const MessageAllReactionItem = as<
         aria-pressed={open}
       >
         <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-          View Reactions
+          Ver reacciones
         </Text>
       </MenuItem>
     </>
@@ -226,7 +226,7 @@ export const MessageReadReceiptItem = as<
         aria-pressed={open}
       >
         <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-          Read Receipts
+          Confirmaciones de lectura
         </Text>
       </MenuItem>
     </>
@@ -309,7 +309,7 @@ export const MessageSourceCodeItem = as<
         aria-pressed={open}
       >
         <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-          View Source
+          Ver fuente
         </Text>
       </MenuItem>
     </>
@@ -343,7 +343,7 @@ export const MessageCopyLinkItem = as<
       ref={ref}
     >
       <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-        Copy Link
+        Copiar enlace
       </Text>
     </MenuItem>
   );
@@ -383,7 +383,7 @@ export const MessagePinItem = as<
       ref={ref}
     >
       <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-        {isPinned ? 'Unpin Message' : 'Pin Message'}
+        {isPinned ? 'Desfijar mensaje' : 'Fijar mensaje'}
       </Text>
     </MenuItem>
   );
@@ -450,7 +450,7 @@ export const MessageDeleteItem = as<
                 size="500"
               >
                 <Box grow="Yes">
-                  <Text size="H4">Delete Message</Text>
+                  <Text size="H4">Eliminar mensaje</Text>
                 </Box>
                 <IconButton size="300" onClick={handleClose} radii="300">
                   <Icon src={Icons.Cross} />
@@ -464,19 +464,19 @@ export const MessageDeleteItem = as<
                 gap="400"
               >
                 <Text priority="400">
-                  This action is irreversible! Are you sure that you want to delete this message?
+                  ¡Esta acción es irreversible! ¿Seguro que quieres eliminar este mensaje?
                 </Text>
                 <Box direction="Column" gap="100">
                   <Text size="L400">
                     Reason{' '}
                     <Text as="span" size="T200">
-                      (optional)
+                      (opcional)
                     </Text>
                   </Text>
                   <Input name="reasonInput" variant="Background" />
                   {deleteState.status === AsyncStatus.Error && (
                     <Text style={{ color: color.Critical.Main }} size="T300">
-                      Failed to delete message! Please try again.
+                      No se pudo eliminar el mensaje. Inténtalo de nuevo.
                     </Text>
                   )}
                 </Box>
@@ -491,7 +491,7 @@ export const MessageDeleteItem = as<
                   aria-disabled={deleteState.status === AsyncStatus.Loading}
                 >
                   <Text size="B400">
-                    {deleteState.status === AsyncStatus.Loading ? 'Deleting...' : 'Delete'}
+                    {deleteState.status === AsyncStatus.Loading ? 'Eliminando...' : 'Eliminar'}
                   </Text>
                 </Button>
               </Box>
@@ -580,7 +580,7 @@ export const MessageReportItem = as<
                 size="500"
               >
                 <Box grow="Yes">
-                  <Text size="H4">Report Message</Text>
+                  <Text size="H4">Reportar mensaje</Text>
                 </Box>
                 <IconButton size="300" onClick={handleClose} radii="300">
                   <Icon src={Icons.Cross} />
@@ -594,20 +594,19 @@ export const MessageReportItem = as<
                 gap="400"
               >
                 <Text priority="400">
-                  Report this message to server, which may then notify the appropriate people to
-                  take action.
+                  Reportar este mensaje al servidor para que se tomen las medidas correspondientes.
                 </Text>
                 <Box direction="Column" gap="100">
-                  <Text size="L400">Reason</Text>
+                  <Text size="L400">Motivo</Text>
                   <Input name="reasonInput" variant="Background" required />
                   {reportState.status === AsyncStatus.Error && (
                     <Text style={{ color: color.Critical.Main }} size="T300">
-                      Failed to report message! Please try again.
+                      No se pudo reportar el mensaje. Inténtalo de nuevo.
                     </Text>
                   )}
                   {reportState.status === AsyncStatus.Success && (
                     <Text style={{ color: color.Success.Main }} size="T300">
-                      Message has been reported to server.
+                      El mensaje fue reportado al servidor.
                     </Text>
                   )}
                 </Box>
@@ -625,7 +624,7 @@ export const MessageReportItem = as<
                   }
                 >
                   <Text size="B400">
-                    {reportState.status === AsyncStatus.Loading ? 'Reporting...' : 'Report'}
+                    {reportState.status === AsyncStatus.Loading ? 'Reportando...' : 'Reportar'}
                   </Text>
                 </Button>
               </Box>
@@ -998,7 +997,7 @@ export const Message = as<'div', MessageProps>(
                                 size="T300"
                                 truncate
                               >
-                                Add Reaction
+                                Agregar reacción
                               </Text>
                             </MenuItem>
                           )}
@@ -1025,7 +1024,7 @@ export const Message = as<'div', MessageProps>(
                               size="T300"
                               truncate
                             >
-                              Reply
+                              Responder
                             </Text>
                           </MenuItem>
                           {!isThreadedMessage && (
@@ -1045,7 +1044,7 @@ export const Message = as<'div', MessageProps>(
                                 size="T300"
                                 truncate
                               >
-                                Reply in Thread
+                                Responder en hilo
                               </Text>
                             </MenuItem>
                           )}
@@ -1066,7 +1065,7 @@ export const Message = as<'div', MessageProps>(
                                 size="T300"
                                 truncate
                               >
-                                Edit Message
+                                Editar mensaje
                               </Text>
                             </MenuItem>
                           )}

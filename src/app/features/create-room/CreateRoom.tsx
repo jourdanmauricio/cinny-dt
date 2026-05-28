@@ -162,7 +162,7 @@ export function CreateRoomForm({
     <Box as="form" onSubmit={handleSubmit} grow="Yes" direction="Column" gap="500">
       {!space && (
         <Box direction="Column" gap="100">
-          <Text size="L400">Type</Text>
+          <Text size="L400">Tipo</Text>
           <CreateRoomTypeSelector
             value={type}
             onSelect={setType}
@@ -172,7 +172,7 @@ export function CreateRoomForm({
         </Box>
       )}
       <Box direction="Column" gap="100">
-        <Text size="L400">Access</Text>
+        <Text size="L400">Acceso</Text>
         <CreateRoomAccessSelector
           value={access}
           onSelect={setAccess}
@@ -182,7 +182,7 @@ export function CreateRoomForm({
         />
       </Box>
       <Box shrink="No" direction="Column" gap="100">
-        <Text size="L400">Name</Text>
+        <Text size="L400">Nombre</Text>
         <Input
           required
           before={<Icon size="100" src={getCreateRoomAccessToIcon(access, type)} />}
@@ -196,7 +196,7 @@ export function CreateRoomForm({
         />
       </Box>
       <Box shrink="No" direction="Column" gap="100">
-        <Text size="L400">Topic (Optional)</Text>
+        <Text size="L400">Tema (opcional)</Text>
         <TextArea
           name="topicTextAria"
           size="500"
@@ -210,7 +210,7 @@ export function CreateRoomForm({
 
       <Box shrink="No" direction="Column" gap="100">
         <Box gap="200" alignItems="End">
-          <Text size="L400">Options</Text>
+          <Text size="L400">Opciones</Text>
           <Box grow="Yes" justifyContent="End">
             <Chip
               radii="Pill"
@@ -218,7 +218,7 @@ export function CreateRoomForm({
               onClick={() => setAdvance(!advance)}
               type="button"
             >
-              <Text size="T200">Advanced Options</Text>
+              <Text size="T200">Opciones avanzadas</Text>
             </Chip>
           </Box>
         </Box>
@@ -245,8 +245,8 @@ export function CreateRoomForm({
               gap="500"
             >
               <SettingTile
-                title="End-to-End Encryption"
-                description="Once this feature is enabled, it can't be disabled after the room is created."
+                title="Cifrado de extremo a extremo"
+                description="Una vez activada esta función no se puede desactivar después de crear la sala."
                 after={
                   <Switch
                     variant="Primary"
@@ -265,8 +265,8 @@ export function CreateRoomForm({
                 gap="500"
               >
                 <SettingTile
-                  title="Knock to Join"
-                  description="Anyone can send request to join this room."
+                  title="Solicitar acceso"
+                  description="Cualquiera puede enviar una solicitud para unirse a esta sala."
                   after={
                     <Switch
                       variant="Primary"
@@ -288,8 +288,8 @@ export function CreateRoomForm({
           gap="500"
         >
           <SettingTile
-            title="Allow Federation"
-            description="Users from other servers can join."
+            title="Permitir federación"
+            description="Usuarios de otros servidores pueden unirse."
             after={
               <Switch
                 variant="Primary"
@@ -316,9 +316,9 @@ export function CreateRoomForm({
           <Text size="T300" style={{ color: color.Critical.Main }}>
             <b>
               {error instanceof MatrixError && error.name === ErrorCode.M_LIMIT_EXCEEDED
-                ? `Server rate-limited your request for ${millisecondsToMinutes(
+                ? `El servidor limitó tu solicitud por ${millisecondsToMinutes(
                     (error.data.retry_after_ms as number | undefined) ?? 0
-                  )} minutes!`
+                  )} minutos.`
                 : error.message}
             </b>
           </Text>
@@ -333,7 +333,7 @@ export function CreateRoomForm({
           disabled={disabled}
           before={loading && <Spinner variant="Primary" fill="Solid" size="200" />}
         >
-          <Text size="B500">Create</Text>
+          <Text size="B500">Crear</Text>
         </Button>
       </Box>
     </Box>

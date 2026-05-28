@@ -114,7 +114,7 @@ export function PermissionGroups({
 
     return (
       <Box direction="Column" gap="100">
-        <Text size="L400">Users</Text>
+        <Text size="L400">Usuarios</Text>
         <SequenceCard
           variant="SurfaceVariant"
           className={SequenceCardStyle}
@@ -122,8 +122,8 @@ export function PermissionGroups({
           gap="400"
         >
           <SettingTile
-            title="Default Power"
-            description="Default power level for all users."
+            title="Poder predeterminado"
+            description="Nivel de poder predeterminado para todos los usuarios."
             after={
               <PowerSwitcher
                 powerLevelTags={powerLevelTags}
@@ -249,11 +249,11 @@ export function PermissionGroups({
             <Box grow="Yes" direction="Column">
               {applyState.status === AsyncStatus.Error ? (
                 <Text size="T200">
-                  <b>Failed to apply changes! Please try again.</b>
+                  <b>No se pudieron aplicar los cambios. Inténtalo de nuevo.</b>
                 </Text>
               ) : (
                 <Text size="T200">
-                  <b>Changes saved! Apply when ready.</b>
+                  <b>¡Cambios guardados! Aplica cuando estés listo.</b>
                 </Text>
               )}
             </Box>
@@ -266,7 +266,7 @@ export function PermissionGroups({
                 disabled={applyingChanges}
                 onClick={resetChanges}
               >
-                <Text size="B300">Reset</Text>
+                <Text size="B300">Restablecer</Text>
               </Button>
               <Button
                 size="300"
@@ -276,7 +276,7 @@ export function PermissionGroups({
                 before={applyingChanges && <Spinner variant="Success" fill="Solid" size="100" />}
                 onClick={handleApplyChanges}
               >
-                <Text size="B300">Apply Changes</Text>
+                <Text size="B300">Aplicar cambios</Text>
               </Button>
             </Box>
           </Box>

@@ -157,7 +157,7 @@ export function Members({ requestClose }: MembersProps) {
         <Box grow="Yes" gap="200">
           <Box grow="Yes" alignItems="Center" gap="200">
             <Text size="H3" truncate>
-              {room.getJoinedMemberCount()} Members
+              {room.getJoinedMemberCount()} miembros
             </Text>
           </Box>
           <Box shrink="No">
@@ -182,7 +182,7 @@ export function Members({ requestClose }: MembersProps) {
                   before={<Icon size="200" src={Icons.Search} />}
                   variant="SurfaceVariant"
                   size="500"
-                  placeholder="Search"
+                  placeholder="Buscar"
                   outlined
                   after={
                     result && (
@@ -197,8 +197,8 @@ export function Members({ requestClose }: MembersProps) {
                       >
                         <Text size="B300">
                           {result.items.length === 0
-                            ? 'No Results'
-                            : `${result.items.length} Results`}
+                            ? 'Sin resultados'
+                            : `${result.items.length} resultados`}
                         </Text>
                       </Chip>
                     )
@@ -282,7 +282,7 @@ export function Members({ requestClose }: MembersProps) {
                   radii="Pill"
                   outlined
                   size="300"
-                  aria-label="Scroll to Top"
+                  aria-label="Ir al inicio"
                 >
                   <Icon src={Icons.ChevronTop} size="300" />
                 </IconButton>
@@ -295,7 +295,7 @@ export function Members({ requestClose }: MembersProps) {
 
               {!fetchingMembers && !result && flattenTagMembers.length === 0 && (
                 <Text style={{ padding: config.space.S300 }} align="Center">
-                  {`No "${membershipFilter.name}" Members`}
+                  {`Sin miembros de tipo "${membershipFilter.name}"`}
                 </Text>
               )}
 

@@ -200,21 +200,21 @@ function InviteCard({
           {invite.isEncrypted && (
             <Box shrink="No" alignItems="Center" justifyContent="Center">
               <Badge variant="Success" fill="Solid" size="400" radii="300">
-                <Text size="L400">Encrypted</Text>
+                <Text size="L400">Cifrado</Text>
               </Badge>
             </Box>
           )}
           {invite.isDirect && (
             <Box shrink="No" alignItems="Center" justifyContent="Center">
-              <Badge variant="Primary" fill="Solid" size="400" radii="300">
-                <Text size="L400">Direct Message</Text>
+              <Badge variant="Principal" fill="Solid" size="400" radii="300">
+                <Text size="L400">Mensaje directo</Text>
               </Badge>
             </Box>
           )}
           {invite.isSpace && (
             <Box shrink="No" alignItems="Center" justifyContent="Center">
               <Badge variant="Secondary" fill="Soft" size="400" radii="300">
-                <Text size="L400">Space</Text>
+                <Text size="L400">Espacio</Text>
               </Badge>
             </Box>
           )}
@@ -290,7 +290,7 @@ function InviteCard({
               disabled={joining || leaving}
               before={leaving ? <Spinner variant="Secondary" size="100" /> : undefined}
             >
-              <Text size="B300">Decline</Text>
+              <Text size="B300">Rechazar</Text>
             </Button>
             <Button
               onClick={join}
@@ -302,7 +302,7 @@ function InviteCard({
               disabled={joining || leaving}
               before={joining ? <Spinner variant="Success" fill="Soft" size="100" /> : undefined}
             >
-              <Text size="B300">Accept</Text>
+              <Text size="B300">Aceptar</Text>
             </Button>
           </Box>
         </Box>
@@ -311,7 +311,7 @@ function InviteCard({
         <Box gap="200" alignItems="Baseline">
           <Box grow="Yes">
             <Text size="T200" priority="300">
-              From: <b>{invite.senderId}</b>
+              De: <b>{invite.senderId}</b>
             </Text>
           </Box>
           {typeof invite.inviteTs === 'number' && invite.inviteTs !== 0 && (
@@ -328,7 +328,7 @@ function InviteCard({
         </Box>
         {invite.reason && (
           <Text size="T200" priority="300">
-            Reason: {invite.reason}
+            Motivo: {invite.reason}
           </Text>
         )}
       </Box>
@@ -391,7 +391,7 @@ function InviteFilters({
           )
         }
       >
-        <Text size="T200">Public</Text>
+        <Text size="T200">Pública</Text>
       </Chip>
       <Chip
         variant={isSpam ? 'Critical' : 'Surface'}
@@ -449,7 +449,7 @@ function KnownInvites({
           <PageHeroSection>
             <PageHero
               icon={<Icon size="600" src={Icons.Mail} />}
-              title="No Invites"
+              title="Sin invitaciones"
               subTitle="When someone you share a room with sends you an invite, it’ll show up here."
             />
           </PageHeroSection>
@@ -488,7 +488,7 @@ function UnknownInvites({
   return (
     <Box direction="Column" gap="200">
       <Box gap="200" justifyContent="SpaceBetween" alignItems="Center">
-        <Text size="H4">Public</Text>
+        <Text size="H4">Pública</Text>
         <Box>
           {invites.length > 0 && (
             <Chip
@@ -498,7 +498,7 @@ function UnknownInvites({
               disabled={declining}
               radii="Pill"
             >
-              <Text size="T200">Decline All</Text>
+              <Text size="T200">Rechazar todas</Text>
             </Chip>
           )}
         </Box>
@@ -522,7 +522,7 @@ function UnknownInvites({
           <PageHeroSection>
             <PageHero
               icon={<Icon size="600" src={Icons.Info} />}
-              title="No Invites"
+              title="Sin invitaciones"
               subTitle="Invites from people outside your rooms will appear here."
             />
           </PageHeroSection>
@@ -611,7 +611,7 @@ function SpamInvites({
                     disabled={loading}
                   >
                     <Text size="B300" truncate>
-                      Decline All
+                      Rechazar todas
                     </Text>
                   </Button>
                   {reportRoomSupported && reportAllStatus.status !== AsyncStatus.Success && (
@@ -625,7 +625,7 @@ function SpamInvites({
                       disabled={loading}
                     >
                       <Text size="B300" truncate>
-                        Report All
+                        Reportar todas
                       </Text>
                     </Button>
                   )}
@@ -640,7 +640,7 @@ function SpamInvites({
                       before={blocking && <Spinner size="100" variant="Secondary" fill="Solid" />}
                     >
                       <Text size="B300" truncate>
-                        Block All
+                        Bloquear todas
                       </Text>
                     </Button>
                   )}
@@ -658,7 +658,7 @@ function SpamInvites({
                   }
                   onClick={() => setShowInvites(!showInvites)}
                 >
-                  <Text size="B300">{showInvites ? 'Hide All' : 'View All'}</Text>
+                  <Text size="B300">{showInvites ? 'Ocultar todas' : 'Ver todas'}</Text>
                 </Button>
               </PageHero>
             </PageHeroSection>
@@ -681,8 +681,8 @@ function SpamInvites({
           <PageHeroSection>
             <PageHero
               icon={<Icon size="600" src={Icons.Warning} />}
-              title="No Spam Invites"
-              subTitle="Invites detected as spam appear here."
+              title="Sin invitaciones de spam"
+              subTitle="Las invitaciones detectadas como spam aparecen aquí."
             />
           </PageHeroSection>
         </PageHeroEmpty>
@@ -763,7 +763,7 @@ export function Invites() {
           <Box alignItems="Center" gap="200">
             {screenSize !== ScreenSize.Mobile && <Icon size="400" src={Icons.Mail} />}
             <Text size="H3" truncate>
-              Invites
+              Invitaciones
             </Text>
           </Box>
           <Box grow="Yes" basis="No" />
@@ -776,7 +776,7 @@ export function Invites() {
               <Box ref={containerRef} direction="Column" gap="600">
                 <Box direction="Column" gap="100">
                   <span data-spacing-node />
-                  <Text size="L400">Filter</Text>
+                  <Text size="L400">Filtrar</Text>
                   <InviteFilters
                     filter={filter}
                     onFilter={setFilter}

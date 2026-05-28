@@ -97,8 +97,8 @@ function CreatePackTile({ packs, roomId }: CreatePackTileProps) {
       gap="400"
     >
       <SettingTile
-        title="New Pack"
-        description="Add your own emoji and sticker pack to use in room."
+        title="Pack nuevo"
+        description="Agrega tu propio pack de emojis y stickers para usar en la sala."
       >
         <Box
           style={{ marginTop: config.space.S200 }}
@@ -108,7 +108,7 @@ function CreatePackTile({ packs, roomId }: CreatePackTileProps) {
           alignItems="End"
         >
           <Box direction="Column" gap="100" grow="Yes">
-            <Text size="L400">Name</Text>
+            <Text size="L400">Nombre</Text>
             <Input
               name="nameInput"
               required
@@ -130,7 +130,7 @@ function CreatePackTile({ packs, roomId }: CreatePackTileProps) {
             disabled={creating}
             before={creating && <Spinner size="200" variant="Success" fill="Solid" />}
           >
-            <Text size="B400">Create</Text>
+            <Text size="B400">Crear</Text>
           </Button>
         </Box>
       </SettingTile>
@@ -255,7 +255,7 @@ export function RoomPacks({ onViewPack }: RoomPacksProps) {
                 outlined
                 onClick={() => onViewPack(pack)}
               >
-                <Text size="B300">View</Text>
+                <Text size="B300">Ver</Text>
               </Button>
             )
           }
@@ -288,10 +288,10 @@ export function RoomPacks({ onViewPack }: RoomPacksProps) {
               }}
             >
               <Text size="H5" align="Center">
-                No Packs
+                Sin packs
               </Text>
               <Text size="T200" align="Center">
-                There are no emoji or sticker packs to display at the moment.
+                No hay packs de emojis o stickers para mostrar en este momento.
               </Text>
             </Box>
           </SequenceCard>
@@ -315,11 +315,11 @@ export function RoomPacks({ onViewPack }: RoomPacksProps) {
             <Box grow="Yes" direction="Column">
               {applyState.status === AsyncStatus.Error ? (
                 <Text size="T200">
-                  <b>Failed to remove packs! Please try again.</b>
+                  <b>No se pudieron eliminar los packs. Inténtalo de nuevo.</b>
                 </Text>
               ) : (
                 <Text size="T200">
-                  <b>Delete selected packs. ({removedPacks.length} selected)</b>
+                  <b>Eliminar packs seleccionados ({removedPacks.length} seleccionados)</b>
                 </Text>
               )}
             </Box>
@@ -332,7 +332,7 @@ export function RoomPacks({ onViewPack }: RoomPacksProps) {
                 disabled={applyingChanges}
                 onClick={handleCancelChanges}
               >
-                <Text size="B300">Cancel</Text>
+                <Text size="B300">Cancelar</Text>
               </Button>
               <Button
                 size="300"
@@ -342,7 +342,7 @@ export function RoomPacks({ onViewPack }: RoomPacksProps) {
                 before={applyingChanges && <Spinner variant="Critical" fill="Solid" size="100" />}
                 onClick={handleApplyChanges}
               >
-                <Text size="B300">Delete</Text>
+                <Text size="B300">Eliminar</Text>
               </Button>
             </Box>
           </Box>

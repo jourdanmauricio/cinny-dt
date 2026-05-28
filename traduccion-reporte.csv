@@ -1,0 +1,463 @@
+archivo,linea,texto_original,traduccion_sugerida
+src/app/pages/client/WelcomePage.tsx,*,Welcome to Cinny,Bienvenido a Dulce Terciopelo
+src/app/pages/client/WelcomePage.tsx,*,Yet another matrix client.,Tu espacio de chat.
+src/app/pages/client/home/Home.tsx,*,Mark as Read,Marcar como leído
+src/app/pages/client/home/Home.tsx,*,Home,Inicio
+src/app/pages/client/home/Home.tsx,*,No Rooms,Sin salas
+src/app/pages/client/home/Home.tsx,*,You do not have any rooms yet.,Aún no tienes ninguna sala.
+src/app/pages/client/home/Home.tsx,*,Create Room,Crear sala
+src/app/pages/client/home/Home.tsx,*,Explore Community Rooms,Explorar salas de la comunidad
+src/app/pages/client/home/Home.tsx,*,Message Search,Buscar mensajes
+src/app/pages/client/home/Home.tsx,*,Rooms,Salas
+src/app/pages/client/direct/Direct.tsx,*,Mark as Read,Marcar como leído
+src/app/pages/client/direct/Direct.tsx,*,Direct Messages,Mensajes directos
+src/app/pages/client/direct/Direct.tsx,*,No Direct Messages,Sin mensajes directos
+src/app/pages/client/direct/Direct.tsx,*,You do not have any direct messages yet.,Aún no tienes ningún mensaje directo.
+src/app/pages/client/direct/Direct.tsx,*,Direct Message,Mensaje directo
+src/app/pages/client/direct/Direct.tsx,*,Create Chat,Crear chat
+src/app/pages/client/direct/Direct.tsx,*,Chats,Chats
+src/app/pages/client/inbox/Inbox.tsx,*,Invites,Invitaciones
+src/app/pages/client/inbox/Inbox.tsx,*,Inbox,Bandeja de entrada
+src/app/pages/client/inbox/Inbox.tsx,*,Notifications,Notificaciones
+src/app/pages/client/inbox/Invites.tsx,*,Encrypted,Cifrado
+src/app/pages/client/inbox/Invites.tsx,*,Direct Message,Mensaje directo
+src/app/pages/client/inbox/Invites.tsx,*,Space,Espacio
+src/app/pages/client/inbox/Invites.tsx,*,Decline,Rechazar
+src/app/pages/client/inbox/Invites.tsx,*,Accept,Aceptar
+src/app/pages/client/inbox/Invites.tsx,*,From:,De:
+src/app/pages/client/inbox/Invites.tsx,*,Reason:,Motivo:
+src/app/pages/client/inbox/Invites.tsx,*,Primary,Principal
+src/app/pages/client/inbox/Invites.tsx,*,Public,Pública
+src/app/pages/client/inbox/Invites.tsx,*,Spam,Spam
+src/app/pages/client/inbox/Invites.tsx,*,No Invites,Sin invitaciones
+src/app/pages/client/inbox/Invites.tsx,*,Decline All,Rechazar todas
+src/app/pages/client/inbox/Invites.tsx,*,Report All,Reportar todas
+src/app/pages/client/inbox/Invites.tsx,*,Block All,Bloquear todas
+src/app/pages/client/inbox/Invites.tsx,*,Hide All,Ocultar todas
+src/app/pages/client/inbox/Invites.tsx,*,View All,Ver todas
+src/app/pages/client/inbox/Invites.tsx,*,No Spam Invites,Sin invitaciones de spam
+src/app/pages/client/inbox/Invites.tsx,*,Invites detected as spam appear here.,Las invitaciones detectadas como spam aparecen aquí.
+src/app/pages/client/inbox/Invites.tsx,*,Filter,Filtrar
+src/app/pages/client/inbox/Invites.tsx,*,Invites,Invitaciones
+src/app/pages/client/inbox/Notifications.tsx,*,Mark as Read,Marcar como leído
+src/app/pages/client/inbox/Notifications.tsx,*,Notification Messages,Mensajes de notificación
+src/app/pages/client/inbox/Notifications.tsx,*,Filter,Filtrar
+src/app/pages/client/inbox/Notifications.tsx,*,All Notifications,Todas las notificaciones
+src/app/pages/client/inbox/Notifications.tsx,*,Highlighted,Destacadas
+src/app/pages/client/inbox/Notifications.tsx,*,Scroll to Top,Ir al inicio
+src/app/pages/client/inbox/Notifications.tsx,*,No Notifications,Sin notificaciones
+src/app/pages/client/inbox/Notifications.tsx,*,You don't have any new notifications to display yet.,Aún no tienes notificaciones nuevas.
+src/app/pages/client/explore/Explore.tsx,*,Add Server,Agregar servidor
+src/app/pages/client/explore/Explore.tsx,*,Add server name to explore public communities.,Ingresa el nombre del servidor para explorar comunidades públicas.
+src/app/pages/client/explore/Explore.tsx,*,Server Name,Nombre del servidor
+src/app/pages/client/explore/Explore.tsx,*,Failed to load public rooms. Please try again.,No se pudieron cargar las salas públicas. Inténtalo de nuevo.
+src/app/pages/client/explore/Explore.tsx,*,View,Ver
+src/app/pages/client/explore/Explore.tsx,*,Explore Community,Explorar comunidad
+src/app/pages/client/explore/Explore.tsx,*,Featured,Destacadas
+src/app/pages/client/explore/Explore.tsx,*,Servers,Servidores
+src/app/features/room/RoomViewHeader.tsx,*,Mark as Read,Marcar como leído
+src/app/features/room/RoomViewHeader.tsx,*,Notifications,Notificaciones
+src/app/features/room/RoomViewHeader.tsx,*,Copy Link,Copiar enlace
+src/app/features/room/RoomViewHeader.tsx,*,Room Settings,Configuración de sala
+src/app/features/room/RoomViewHeader.tsx,*,Jump to Time,Ir a fecha/hora
+src/app/features/room/RoomViewHeader.tsx,*,Start Call,Iniciar llamada
+src/app/features/room/RoomViewHeader.tsx,*,Voice,Voz
+src/app/features/room/RoomViewHeader.tsx,*,Video,Video
+src/app/features/room/RoomViewHeader.tsx,*,Search,Buscar
+src/app/features/room/RoomViewHeader.tsx,*,Pinned Messages,Mensajes fijados
+src/app/features/room/RoomViewHeader.tsx,*,Members,Miembros
+src/app/features/room/RoomViewHeader.tsx,*,Hide Members,Ocultar miembros
+src/app/features/room/RoomViewHeader.tsx,*,Show Members,Mostrar miembros
+src/app/features/room/RoomViewHeader.tsx,*,More Options,Más opciones
+src/app/features/room/RoomViewHeader.tsx,*,Already in another call — End the current call to join!,Ya estás en otra llamada. Finaliza la llamada actual para unirte.
+src/app/features/room/RoomInput.tsx,*,Drop Files in "${room?.name || 'Room'}",Suelta archivos en "${room?.name || 'la sala'}"
+src/app/features/room/RoomInput.tsx,*,Drag and drop files here or click for selection dialog,Arrastra archivos aquí o haz clic para seleccionarlos
+src/app/features/room/RoomInput.tsx,*,Send a message...,Escribe un mensaje...
+src/app/features/room/RoomInput.tsx,*,Stop recording,Detener grabación
+src/app/features/room/RoomInput.tsx,*,Record voice message,Grabar mensaje de voz
+src/app/features/room/RoomInput.tsx,*,Microphone access denied,Acceso al micrófono denegado
+src/app/features/room/MembersDrawer.tsx,*,${millify(count)} Members,${millify(count)} miembros
+src/app/features/room/MembersDrawer.tsx,*,Close,Cerrar
+src/app/features/room/MembersDrawer.tsx,*,Type name...,Escribe un nombre...
+src/app/features/room/MembersDrawer.tsx,*,${result.items.length || 'No'} Result(s),${result.items.length || 'Sin'} resultado(s)
+src/app/features/room/MembersDrawer.tsx,*,Scroll to Top,Ir al inicio
+src/app/features/room/MembersDrawer.tsx,*,No "${membershipFilter.name}" Members,Sin miembros de tipo "${membershipFilter.name}"
+src/app/features/room/message/Message.tsx,*,View Reactions,Ver reacciones
+src/app/features/room/message/Message.tsx,*,Read Receipts,Confirmaciones de lectura
+src/app/features/room/message/Message.tsx,*,View Source,Ver fuente
+src/app/features/room/message/Message.tsx,*,Copy Link,Copiar enlace
+src/app/features/room/message/Message.tsx,*,Unpin Message,Desfijar mensaje
+src/app/features/room/message/Message.tsx,*,Pin Message,Fijar mensaje
+src/app/features/room/message/Message.tsx,*,Delete Message,Eliminar mensaje
+src/app/features/room/message/Message.tsx,*,This action is irreversible! Are you sure that you want to delete this message?,¡Esta acción es irreversible! ¿Seguro que quieres eliminar este mensaje?
+src/app/features/room/message/Message.tsx,*,Reason,Motivo
+src/app/features/room/message/Message.tsx,*,(optional),(opcional)
+src/app/features/room/message/Message.tsx,*,Failed to delete message! Please try again.,No se pudo eliminar el mensaje. Inténtalo de nuevo.
+src/app/features/room/message/Message.tsx,*,Deleting...,Eliminando...
+src/app/features/room/message/Message.tsx,*,Delete,Eliminar
+src/app/features/room/message/Message.tsx,*,Report Message,Reportar mensaje
+src/app/features/room/message/Message.tsx,*,Report this message to server which may then notify the appropriate people to take action.,Reportar este mensaje al servidor para que se tomen las medidas correspondientes.
+src/app/features/room/message/Message.tsx,*,Failed to report message! Please try again.,No se pudo reportar el mensaje. Inténtalo de nuevo.
+src/app/features/room/message/Message.tsx,*,Message has been reported to server.,El mensaje fue reportado al servidor.
+src/app/features/room/message/Message.tsx,*,Reporting...,Reportando...
+src/app/features/room/message/Message.tsx,*,Report,Reportar
+src/app/features/room/message/Message.tsx,*,Add Reaction,Agregar reacción
+src/app/features/room/message/Message.tsx,*,Reply,Responder
+src/app/features/room/message/Message.tsx,*,Reply in Thread,Responder en hilo
+src/app/features/room/message/Message.tsx,*,Edit Message,Editar mensaje
+src/app/features/room/RoomTombstone.tsx,*,This room has been replaced and is no longer active.,Esta sala fue reemplazada y ya no está activa.
+src/app/features/room/RoomTombstone.tsx,*,Failed to join replacement room!,No se pudo unir a la sala de reemplazo.
+src/app/features/room/RoomTombstone.tsx,*,Open New Room,Abrir sala nueva
+src/app/features/room/RoomTombstone.tsx,*,Join New Room,Unirse a la sala nueva
+src/app/features/room/room-pin-menu/RoomPinMenu.tsx,*,Open,Abrir
+src/app/features/room/room-pin-menu/RoomPinMenu.tsx,*,Failed to load message!,No se pudo cargar el mensaje.
+src/app/features/room/room-pin-menu/RoomPinMenu.tsx,*,Pinned Messages,Mensajes fijados
+src/app/features/room/room-pin-menu/RoomPinMenu.tsx,*,No Pinned Messages,Sin mensajes fijados
+src/app/features/room/room-pin-menu/RoomPinMenu.tsx,*,Users with sufficient power level can pin a messages from its context menu.,Los usuarios con el nivel de permisos suficiente pueden fijar mensajes desde el menú contextual.
+src/app/features/room/jump-to-time/JumpToTime.tsx,*,Jump to Time,Ir a fecha/hora
+src/app/features/room/jump-to-time/JumpToTime.tsx,*,Time,Hora
+src/app/features/room/jump-to-time/JumpToTime.tsx,*,Date,Fecha
+src/app/features/room/jump-to-time/JumpToTime.tsx,*,Preset,Acceso rápido
+src/app/features/room/jump-to-time/JumpToTime.tsx,*,Today,Hoy
+src/app/features/room/jump-to-time/JumpToTime.tsx,*,Yesterday,Ayer
+src/app/features/room/jump-to-time/JumpToTime.tsx,*,Beginning,Inicio
+src/app/features/room/jump-to-time/JumpToTime.tsx,*,Open Timeline,Abrir cronología
+src/app/features/room/reaction-viewer/ReactionViewer.tsx,*,Reacted with :${selectedShortcode}:,Reaccionaron con :${selectedShortcode}:
+src/app/features/lobby/LobbyHeader.tsx,*,Invite,Invitar
+src/app/features/lobby/LobbyHeader.tsx,*,Space Settings,Configuración del espacio
+src/app/features/lobby/LobbyHeader.tsx,*,Leave Space,Salir del espacio
+src/app/features/lobby/LobbyHeader.tsx,*,Members,Miembros
+src/app/features/lobby/LobbyHeader.tsx,*,More Options,Más opciones
+src/app/features/lobby/HierarchyItemMenu.tsx,*,Unset Suggested,Quitar sugerencia
+src/app/features/lobby/HierarchyItemMenu.tsx,*,Set Suggested,Marcar como sugerida
+src/app/features/lobby/HierarchyItemMenu.tsx,*,Remove,Eliminar
+src/app/features/lobby/HierarchyItemMenu.tsx,*,Invite,Invitar
+src/app/features/lobby/HierarchyItemMenu.tsx,*,Settings,Configuración
+src/app/features/lobby/HierarchyItemMenu.tsx,*,Leave,Salir
+src/app/features/lobby/HierarchyItemMenu.tsx,*,Unpin from Sidebar,Desanclar de la barra lateral
+src/app/features/lobby/HierarchyItemMenu.tsx,*,Pin to Sidebar,Anclar en la barra lateral
+src/app/features/settings/Settings.tsx,*,General,General
+src/app/features/settings/Settings.tsx,*,Account,Cuenta
+src/app/features/settings/Settings.tsx,*,Notifications,Notificaciones
+src/app/features/settings/Settings.tsx,*,About,Acerca de
+src/app/features/settings/Settings.tsx,*,Settings,Configuración
+src/app/features/settings/Settings.tsx,*,Logout,Cerrar sesión
+src/app/features/settings/general/General.tsx,*,Appearance,Apariencia
+src/app/features/settings/general/General.tsx,*,System Theme,Tema del sistema
+src/app/features/settings/general/General.tsx,*,Choose between light and dark theme based on system preference.,Elige entre tema claro u oscuro según la preferencia del sistema.
+src/app/features/settings/general/General.tsx,*,Light Theme:,Tema claro:
+src/app/features/settings/general/General.tsx,*,Dark Theme:,Tema oscuro:
+src/app/features/settings/general/General.tsx,*,Theme,Tema
+src/app/features/settings/general/General.tsx,*,Monochrome Mode,Modo monocromático
+src/app/features/settings/general/General.tsx,*,Twitter Emoji,Emoji de Twitter
+src/app/features/settings/general/General.tsx,*,Page Zoom,Zoom de la página
+src/app/features/settings/general/General.tsx,*,Date & Time,Fecha y hora
+src/app/features/settings/general/General.tsx,*,24-Hour Time Format,Formato de 24 horas
+src/app/features/settings/general/General.tsx,*,Date Format,Formato de fecha
+src/app/features/settings/general/General.tsx,*,Save,Guardar
+src/app/features/settings/general/General.tsx,*,Editor,Editor
+src/app/features/settings/general/General.tsx,*,ENTER for Newline,ENTER para nueva línea
+src/app/features/settings/general/General.tsx,*,Markdown Formatting,Formato Markdown
+src/app/features/settings/general/General.tsx,*,Hide Typing & Read Receipts,Ocultar estado de escritura y confirmaciones de lectura
+src/app/features/settings/general/General.tsx,*,Turn off both typing status and read receipts to keep your activity private.,Desactiva el estado de escritura y las confirmaciones de lectura para mantener tu actividad privada.
+src/app/features/settings/general/General.tsx,*,Messages,Mensajes
+src/app/features/settings/general/General.tsx,*,Message Layout,Diseño de mensajes
+src/app/features/settings/general/General.tsx,*,Message Spacing,Espaciado de mensajes
+src/app/features/settings/general/General.tsx,*,Hide Profile Change,Ocultar cambios de perfil
+src/app/features/settings/general/General.tsx,*,Disable Media Auto Load,Desactivar carga automática de medios
+src/app/features/settings/general/General.tsx,*,Url Preview,Vista previa de enlaces
+src/app/features/settings/general/General.tsx,*,General,General
+src/app/features/settings/account/Profile.tsx,*,Avatar,Avatar
+src/app/features/settings/account/Profile.tsx,*,Upload,Subir
+src/app/features/settings/account/Profile.tsx,*,Remove,Eliminar
+src/app/features/settings/account/Profile.tsx,*,Remove Avatar,Eliminar avatar
+src/app/features/settings/account/Profile.tsx,*,Are you sure you want to remove profile avatar?,¿Seguro que quieres eliminar el avatar de perfil?
+src/app/features/settings/account/Profile.tsx,*,Display Name,Nombre para mostrar
+src/app/features/settings/account/Profile.tsx,*,Save,Guardar
+src/app/features/settings/account/Profile.tsx,*,Profile,Perfil
+src/app/features/settings/account/ContactInfo.tsx,*,Contact Information,Información de contacto
+src/app/features/settings/account/ContactInfo.tsx,*,Email Address,Correo electrónico
+src/app/features/settings/account/ContactInfo.tsx,*,Email address attached to your account.,Correo electrónico vinculado a tu cuenta.
+src/app/features/settings/notifications/Notifications.tsx,*,Notifications,Notificaciones
+src/app/features/settings/notifications/SystemNotification.tsx,*,System,Sistema
+src/app/features/settings/notifications/SystemNotification.tsx,*,Desktop Notifications,Notificaciones de escritorio
+src/app/features/settings/notifications/SystemNotification.tsx,*,Notification permission is blocked. Please allow notification permission from browser address bar.,El permiso de notificaciones está bloqueado. Habilítalo desde la barra de direcciones del navegador.
+src/app/features/settings/notifications/SystemNotification.tsx,*,Notifications are not supported by the system.,Las notificaciones no son compatibles con este sistema.
+src/app/features/settings/notifications/SystemNotification.tsx,*,Show desktop notifications when message arrive.,Mostrar notificaciones de escritorio al recibir mensajes.
+src/app/features/settings/notifications/SystemNotification.tsx,*,Enable,Activar
+src/app/features/settings/notifications/SystemNotification.tsx,*,Notification Sound,Sonido de notificación
+src/app/features/settings/notifications/SystemNotification.tsx,*,Play sound when new message arrive.,Reproducir sonido al recibir mensajes nuevos.
+src/app/features/settings/notifications/AllMessages.tsx,*,All Messages,Todos los mensajes
+src/app/features/settings/notifications/AllMessages.tsx,*,Badge: ,Insignia:
+src/app/features/settings/notifications/AllMessages.tsx,*,1-to-1 Chats,Chats individuales
+src/app/features/settings/notifications/AllMessages.tsx,*,Rooms,Salas
+src/app/features/settings/notifications/SpecialMessages.tsx,*,Special Messages,Mensajes especiales
+src/app/features/settings/notifications/SpecialMessages.tsx,*,Badge: ,Insignia:
+src/app/features/settings/notifications/SpecialMessages.tsx,*,Mention User ID ("${userId}"),Mencionar ID de usuario ("${userId}")
+src/app/features/settings/notifications/SpecialMessages.tsx,*,Contains Displayname ${displayName},Contiene nombre para mostrar ${displayName}
+src/app/features/settings/notifications/SpecialMessages.tsx,*,Contains Username ("${getMxIdLocalPart(userId)}"),Contiene nombre de usuario ("${getMxIdLocalPart(userId)}")
+src/app/features/settings/notifications/SpecialMessages.tsx,*,Mention @room,Mención @room
+src/app/features/settings/notifications/SpecialMessages.tsx,*,Contains @room,Contiene @room
+src/app/features/settings/notifications/KeywordMessages.tsx,*,Keyword Messages,Mensajes por palabra clave
+src/app/features/settings/notifications/KeywordMessages.tsx,*,Badge: ,Insignia:
+src/app/features/settings/notifications/KeywordMessages.tsx,*,Select Keyword,Seleccionar palabra clave
+src/app/features/settings/notifications/KeywordMessages.tsx,*,Set a notification preference for message containing given keyword.,Configura una preferencia de notificación para mensajes que contengan la palabra clave.
+src/app/features/settings/notifications/KeywordMessages.tsx,*,Save,Guardar
+src/app/features/settings/about/About.tsx,*,About,Acerca de
+src/app/features/settings/about/About.tsx,*,Dulce Terciopelo logo,Logo de Dulce Terciopelo
+src/app/features/settings/about/About.tsx,*,Options,Opciones
+src/app/features/settings/about/About.tsx,*,Clear Cache & Reload,Limpiar caché y recargar
+src/app/features/settings/about/About.tsx,*,Clear all your locally stored data and reload from server.,Elimina todos los datos almacenados localmente y recarga desde el servidor.
+src/app/features/settings/about/About.tsx,*,Clear Cache,Limpiar caché
+src/app/features/settings/about/About.tsx,*,Credits,Créditos
+src/app/features/room-settings/RoomSettings.tsx,*,General,General
+src/app/features/room-settings/RoomSettings.tsx,*,Members,Miembros
+src/app/features/room-settings/RoomSettings.tsx,*,Permissions,Permisos
+src/app/features/room-settings/RoomSettings.tsx,*,Emojis & Stickers,Emojis y stickers
+src/app/features/room-settings/RoomSettings.tsx,*,Developer Tools,Herramientas de desarrollador
+src/app/features/room-settings/general/General.tsx,*,General,General
+src/app/features/room-settings/general/General.tsx,*,Options,Opciones
+src/app/features/room-settings/general/General.tsx,*,Addresses,Direcciones
+src/app/features/room-settings/general/General.tsx,*,Advanced Options,Opciones avanzadas
+src/app/features/common-settings/general/RoomProfile.tsx,*,Avatar,Avatar
+src/app/features/common-settings/general/RoomProfile.tsx,*,Upload,Subir
+src/app/features/common-settings/general/RoomProfile.tsx,*,Reset,Restablecer
+src/app/features/common-settings/general/RoomProfile.tsx,*,Remove,Eliminar
+src/app/features/common-settings/general/RoomProfile.tsx,*,Name,Nombre
+src/app/features/common-settings/general/RoomProfile.tsx,*,Topic,Tema
+src/app/features/common-settings/general/RoomProfile.tsx,*,Save,Guardar
+src/app/features/common-settings/general/RoomProfile.tsx,*,Cancel,Cancelar
+src/app/features/common-settings/general/RoomProfile.tsx,*,Edit,Editar
+src/app/features/common-settings/general/RoomProfile.tsx,*,Profile,Perfil
+src/app/features/common-settings/general/RoomJoinRules.tsx,*,Space Access,Acceso al espacio
+src/app/features/common-settings/general/RoomJoinRules.tsx,*,Room Access,Acceso a la sala
+src/app/features/common-settings/general/RoomJoinRules.tsx,*,Change how people can join the space.,Cambia cómo las personas pueden unirse al espacio.
+src/app/features/common-settings/general/RoomJoinRules.tsx,*,Change how people can join the room.,Cambia cómo las personas pueden unirse a la sala.
+src/app/features/common-settings/general/RoomHistoryVisibility.tsx,*,Message History Visibility,Visibilidad del historial de mensajes
+src/app/features/common-settings/general/RoomHistoryVisibility.tsx,*,Changes to history visibility will only apply to future messages. The visibility of existing history will have no effect.,Los cambios en la visibilidad del historial solo se aplicarán a mensajes futuros.
+src/app/features/common-settings/general/RoomHistoryVisibility.tsx,*,After Invite,Desde la invitación
+src/app/features/common-settings/general/RoomHistoryVisibility.tsx,*,After Join,Desde que se unió
+src/app/features/common-settings/general/RoomHistoryVisibility.tsx,*,All Messages,Todos los mensajes
+src/app/features/common-settings/general/RoomHistoryVisibility.tsx,*,All Messages (Guests),Todos los mensajes (invitados)
+src/app/features/common-settings/general/RoomEncryption.tsx,*,Room Encryption,Cifrado de sala
+src/app/features/common-settings/general/RoomEncryption.tsx,*,Messages in this room are protected by end-to-end encryption.,Los mensajes de esta sala están protegidos con cifrado de extremo a extremo.
+src/app/features/common-settings/general/RoomEncryption.tsx,*,Once enabled encryption cannot be disabled!,¡Una vez activado el cifrado no se puede desactivar!
+src/app/features/common-settings/general/RoomEncryption.tsx,*,Enabled,Activado
+src/app/features/common-settings/general/RoomEncryption.tsx,*,Enable,Activar
+src/app/features/common-settings/general/RoomEncryption.tsx,*,Enable Encryption,Activar cifrado
+src/app/features/common-settings/general/RoomEncryption.tsx,*,Are you sure? Once enabled encryption cannot be disabled!,¿Seguro? Una vez activado el cifrado no se puede desactivar.
+src/app/features/common-settings/general/RoomEncryption.tsx,*,Enable E2E Encryption,Activar cifrado E2E
+src/app/features/common-settings/general/RoomPublish.tsx,*,Publish to Directory,Publicar en el directorio
+src/app/features/common-settings/general/RoomPublish.tsx,*,List the space in the public directory to make it discoverable by others.,Lista el espacio en el directorio público para que otros puedan encontrarlo.
+src/app/features/common-settings/general/RoomPublish.tsx,*,List the room in the public directory to make it discoverable by others.,Lista la sala en el directorio público para que otros puedan encontrarla.
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Space Upgrade,Actualizar espacio
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Room Upgrade,Actualizar sala
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,This action is irreversible!,¡Esta acción es irreversible!
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Options,Opciones
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Upgrade Space,Actualizar espacio
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Upgrade Room,Actualizar sala
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Old Space,Espacio anterior
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Old Room,Sala anterior
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Open New Space,Abrir espacio nuevo
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Open New Room,Abrir sala nueva
+src/app/features/common-settings/general/RoomUpgrade.tsx,*,Upgrade,Actualizar
+src/app/features/common-settings/general/RoomAddress.tsx,*,Published Addresses,Direcciones publicadas
+src/app/features/common-settings/general/RoomAddress.tsx,*,If access is Public Published addresses will be used to join by anyone.,Si el acceso es Público las direcciones publicadas podrán usarlas todos para unirse.
+src/app/features/common-settings/general/RoomAddress.tsx,*,No Addresses,Sin direcciones
+src/app/features/common-settings/general/RoomAddress.tsx,*,To publish an address it needs to be set as a local address first,Para publicar una dirección primero debe configurarse como dirección local.
+src/app/features/common-settings/general/RoomAddress.tsx,*,Main,Principal
+src/app/features/common-settings/general/RoomAddress.tsx,*,Unset Main,Quitar principal
+src/app/features/common-settings/general/RoomAddress.tsx,*,Set Main,Marcar como principal
+src/app/features/common-settings/general/RoomAddress.tsx,*,Unpublish,Despublicar
+src/app/features/common-settings/general/RoomAddress.tsx,*,Publish,Publicar
+src/app/features/common-settings/general/RoomAddress.tsx,*,Delete,Eliminar
+src/app/features/common-settings/general/RoomAddress.tsx,*,Published,Publicada
+src/app/features/common-settings/general/RoomAddress.tsx,*,Local Addresses,Direcciones locales
+src/app/features/common-settings/general/RoomAddress.tsx,*,Set local address so users can join through your homeserver.,Configura una dirección local para que los usuarios se unan a través de tu servidor.
+src/app/features/common-settings/general/RoomAddress.tsx,*,Collapse,Contraer
+src/app/features/common-settings/general/RoomAddress.tsx,*,Expand,Expandir
+src/app/features/common-settings/general/RoomAddress.tsx,*,Loading...,Cargando...
+src/app/features/common-settings/general/RoomAddress.tsx,*,Address is already in use!,¡Esta dirección ya está en uso!
+src/app/features/common-settings/general/RoomAddress.tsx,*,Save,Guardar
+src/app/features/common-settings/members/Members.tsx,*,${room.getJoinedMemberCount()} Members,${room.getJoinedMemberCount()} miembros
+src/app/features/common-settings/members/Members.tsx,*,Search,Buscar
+src/app/features/common-settings/members/Members.tsx,*,No Results,Sin resultados
+src/app/features/common-settings/members/Members.tsx,*,${result.items.length} Results,${result.items.length} resultados
+src/app/features/common-settings/members/Members.tsx,*,Scroll to Top,Ir al inicio
+src/app/features/common-settings/members/Members.tsx,*,No "${membershipFilter.name}" Members,Sin miembros de tipo "${membershipFilter.name}"
+src/app/features/common-settings/permissions/PermissionGroups.tsx,*,Users,Usuarios
+src/app/features/common-settings/permissions/PermissionGroups.tsx,*,Default Power,Poder predeterminado
+src/app/features/common-settings/permissions/PermissionGroups.tsx,*,Default power level for all users.,Nivel de poder predeterminado para todos los usuarios.
+src/app/features/common-settings/permissions/PermissionGroups.tsx,*,Failed to apply changes! Please try again.,No se pudieron aplicar los cambios. Inténtalo de nuevo.
+src/app/features/common-settings/permissions/PermissionGroups.tsx,*,Changes saved! Apply when ready.,¡Cambios guardados! Aplica cuando estés listo.
+src/app/features/common-settings/permissions/PermissionGroups.tsx,*,Reset,Restablecer
+src/app/features/common-settings/permissions/PermissionGroups.tsx,*,Apply Changes,Aplicar cambios
+src/app/features/common-settings/permissions/Powers.tsx,*,Founders,Fundadores
+src/app/features/common-settings/permissions/Powers.tsx,*,Founding members has all permissions and can only be changed during upgrade.,Los miembros fundadores tienen todos los permisos y solo pueden modificarse al actualizar.
+src/app/features/common-settings/permissions/Powers.tsx,*,Power Levels,Niveles de poder
+src/app/features/common-settings/permissions/Powers.tsx,*,Manage and customize incremental power levels for users.,Administra y personaliza los niveles de poder incrementales para los usuarios.
+src/app/features/common-settings/permissions/Powers.tsx,*,Edit,Editar
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Permissions,Permisos
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Power Levels,Niveles de poder
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,New Power Level,Nuevo nivel de poder
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Create a new power level.,Crear un nuevo nivel de poder.
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Create,Crear
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Color,Color
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Name,Nombre
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Power,Poder
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Icon,Ícono
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Pick,Elegir
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Import,Importar
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Remove,Eliminar
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Save,Guardar
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Cancel,Cancelar
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Used Power Level,Nivel de poder en uso
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,You have to remove its use before you can delete it.,Debes eliminar su uso antes de poder borrarlo.
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Delete,Eliminar
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Undo,Deshacer
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Edit,Editar
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Failed to apply changes! Please try again.,No se pudieron aplicar los cambios. Inténtalo de nuevo.
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Changes saved! Apply when ready.,¡Cambios guardados! Aplica cuando estés listo.
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Reset,Restablecer
+src/app/features/common-settings/permissions/PowersEditor.tsx,*,Apply Changes,Aplicar cambios
+src/app/features/common-settings/emojis-stickers/EmojisStickers.tsx,*,Emojis & Stickers,Emojis y stickers
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,New Pack,Pack nuevo
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,Add your own emoji and sticker pack to use in room.,Agrega tu propio pack de emojis y stickers para usar en la sala.
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,Name,Nombre
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,Create,Crear
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,View,Ver
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,Packs,Packs
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,No Packs,Sin packs
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,There are no emoji or sticker packs to display at the moment.,No hay packs de emojis o stickers para mostrar en este momento.
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,Failed to remove packs! Please try again.,No se pudieron eliminar los packs. Inténtalo de nuevo.
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,Delete selected packs. (${removedPacks.length} selected),Eliminar packs seleccionados (${removedPacks.length} seleccionados).
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,Cancel,Cancelar
+src/app/features/common-settings/emojis-stickers/RoomPacks.tsx,*,Delete,Eliminar
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Developer Tools,Herramientas de desarrollador
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Options,Opciones
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Enable Developer Tools,Activar herramientas de desarrollador
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Room ID,ID de sala
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Copy room ID to clipboard. ("${room.roomId}"),Copiar ID de sala al portapapeles ("${room.roomId}").
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Copy,Copiar
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Data,Datos
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,New Message Event,Nuevo evento de mensaje
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Create and send a new message event within the room.,Crear y enviar un nuevo evento de mensaje en la sala.
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Compose,Redactar
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Room State,Estado de la sala
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,State events of the room.,Eventos de estado de la sala.
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Collapse,Contraer
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Expand,Expandir
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Events,Eventos
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Total: ${roomState.size},Total: ${roomState.size}
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Add New,Agregar
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Default,Predeterminado
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Account Data,Datos de cuenta
+src/app/features/common-settings/developer-tools/DevelopTools.tsx,*,Private personalization data stored within room.,Datos privados de personalización almacenados en la sala.
+src/app/features/create-room/CreateRoom.tsx,*,Type,Tipo
+src/app/features/create-room/CreateRoom.tsx,*,Access,Acceso
+src/app/features/create-room/CreateRoom.tsx,*,Name,Nombre
+src/app/features/create-room/CreateRoom.tsx,*,Topic (Optional),Tema (opcional)
+src/app/features/create-room/CreateRoom.tsx,*,Options,Opciones
+src/app/features/create-room/CreateRoom.tsx,*,Advanced Options,Opciones avanzadas
+src/app/features/create-room/CreateRoom.tsx,*,End-to-End Encryption,Cifrado de extremo a extremo
+src/app/features/create-room/CreateRoom.tsx,*,Once this feature is enabled it can't be disabled after the room is created.,Una vez activada esta función no se puede desactivar después de crear la sala.
+src/app/features/create-room/CreateRoom.tsx,*,Knock to Join,Solicitar acceso
+src/app/features/create-room/CreateRoom.tsx,*,Anyone can send request to join this room.,Cualquiera puede enviar una solicitud para unirse a esta sala.
+src/app/features/create-room/CreateRoom.tsx,*,Allow Federation,Permitir federación
+src/app/features/create-room/CreateRoom.tsx,*,Users from other servers can join.,Usuarios de otros servidores pueden unirse.
+src/app/features/create-room/CreateRoom.tsx,*,Server rate-limited your request for ${millisecondsToMinutes(...)} minutes!,El servidor limitó tu solicitud por ${millisecondsToMinutes(...)} minutos.
+src/app/features/create-room/CreateRoom.tsx,*,Create,Crear
+src/app/features/create-chat/CreateChat.tsx,*,User ID,ID de usuario
+src/app/features/create-chat/CreateChat.tsx,*,Please enter a valid User ID.,Ingresa un ID de usuario válido.
+src/app/features/create-chat/CreateChat.tsx,*,Options,Opciones
+src/app/features/create-chat/CreateChat.tsx,*,End-to-End Encryption,Cifrado de extremo a extremo
+src/app/features/create-chat/CreateChat.tsx,*,Once this feature is enabled it can't be disabled after the room is created.,Una vez activada esta función no se puede desactivar después de crear la sala.
+src/app/features/create-chat/CreateChat.tsx,*,Create,Crear
+src/app/features/create-space/CreateSpace.tsx,*,Access,Acceso
+src/app/features/create-space/CreateSpace.tsx,*,Name,Nombre
+src/app/features/create-space/CreateSpace.tsx,*,Topic (Optional),Tema (opcional)
+src/app/features/create-space/CreateSpace.tsx,*,Options,Opciones
+src/app/features/create-space/CreateSpace.tsx,*,Advanced Options,Opciones avanzadas
+src/app/features/create-space/CreateSpace.tsx,*,Knock to Join,Solicitar acceso
+src/app/features/create-space/CreateSpace.tsx,*,Anyone can send request to join this space.,Cualquiera puede enviar una solicitud para unirse a este espacio.
+src/app/features/create-space/CreateSpace.tsx,*,Allow Federation,Permitir federación
+src/app/features/create-space/CreateSpace.tsx,*,Users from other servers can join.,Usuarios de otros servidores pueden unirse.
+src/app/features/create-space/CreateSpace.tsx,*,Create,Crear
+src/app/features/message-search/MessageSearch.tsx,*,Scroll to Top,Ir al inicio
+src/app/features/message-search/MessageSearch.tsx,*,Search Messages,Buscar mensajes
+src/app/features/message-search/MessageSearch.tsx,*,Find helpful messages in your community by searching with related keywords.,Encuentra mensajes útiles en tu comunidad buscando por palabras clave.
+src/app/features/message-search/MessageSearch.tsx,*,No results found for "${msgSearchParams.term}",Sin resultados para "${msgSearchParams.term}"
+src/app/features/message-search/MessageSearch.tsx,*,Results for "${msgSearchParams.term}",Resultados para "${msgSearchParams.term}"
+src/app/features/message-search/SearchFilters.tsx,*,Sort by,Ordenar por
+src/app/features/message-search/SearchFilters.tsx,*,Recent,Recientes
+src/app/features/message-search/SearchFilters.tsx,*,Relevance,Relevancia
+src/app/features/message-search/SearchFilters.tsx,*,Rooms for "${searchResult.query}",Salas para "${searchResult.query}"
+src/app/features/message-search/SearchFilters.tsx,*,No match found!,¡Sin coincidencias!
+src/app/features/message-search/SearchFilters.tsx,*,Save (${localSelected.length}),Guardar (${localSelected.length})
+src/app/features/message-search/SearchFilters.tsx,*,Save,Guardar
+src/app/features/message-search/SearchFilters.tsx,*,Deselect All,Deseleccionar todo
+src/app/features/message-search/SearchFilters.tsx,*,Select Rooms,Seleccionar salas
+src/app/features/message-search/SearchFilters.tsx,*,Filter,Filtrar
+src/app/features/message-search/SearchFilters.tsx,*,Global,Global
+src/app/features/message-search/SearchInput.tsx,*,Search,Buscar
+src/app/features/message-search/SearchInput.tsx,*,Search for keyword,Buscar por palabra clave
+src/app/features/message-search/SearchInput.tsx,*,Clear,Limpiar
+src/app/features/message-search/SearchInput.tsx,*,Enter,Buscar
+src/app/features/search/Search.tsx,*,Search,Buscar
+src/app/features/search/Search.tsx,*,No Match Found,Sin coincidencias
+src/app/features/search/Search.tsx,*,No Rooms,Sin salas
+src/app/features/search/Search.tsx,*,No match found for "${result.query}".,Sin coincidencias para "${result.query}".
+src/app/features/search/Search.tsx,*,You do not have any Rooms to display yet.,Aún no tienes ninguna sala para mostrar.
+src/app/features/search/Search.tsx,*,Type # for rooms @ for DMs and * for spaces. Hotkey: Ctrl + k,Escribe # para salas @ para mensajes directos y * para espacios. Atajo: Ctrl + k
+src/app/components/LogoutDialog.tsx,*,Logout,Cerrar sesión
+src/app/components/LogoutDialog.tsx,*,Unverified Device,Dispositivo no verificado
+src/app/components/LogoutDialog.tsx,*,Verify your device before logging out...,Verifica tu dispositivo antes de cerrar sesión.
+src/app/components/LogoutDialog.tsx,*,Alert,Alerta
+src/app/components/LogoutDialog.tsx,*,Enable device verification or export your encrypted data...,Activa la verificación del dispositivo o exporta tus datos cifrados.
+src/app/components/LogoutDialog.tsx,*,You're about to log out. Are you sure?,Estás por cerrar sesión. ¿Seguro?
+src/app/components/LogoutDialog.tsx,*,Failed to logout!,No se pudo cerrar sesión.
+src/app/components/LogoutDialog.tsx,*,Cancel,Cancelar
+src/app/components/leave-room-prompt/LeaveRoomPrompt.tsx,*,Leave Room,Salir de la sala
+src/app/components/leave-room-prompt/LeaveRoomPrompt.tsx,*,Are you sure you want to leave this room?,¿Seguro que quieres salir de esta sala?
+src/app/components/leave-room-prompt/LeaveRoomPrompt.tsx,*,Failed to leave room!,No se pudo salir de la sala.
+src/app/components/leave-room-prompt/LeaveRoomPrompt.tsx,*,Leaving...,Saliendo...
+src/app/components/leave-room-prompt/LeaveRoomPrompt.tsx,*,Leave,Salir
+src/app/components/leave-space-prompt/LeaveSpacePrompt.tsx,*,Leave Space,Salir del espacio
+src/app/components/leave-space-prompt/LeaveSpacePrompt.tsx,*,Are you sure you want to leave this space?,¿Seguro que quieres salir de este espacio?
+src/app/components/leave-space-prompt/LeaveSpacePrompt.tsx,*,Failed to leave space!,No se pudo salir del espacio.
+src/app/components/leave-space-prompt/LeaveSpacePrompt.tsx,*,Leaving...,Saliendo...
+src/app/components/leave-space-prompt/LeaveSpacePrompt.tsx,*,Leave,Salir
+src/app/components/invite-user-prompt/InviteUserPrompt.tsx,*,Invite,Invitar
+src/app/components/invite-user-prompt/InviteUserPrompt.tsx,*,User ID,ID de usuario
+src/app/components/invite-user-prompt/InviteUserPrompt.tsx,*,Reason (Optional),Motivo (opcional)
+src/app/components/join-address-prompt/JoinAddressPrompt.tsx,*,Join with Address,Unirse con dirección
+src/app/components/join-address-prompt/JoinAddressPrompt.tsx,*,Enter public address to join the community. Addresses looks like:,Ingresa una dirección pública para unirte a la comunidad. Las direcciones tienen el formato:
+src/app/components/join-address-prompt/JoinAddressPrompt.tsx,*,Address,Dirección
+src/app/components/join-address-prompt/JoinAddressPrompt.tsx,*,Invalid Address,Dirección inválida
+src/app/components/join-address-prompt/JoinAddressPrompt.tsx,*,Open,Abrir
+src/app/components/emoji-board/components/SearchInput.tsx,*,Search or Text Reaction ,Buscar o reacción de texto
+src/app/components/emoji-board/components/SearchInput.tsx,*,Search,Buscar
+src/app/components/emoji-board/components/SearchInput.tsx,*,React,Reaccionar
+src/app/components/emoji-board/components/NoStickerPacks.tsx,*,No Sticker Packs!,¡Sin packs de stickers!
+src/app/components/emoji-board/components/NoStickerPacks.tsx,*,Add stickers from user room or space settings.,Agrega stickers desde la configuración de usuario sala o espacio.
+src/app/components/upload-board/UploadBoard.tsx,*,Files,Archivos
+src/app/components/upload-board/UploadBoard.tsx,*,Send,Enviar
+src/app/components/upload-board/UploadBoard.tsx,*,Upload Failed,Error al subir
+src/app/components/upload-board/UploadBoard.tsx,*,Remove,Eliminar
+src/app/components/upload-board/UploadBoard.tsx,*,Remove All,Eliminar todo
+src/app/components/user-profile/UserModeration.tsx,*,Kicked User,Usuario expulsado
+src/app/components/user-profile/UserModeration.tsx,*,Kicked by:,Expulsado por:
+src/app/components/user-profile/UserModeration.tsx,*,Reason:,Motivo:
+src/app/components/user-profile/UserModeration.tsx,*,No Reason Provided.,Sin motivo indicado.
+src/app/components/user-profile/UserModeration.tsx,*,Banned User,Usuario bloqueado
+src/app/components/user-profile/UserModeration.tsx,*,Banned by:,Bloqueado por:
+src/app/components/user-profile/UserModeration.tsx,*,Unban,Desbloquear
+src/app/components/user-profile/UserModeration.tsx,*,Invited User,Usuario invitado
+src/app/components/user-profile/UserModeration.tsx,*,Invited by:,Invitado por:
+src/app/components/user-profile/UserModeration.tsx,*,Cancel Invite,Cancelar invitación
+src/app/components/user-profile/UserModeration.tsx,*,Moderation,Moderación
+src/app/components/user-profile/UserModeration.tsx,*,Reason,Motivo
+src/app/components/user-profile/UserModeration.tsx,*,Invite,Invitar
+src/app/components/user-profile/UserModeration.tsx,*,Kick,Expulsar
+src/app/components/user-profile/UserModeration.tsx,*,Ban,Bloquear
+src/app/components/event-readers/EventReaders.tsx,*,Seen by,Visto por

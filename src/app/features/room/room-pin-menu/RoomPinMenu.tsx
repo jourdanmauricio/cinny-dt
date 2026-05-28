@@ -142,7 +142,7 @@ function PinnedMessage({
   const renderOptions = () => (
     <Box shrink="No" gap="200" alignItems="Center">
       <Chip data-event-id={eventId} onClick={handleOpenClick} variant="Secondary" radii="Pill">
-        <Text size="T200">Open</Text>
+        <Text size="T200">Abrir</Text>
       </Chip>
       {canPinEvent && (
         <IconButton
@@ -168,7 +168,7 @@ function PinnedMessage({
     return (
       <Box gap="300" justifyContent="SpaceBetween" alignItems="Center">
         <Box>
-          <Text style={{ color: color.Critical.Main }}>Failed to load message!</Text>
+          <Text style={{ color: color.Critical.Main }}>No se pudo cargar el mensaje.</Text>
         </Box>
         {renderOptions()}
       </Box>
@@ -454,7 +454,7 @@ export const RoomPinMenu = forwardRef<HTMLDivElement, RoomPinMenuProps>(
         <Box grow="Yes" direction="Column">
           <Header className={css.PinMenuHeader} size="500">
             <Box grow="Yes">
-              <Text size="H5">Pinned Messages</Text>
+              <Text size="H5">Mensajes fijados</Text>
             </Box>
             <Box shrink="No">
               <IconButton size="300" onClick={requestClose} radii="300">
@@ -527,10 +527,10 @@ export const RoomPinMenu = forwardRef<HTMLDivElement, RoomPinMenuProps>(
                       alignItems="Center"
                     >
                       <Text size="H4" align="Center">
-                        No Pinned Messages
+                        Sin mensajes fijados
                       </Text>
                       <Text size="T400" align="Center">
-                        Users with sufficient power level can pin a messages from its context menu.
+                        Los usuarios con el nivel de permisos suficiente pueden fijar mensajes desde el menú contextual.
                       </Text>
                     </Box>
                   </Box>

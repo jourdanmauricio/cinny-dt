@@ -61,19 +61,19 @@ export function RoomPublishedAddresses({ permissions }: RoomPublishedAddressesPr
       gap="400"
     >
       <SettingTile
-        title="Published Addresses"
+        title="Direcciones publicadas"
         description={
           <span>
-            If access is <b>Public</b>, Published addresses will be used to join by anyone.
+            Si el acceso es <b>Público</b>, las direcciones publicadas podrán usarlas todos para unirse.
           </span>
         }
       />
       <CutoutCard variant="Surface" style={{ padding: config.space.S300 }}>
         {publishedAliases.length === 0 ? (
           <Box direction="Column" gap="100">
-            <Text size="L400">No Addresses</Text>
+            <Text size="L400">Sin direcciones</Text>
             <Text size="T200">
-              To publish an address, it needs to be set as a local address first
+              Para publicar una dirección, primero debe configurarse como dirección local.
             </Text>
           </Box>
         ) : (
@@ -86,7 +86,7 @@ export function RoomPublishedAddresses({ permissions }: RoomPublishedAddressesPr
                   </Text>
                   {alias === canonicalAlias && (
                     <Badge variant="Success" fill="Solid" size="500">
-                      <Text size="L400">Main</Text>
+                      <Text size="L400">Principal</Text>
                     </Badge>
                   )}
                 </Box>
@@ -100,7 +100,7 @@ export function RoomPublishedAddresses({ permissions }: RoomPublishedAddressesPr
                         disabled={loading}
                         onClick={() => setMain(undefined)}
                       >
-                        <Text size="B300">Unset Main</Text>
+                        <Text size="B300">Quitar principal</Text>
                       </Chip>
                     ) : (
                       <Chip
@@ -110,7 +110,7 @@ export function RoomPublishedAddresses({ permissions }: RoomPublishedAddressesPr
                         disabled={loading}
                         onClick={() => setMain(alias)}
                       >
-                        <Text size="B300">Set Main</Text>
+                        <Text size="B300">Marcar como principal</Text>
                       </Chip>
                     )}
                   </Box>
@@ -183,14 +183,14 @@ function LocalAddressInput({ addLocalAlias }: { addLocalAlias: (alias: string) =
             disabled={adding}
             before={adding && <Spinner size="100" variant="Success" fill="Solid" />}
           >
-            <Text size="B400">Save</Text>
+            <Text size="B400">Guardar</Text>
           </Button>
         </Box>
       </Box>
       {addState.status === AsyncStatus.Error && (
         <Text style={{ color: color.Critical.Main }} size="T200">
           {(addState.error as MatrixError).httpStatus === 409
-            ? 'Address is already in use!'
+            ? '¡Esta dirección ya está en uso!'
             : (addState.error as MatrixError).message}
         </Text>
       )}
@@ -287,7 +287,7 @@ function LocalAddressesList({
                     )
                   }
                 >
-                  <Text size="B300">Unpublish</Text>
+                  <Text size="B300">Despublicar</Text>
                 </Chip>
               ) : (
                 <Chip
@@ -301,7 +301,7 @@ function LocalAddressesList({
                     )
                   }
                 >
-                  <Text size="B300">Publish</Text>
+                  <Text size="B300">Publicar</Text>
                 </Chip>
               ))}
             <Chip
@@ -315,7 +315,7 @@ function LocalAddressesList({
                 )
               }
             >
-              <Text size="B300">Delete</Text>
+              <Text size="B300">Eliminar</Text>
             </Chip>
           </Box>
         </Box>
@@ -343,7 +343,7 @@ function LocalAddressesList({
             <Box shrink="No" gap="100">
               {published && (
                 <Badge variant="Success" fill="Soft" size="500">
-                  <Text size="L400">Published</Text>
+                  <Text size="L400">Publicada</Text>
                 </Badge>
               )}
             </Box>
@@ -380,8 +380,8 @@ export function RoomLocalAddresses({ permissions }: { permissions: RoomPermissio
       gap="400"
     >
       <SettingTile
-        title="Local Addresses"
-        description="Set local address so users can join through your homeserver."
+        title="Direcciones locales"
+        description="Configura una dirección local para que los usuarios se unan a través de tu servidor."
         after={
           <Button
             type="button"
@@ -396,7 +396,7 @@ export function RoomLocalAddresses({ permissions }: { permissions: RoomPermissio
             }
           >
             <Text as="span" size="B300" truncate>
-              {expand ? 'Collapse' : 'Expand'}
+              {expand ? 'Contraer' : 'Expandir'}
             </Text>
           </Button>
         }
@@ -406,13 +406,13 @@ export function RoomLocalAddresses({ permissions }: { permissions: RoomPermissio
           {localAliasesState.status === AsyncStatus.Loading && (
             <Box gap="100">
               <Spinner variant="Secondary" size="100" />
-              <Text size="T200">Loading...</Text>
+              <Text size="T200">Cargando...</Text>
             </Box>
           )}
           {localAliasesState.status === AsyncStatus.Success &&
             (localAliasesState.data.length === 0 ? (
               <Box direction="Column" gap="100">
-                <Text size="L400">No Addresses</Text>
+                <Text size="L400">Sin direcciones</Text>
               </Box>
             ) : (
               <LocalAddressesList

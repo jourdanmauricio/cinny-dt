@@ -60,12 +60,12 @@ const useSettingsMenuItems = (): SettingsMenuItem[] =>
       },
       {
         page: SettingsPages.AccountPage,
-        name: 'Account',
+        name: 'Cuenta',
         icon: Icons.User,
       },
       {
         page: SettingsPages.NotificationPage,
-        name: 'Notifications',
+        name: 'Notificaciones',
         icon: Icons.Bell,
       },
       // DT: Devices - oculto para todos los roles; relacionado con encryption que no se usa en DT
@@ -88,7 +88,7 @@ const useSettingsMenuItems = (): SettingsMenuItem[] =>
       // },
       {
         page: SettingsPages.AboutPage,
-        name: 'About',
+        name: 'Acerca de',
         icon: Icons.Info,
       },
     ],
@@ -139,7 +139,7 @@ export function Settings({ initialPage, requestClose }: SettingsProps) {
                   />
                 </Avatar>
                 <Text size="H4" truncate>
-                  Settings
+                  Configuración
                 </Text>
               </Box>
               <Box shrink="No">
@@ -187,7 +187,7 @@ export function Settings({ initialPage, requestClose }: SettingsProps) {
                         before={<Icon src={Icons.Power} size="100" />}
                         onClick={() => setLogout(true)}
                       >
-                        <Text size="B400">Logout</Text>
+                        <Text size="B400">Cerrar sesión</Text>
                       </Button>
                       {logout && (
                         <Overlay open backdrop={<OverlayBackdrop />}>
