@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Box, Header, Scroll, Spinner, Text, color } from 'folds';
+import { Box, Scroll, Spinner, Text, color } from 'folds';
 import {
   Outlet,
   generatePath,
@@ -8,11 +8,8 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
-import classNames from 'classnames';
 
-import { AuthFooter } from './AuthFooter';
 import * as css from './styles.css';
-import * as PatternsCss from '../../styles/Patterns.css';
 import {
   clientAllowedServer,
   clientDefaultServer,
@@ -20,7 +17,6 @@ import {
 } from '../../hooks/useClientConfig';
 import { AsyncStatus, useAsyncCallback } from '../../hooks/useAsyncCallback';
 import { LOGIN_PATH, REGISTER_PATH, RESET_PASSWORD_PATH } from '../paths';
-import CinnySVG from '../../../../public/res/svg/cinny.svg';
 import { ServerPicker } from './ServerPicker';
 import { AutoDiscoveryAction, autoDiscovery } from '../../cs-api';
 import { SpecVersionsLoader } from '../../components/SpecVersionsLoader';
@@ -125,19 +121,16 @@ export function AuthLayout() {
   return (
     <Scroll variant="Background" visibility="Hover" size="300" hideTrack>
       <Box
-        className={classNames(css.AuthLayout, PatternsCss.BackgroundDotPattern)}
+        className={css.AuthLayout}
         direction="Column"
         alignItems="Center"
-        justifyContent="SpaceBetween"
+        justifyContent="Center"
         gap="400"
       >
-        <Box direction="Column" className={css.AuthCard}>
-          <Header className={css.AuthHeader} size="600" variant="Surface">
-            <Box grow="Yes" direction="Row" gap="300" alignItems="Center">
-              <img className={css.AuthLogo} src={CinnySVG} alt="Cinny Logo" />
-              <Text size="H3">Dulce Terciopelo</Text>
-            </Box>
-          </Header>
+        <Box direction="Column" className={css.AuthCard} style={{ color: '#3c4043' }}>
+          <div className={css.AuthHeader}>
+            <p className={css.AuthBrandTitle}>Agencia Dulce Terciopelo</p>
+          </div>
           <Box className={css.AuthCardContent} direction="Column">
             {/*  <Box direction="Column" gap="100">
               <Text as="label" size="L400" priority="300">
@@ -218,7 +211,6 @@ export function AuthLayout() {
             )}
           </Box>
         </Box>
-        <AuthFooter />
       </Box>
     </Scroll>
   );

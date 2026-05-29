@@ -1,19 +1,48 @@
 import React, { FormEventHandler, useState } from 'react';
-import { Box, Button, Overlay, OverlayBackdrop, OverlayCenter, Spinner, Text } from 'folds';
+import { Overlay, OverlayBackdrop, OverlayCenter, Spinner } from 'folds';
 import { CustomLoginResponse, useLoginComplete } from './loginUtil';
-import { PasswordInput } from '../../../components/password-input';
-import { FieldError } from '../FiledError';
 import { dtLogin } from './dtLogin';
 import { clearPreviousSessionData } from '../../../state/sessions';
+import * as css from './loginForm.css';
+
+const baseInputStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '10px 12px',
+  border: '1.5px solid #EDB5C0',
+  borderRadius: '8px',
+  fontSize: '15px',
+  fontFamily: 'inherit',
+  color: '#3c4043',
+  backgroundColor: '#ffffff',
+  outline: 'none',
+  boxSizing: 'border-box',
+};
+
+const inputErrorStyle: React.CSSProperties = {
+  ...baseInputStyle,
+  borderColor: '#E8829F',
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: '14px',
+  color: '#6B3D4E',
+  fontWeight: 400,
+};
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type PasswordLoginFormProps = {
   defaultUsername?: string;
   defaultEmail?: string;
 };
+
 export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
   const [loginData, setLoginData] = useState<CustomLoginResponse | undefined>();
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useLoginComplete(loginData);
 
@@ -25,20 +54,35 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
     };
     const email = emailInput.value.trim();
     const password = passwordInput.value;
+
+    let hasError = false;
+
     if (!email) {
-      emailInput.focus();
-      return;
-    }
-    if (!password) {
-      passwordInput.focus();
-      return;
+      setEmailError('El email es requerido');
+      hasError = true;
+    } else if (!EMAIL_RE.test(email)) {
+      setEmailError('Email inválido');
+      hasError = true;
+    } else {
+      setEmailError(null);
     }
 
+    if (!password) {
+      setPasswordError('La contraseña es requerida');
+      hasError = true;
+    } else if (password.length < 6) {
+      setPasswordError('La contraseña debe tener al menos 6 caracteres');
+      hasError = true;
+    } else {
+      setPasswordError(null);
+    }
+
+    if (hasError) return;
+
     setLoading(true);
-    setError(null);
+    setServerError(null);
     try {
       const dtRes = await dtLogin(email, password);
-      // Limpiar datos de sesión anterior antes de guardar los nuevos tokens
       clearPreviousSessionData();
       localStorage.setItem('dt_access_token', dtRes.dtToken);
       const data: CustomLoginResponse = {
@@ -51,9 +95,9 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
       };
       setLoginData(data);
     } catch (err: any) {
-      if (err.status === 401) setError('Email o contraseña incorrectos.');
-      else if (err.status === 403) setError('Tu cuenta aún no fue aprobada.');
-      else setError('Error al iniciar sesión. Intentá de nuevo.');
+      if (err.status === 401) setServerError('Email o contraseña incorrectos.');
+      else if (err.status === 403) setServerError('Tu cuenta aún no fue aprobada.');
+      else setServerError('Error al iniciar sesión. Intentá de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -62,54 +106,148 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
   const webUrl = import.meta.env.VITE_DT_WEB_URL ?? 'http://localhost:3000';
 
   return (
-    <Box as="form" onSubmit={handleSubmit} direction="Inherit" gap="400">
-      <Box direction="Column" gap="100">
-        <Text as="label" size="L400" priority="300">
-          Email
-        </Text>
+    <form
+      onSubmit={handleSubmit}
+      className={css.dtLoginForm}
+      style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+    >
+      {/* Email */}
+      <div style={{ position: 'relative', paddingBottom: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <label style={labelStyle}>Email</label>
         <input
           defaultValue={defaultEmail}
           name="emailInput"
           type="email"
-          required
           autoComplete="email"
-          style={{ width: '100%' }}
+          placeholder="tucorreo@email.com"
+          style={emailError ? inputErrorStyle : baseInputStyle}
         />
-      </Box>
-      <Box direction="Column" gap="100">
-        <Text as="label" size="L400" priority="300">
-          Password
-        </Text>
-        <PasswordInput name="passwordInput" variant="Background" size="500" outlined required />
-        <Box alignItems="Start" justifyContent="SpaceBetween" gap="200">
-          {error && <FieldError message={error} />}
-          <Box grow="Yes" shrink="No" justifyContent="End">
-            <Text as="span" size="T200" priority="400" align="Right">
-              <a href={`${webUrl}/forgot-password?redirect=chat`}>¿Olvidaste tu contraseña?</a>
-            </Text>
-          </Box>
-        </Box>
-      </Box>
-      <Button type="submit" variant="Primary" size="500">
-        <Text as="span" size="B500">
-          Login
-        </Text>
-      </Button>
+        {emailError && <p className={css.dtFieldError}>{emailError}</p>}
+      </div>
+
+      {/* Contraseña */}
+      <div style={{ position: 'relative', paddingBottom: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <label style={labelStyle}>Contraseña</label>
+          <a
+            href={`${webUrl}/forgot-password?redirect=chat`}
+            style={{ fontSize: '13px' }}
+          >
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+        <div style={{ position: 'relative' }}>
+          <input
+            name="passwordInput"
+            type={passwordVisible ? 'text' : 'password'}
+            autoComplete="current-password"
+            placeholder="Tu contraseña"
+            style={{
+              ...(passwordError ? inputErrorStyle : baseInputStyle),
+              paddingRight: '42px',
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => setPasswordVisible(!passwordVisible)}
+            style={{
+              position: 'absolute',
+              right: '10px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px',
+              color: '#9ca3af',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {passwordVisible ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            )}
+          </button>
+        </div>
+        {passwordError && <p className={css.dtFieldError}>{passwordError}</p>}
+        {serverError && <p className={css.dtFieldError}>{serverError}</p>}
+      </div>
+
+      {/* Botón ingresar */}
+      <button
+        type="submit"
+        disabled={loading}
+        style={{
+          width: '100%',
+          padding: '12px 16px',
+          backgroundColor: '#E8829F',
+          color: '#FFFFFF',
+          border: 'none',
+          borderRadius: '8px',
+          fontSize: '16px',
+          fontWeight: 600,
+          textAlign: 'center',
+          cursor: loading ? 'not-allowed' : 'pointer',
+          fontFamily: 'inherit',
+          opacity: loading ? 0.7 : 1,
+          transition: 'background-color 0.15s',
+        }}
+        onMouseOver={(e) => {
+          if (!loading)
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#D4637E';
+        }}
+        onMouseOut={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#E8829F';
+        }}
+      >
+        Ingresar
+      </button>
 
       {/* Separador OAuth */}
-      <Box alignItems="Center" gap="200">
-        <Box
-          grow="Yes"
-          style={{ height: '1px', background: 'var(--bg-surface-border, #e0e0e0)' }}
-        />
-        <Text size="T200" priority="300">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ flex: 1, height: '1px', background: '#EDB5C0' }} />
+        <span
+          style={{
+            fontSize: '11px',
+            color: '#9ca3af',
+            letterSpacing: '0.06em',
+            fontWeight: 500,
+            whiteSpace: 'nowrap',
+          }}
+        >
           O CONTINUÁ CON
-        </Text>
-        <Box
-          grow="Yes"
-          style={{ height: '1px', background: 'var(--bg-surface-border, #e0e0e0)' }}
-        />
-      </Box>
+        </span>
+        <div style={{ flex: 1, height: '1px', background: '#EDB5C0' }} />
+      </div>
 
       {/* Botón Google */}
       <button
@@ -126,7 +264,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
           padding: '10px 16px',
           border: '1.5px solid #dadce0',
           borderRadius: '8px',
-          background: '#fff',
+          background: '#ffffff',
           color: '#3c4043',
           fontSize: '15px',
           fontWeight: 500,
@@ -141,7 +279,6 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
           (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
         }}
       >
-        {/* Google logo SVG */}
         <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path
             fill="#EA4335"
@@ -165,18 +302,21 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
       </button>
 
       {/* Link de registro */}
-      <Box justifyContent="Center" gap="200">
-        <Text size="T300" priority="300">
-          ¿No tenés cuenta?{' '}
-          <a href={`${webUrl}/register`}>Registrate</a>
-        </Text>
-      </Box>
+      <div style={{ textAlign: 'center', fontSize: '14px', color: '#6b7280' }}>
+        ¿No tenés cuenta?{' '}
+        <a
+          href={`${webUrl}/register`}
+          style={{ fontWeight: 600, color: '#1C1719' }}
+        >
+          Registrate
+        </a>
+      </div>
 
       <Overlay open={loading} backdrop={<OverlayBackdrop />}>
         <OverlayCenter>
           <Spinner variant="Secondary" size="600" />
         </OverlayCenter>
       </Overlay>
-    </Box>
+    </form>
   );
 }
