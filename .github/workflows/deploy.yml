@@ -34,6 +34,8 @@ jobs:
           tags: ghcr.io/jourdanmauricio/cinny-dt:latest
           build-args: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_DT_API_URL=${{ secrets.VITE_DT_API_URL }}
+            VITE_DT_WEB_URL=${{ secrets.VITE_DT_WEB_URL }}
 
       - name: Trigger Dokploy deploy
         run: |
