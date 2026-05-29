@@ -79,7 +79,7 @@ export function Room() {
             <CallChatView />
           </>
         )}
-        {!callView && screenSize === ScreenSize.Desktop && isDrawer && (
+        {!callView && screenSize === ScreenSize.Desktop && isDrawer && localStorage.getItem('dt_is_admin') === 'true' && (
           <>
             <Line variant="Background" direction="Vertical" size="300" />
             <MembersDrawer key={room.roomId} room={room} members={members} />

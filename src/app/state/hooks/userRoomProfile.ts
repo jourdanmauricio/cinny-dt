@@ -32,6 +32,7 @@ export const useOpenUserRoomProfile = (): OpenCallback => {
 
   const open: OpenCallback = useCallback(
     (roomId, spaceId, userId, cords, position) => {
+      if (localStorage.getItem('dt_is_admin') !== 'true') return;
       setUserRoomProfile({ roomId, spaceId, userId, cords, position });
     },
     [setUserRoomProfile]

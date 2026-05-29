@@ -1,5 +1,5 @@
 import { Box, Button, color, config, Icon, Icons, Input, Spinner, Switch, Text } from 'folds';
-import React, { FormEventHandler, useCallback, useState } from 'react';
+import React, { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { ICreateRoomStateEvent, MatrixError, Preset, Visibility } from 'matrix-js-sdk';
 import { useNavigate } from 'react-router-dom';
 import { SettingTile } from '../../components/setting-tile';
@@ -11,7 +11,7 @@ import { ErrorCode } from '../../cs-errorcode';
 import { millisecondsToMinutes } from '../../utils/common';
 import { createRoomEncryptionState } from '../../components/create-room';
 import { useAlive } from '../../hooks/useAlive';
-import { getDirectRoomPath } from '../../pages/pathUtils';
+import { getDirectPath, getDirectRoomPath } from '../../pages/pathUtils';
 
 type CreateChatProps = {
   defaultUserId?: string;
@@ -20,6 +20,12 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
   const mx = useMatrixClient();
   const alive = useAlive();
   const navigate = useNavigate();
+
+  const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
+
+  useEffect(() => {
+    if (!isAdmin) navigate(getDirectPath(), { replace: true });
+  }, [isAdmin, navigate]);
 
   const [encryption, setEncryption] = useState(false);
   const [invalidUserId, setInvalidUserId] = useState(false);
@@ -49,6 +55,8 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
   const loading = createState.status === AsyncStatus.Loading;
   const error = createState.status === AsyncStatus.Error ? createState.error : undefined;
   const disabled = createState.status === AsyncStatus.Loading;
+
+  if (!isAdmin) return null;
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();

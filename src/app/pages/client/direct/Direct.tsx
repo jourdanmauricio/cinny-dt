@@ -1,4 +1,12 @@
-import React, { MouseEventHandler, forwardRef, useMemo, useRef, useState } from 'react';
+import React, {
+  MouseEventHandler,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import {
   Avatar,
@@ -30,7 +38,11 @@ import {
   NavItemContent,
 } from '../../../components/nav';
 import { getDirectCreatePath, getDirectRoomPath } from '../../pathUtils';
-import { getCanonicalAliasOrRoomId } from '../../../utils/matrix';
+import {
+  addRoomIdToMDirect,
+  getCanonicalAliasOrRoomId,
+  getDMRoomFor,
+} from '../../../utils/matrix';
 import { useSelectedRoom } from '../../../hooks/router/useSelectedRoom';
 import { VirtualTile } from '../../../components/virtualizer';
 import { RoomNavCategoryButton, RoomNavItem } from '../../../features/room-nav';
@@ -51,6 +63,7 @@ import {
   useRoomsNotificationPreferencesContext,
 } from '../../../hooks/useRoomsNotificationPreferences';
 import { useDirectCreateSelected } from '../../../hooks/router/useDirectSelected';
+import { dtAdminsAtom, DtAdmin } from '../../../state/dtAdmins';
 
 type DirectMenuProps = {
   requestClose: () => void;
@@ -138,8 +151,50 @@ function DirectHeader() {
   );
 }
 
-function DirectEmpty() {
+type DirectEmptyProps = {
+  isAdmin: boolean;
+  dtAdmins: DtAdmin[] | null;
+  onAdminClick: (admin: DtAdmin) => void;
+};
+
+function DirectEmpty({ isAdmin, dtAdmins, onAdminClick }: DirectEmptyProps) {
   const navigate = useNavigate();
+
+  if (!isAdmin) {
+    return (
+      <NavEmptyCenter>
+        <NavEmptyLayout
+          icon={<Icon size="600" src={Icons.Mention} />}
+          title={
+            <Text size="H5" align="Center">
+              Sin mensajes directos
+            </Text>
+          }
+          content={
+            <Text size="T300" align="Center">
+              Enviá un mensaje a un administrador.
+            </Text>
+          }
+          options={
+            <Box direction="Column" gap="200">
+              {(dtAdmins ?? []).map((admin) => (
+                <Button
+                  key={admin.synapseUserId}
+                  variant="Secondary"
+                  size="300"
+                  onClick={() => onAdminClick(admin)}
+                >
+                  <Text size="B300" truncate>
+                    {admin.displayName}
+                  </Text>
+                </Button>
+              ))}
+            </Box>
+          }
+        />
+      </NavEmptyCenter>
+    );
+  }
 
   return (
     <NavEmptyCenter>
@@ -177,6 +232,37 @@ export function Direct() {
   const roomToUnread = useAtomValue(roomToUnreadAtom);
   const navigate = useNavigate();
 
+  const isAdmin = useMemo(() => localStorage.getItem('dt_is_admin') === 'true', []);
+  const [dtAdmins, setDtAdmins] = useAtom(dtAdminsAtom);
+
+  useEffect(() => {
+    if (isAdmin || dtAdmins !== null) return;
+    const apiUrl = import.meta.env.VITE_DT_API_URL as string;
+    fetch(`${apiUrl}/matrix/admins`)
+      .then((r) => r.json())
+      .then((data: DtAdmin[]) => setDtAdmins(data))
+      .catch(() => setDtAdmins([]));
+  }, [isAdmin, dtAdmins, setDtAdmins]);
+
+  const handleAdminClick = useCallback(
+    async (admin: DtAdmin) => {
+      const existing = getDMRoomFor(mx, admin.synapseUserId);
+      if (existing) {
+        navigate(getDirectRoomPath(getCanonicalAliasOrRoomId(mx, existing.roomId)));
+        return;
+      }
+      const result = await mx.createRoom({
+        is_direct: true,
+        invite: [admin.synapseUserId],
+        visibility: 'private' as any,
+        preset: 'trusted_private_chat' as any,
+      });
+      addRoomIdToMDirect(mx, result.room_id, admin.synapseUserId);
+      navigate(getDirectRoomPath(result.room_id));
+    },
+    [mx, navigate]
+  );
+
   const createDirectSelected = useDirectCreateSelected();
 
   const selectedRoomId = useSelectedRoom();
@@ -206,28 +292,51 @@ export function Direct() {
     <PageNav>
       <DirectHeader />
       {noRoomToDisplay ? (
-        <DirectEmpty />
+        <DirectEmpty isAdmin={isAdmin} dtAdmins={dtAdmins} onAdminClick={handleAdminClick} />
       ) : (
         <PageNavContent scrollRef={scrollRef}>
           <Box direction="Column" gap="300">
-            <NavCategory>
-              <NavItem variant="Background" radii="400" aria-selected={createDirectSelected}>
-                <NavButton onClick={() => navigate(getDirectCreatePath())}>
-                  <NavItemContent>
-                    <Box as="span" grow="Yes" alignItems="Center" gap="200">
-                      <Avatar size="200" radii="400">
-                        <Icon src={Icons.Plus} size="100" />
-                      </Avatar>
-                      <Box as="span" grow="Yes">
-                        <Text as="span" size="Inherit" truncate>
-                          Crear chat
-                        </Text>
+            {isAdmin ? (
+              <NavCategory>
+                <NavItem variant="Background" radii="400" aria-selected={createDirectSelected}>
+                  <NavButton onClick={() => navigate(getDirectCreatePath())}>
+                    <NavItemContent>
+                      <Box as="span" grow="Yes" alignItems="Center" gap="200">
+                        <Avatar size="200" radii="400">
+                          <Icon src={Icons.Plus} size="100" />
+                        </Avatar>
+                        <Box as="span" grow="Yes">
+                          <Text as="span" size="Inherit" truncate>
+                            Crear chat
+                          </Text>
+                        </Box>
                       </Box>
-                    </Box>
-                  </NavItemContent>
-                </NavButton>
-              </NavItem>
-            </NavCategory>
+                    </NavItemContent>
+                  </NavButton>
+                </NavItem>
+              </NavCategory>
+            ) : (
+              <NavCategory>
+                {(dtAdmins ?? []).map((admin) => (
+                  <NavItem key={admin.synapseUserId} variant="Background" radii="400">
+                    <NavButton onClick={() => handleAdminClick(admin)}>
+                      <NavItemContent>
+                        <Box as="span" grow="Yes" alignItems="Center" gap="200">
+                          <Avatar size="200" radii="400">
+                            <Icon src={Icons.Mention} size="100" />
+                          </Avatar>
+                          <Box as="span" grow="Yes">
+                            <Text as="span" size="Inherit" truncate>
+                              {admin.displayName}
+                            </Text>
+                          </Box>
+                        </Box>
+                      </NavItemContent>
+                    </NavButton>
+                  </NavItem>
+                ))}
+              </NavCategory>
+            )}
             <NavCategory>
               <NavCategoryHeader>
                 <RoomNavCategoryButton

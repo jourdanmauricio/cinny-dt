@@ -85,6 +85,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
       const dtRes = await dtLogin(email, password);
       clearPreviousSessionData();
       localStorage.setItem('dt_access_token', dtRes.dtToken);
+      localStorage.setItem('dt_is_admin', String(dtRes.isAdmin === true));
       const data: CustomLoginResponse = {
         baseUrl: dtRes.homeserver,
         response: {

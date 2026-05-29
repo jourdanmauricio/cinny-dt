@@ -72,6 +72,7 @@ async function init() {
         if (dtToken) {
           localStorage.setItem('dt_access_token', dtToken);
         }
+        localStorage.setItem('dt_is_admin', String(data.isAdmin === true));
         setFallbackSession(data.token, data.deviceId, data.userId, data.homeserver);
       }
     } catch {

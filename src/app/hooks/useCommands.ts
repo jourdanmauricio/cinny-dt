@@ -203,6 +203,7 @@ export const useCommands = (mx: MatrixClient, room: Room): CommandRecord => {
         name: Command.StartDm,
         description: 'Start direct message with user. Example: /startdm userId1',
         exe: async (payload) => {
+          if (localStorage.getItem('dt_is_admin') !== 'true') return;
           const rawIds = splitWithSpace(payload);
           const userIds = rawIds.filter((id) => isUserId(id) && id !== mx.getSafeUserId());
           if (userIds.length === 0) return;

@@ -45,8 +45,9 @@ export const removeFallbackSession = () => {
   localStorage.removeItem('cinny_user_id');
   localStorage.removeItem('cinny_device_id');
   localStorage.removeItem('cinny_access_token');
-  // DT JWT — must stay in sync with PasswordLoginForm's localStorage.setItem('dt_access_token')
+  // DT JWT + role — must stay in sync with PasswordLoginForm and index.tsx
   localStorage.removeItem('dt_access_token');
+  localStorage.removeItem('dt_is_admin');
 };
 
 /**

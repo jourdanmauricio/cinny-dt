@@ -605,7 +605,7 @@ export function RoomViewHeader({ callView }: { callView?: boolean }) {
           {!room.isCallRoom() && livekitSupported && rtcSupported && hasCallPermission && (
             <CallButton />
           )}
-          {screenSize === ScreenSize.Desktop && (
+          {screenSize === ScreenSize.Desktop && localStorage.getItem('dt_is_admin') === 'true' && (
             <TooltipProvider
               position="Bottom"
               offset={4}

@@ -59,6 +59,8 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
 
   const presence = useUserPresence(userId);
 
+  const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
+
   const handleMessage = () => {
     closeUserRoomProfile();
     const directSearchParam: DirectCreateSearchParams = {
@@ -78,7 +80,7 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
         <Box direction="Column" gap="400">
           <Box gap="400" alignItems="Start">
             <UserHeroName displayName={displayName} userId={userId} />
-            {userId !== myUserId && (
+            {userId !== myUserId && isAdmin && (
               <Box shrink="No">
                 <Button
                   size="300"

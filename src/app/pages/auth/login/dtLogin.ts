@@ -4,6 +4,7 @@ export type DtLoginResponse = {
   dtToken: string;
   userId: string;
   homeserver: string;
+  isAdmin: boolean;
 };
 
 export const dtLogin = async (email: string, password: string): Promise<DtLoginResponse> => {
