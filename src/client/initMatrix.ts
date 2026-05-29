@@ -1,6 +1,8 @@
-import { createClient, MatrixClient, IndexedDBStore, IndexedDBCryptoStore } from 'matrix-js-sdk';
+import { createClient, MatrixClient, IndexedDBStore } from 'matrix-js-sdk';
 
-import { cryptoCallbacks } from './secretStorageKeys';
+// DT: E2E deshabilitado — salas son broadcast/admin, tokens sin device_id vinculado causan error 400 en key upload
+// import { IndexedDBCryptoStore } from 'matrix-js-sdk';
+// import { cryptoCallbacks } from './secretStorageKeys';
 import { clearNavToActivePathStore } from '../app/state/navToActivePath';
 import { pushSessionToSW } from '../sw-session';
 
@@ -18,22 +20,25 @@ export const initClient = async (session: Session): Promise<MatrixClient> => {
     dbName: 'web-sync-store',
   });
 
-  const legacyCryptoStore = new IndexedDBCryptoStore(global.indexedDB, 'crypto-store');
+  // DT: E2E deshabilitado — no se crea cryptoStore ni se inicializa Rust crypto
+  // const legacyCryptoStore = new IndexedDBCryptoStore(global.indexedDB, 'crypto-store');
 
   const mx = createClient({
     baseUrl: session.baseUrl,
     accessToken: session.accessToken,
     userId: session.userId,
     store: indexedDBStore,
-    cryptoStore: legacyCryptoStore,
+    // DT: cryptoStore, cryptoCallbacks y verificationMethods eliminados para deshabilitar E2E
+    // cryptoStore: legacyCryptoStore,
     deviceId: session.deviceId,
     timelineSupport: true,
-    cryptoCallbacks: cryptoCallbacks as any,
-    verificationMethods: ['m.sas.v1'],
+    // cryptoCallbacks: cryptoCallbacks as any,
+    // verificationMethods: ['m.sas.v1'],
   });
 
   await indexedDBStore.startup();
-  await mx.initRustCrypto();
+  // DT: initRustCrypto omitido — dispara el upload de claves que falla con 400 sin device_id vinculado
+  // await mx.initRustCrypto();
 
   mx.setMaxListeners(50);
 
