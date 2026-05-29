@@ -41,8 +41,8 @@ function ClientRootLoading() {
   return (
     <SplashScreen>
       <Box direction="Column" grow="Yes" alignItems="Center" justifyContent="Center" gap="400">
-        <Spinner variant="Secondary" size="600" />
-        <Text>Heating up</Text>
+        <Spinner variant="Primary" size="600" />
+        <Text>Cargando...</Text>
       </Box>
     </SplashScreen>
   );

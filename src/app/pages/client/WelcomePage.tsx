@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Icon, Icons, Text, config, toRem } from 'folds';
 import { Page, PageHero, PageHeroSection } from '../../components/page';
-import CinnySVG from '../../../../public/res/svg/cinny.svg';
+import GatitoImg from '../../../../public/res/img/logo.jpeg';
 
 export function WelcomePage() {
   return (
@@ -14,20 +14,13 @@ export function WelcomePage() {
       >
         <PageHeroSection>
           <PageHero
-            icon={<img width="70" height="70" src={CinnySVG} alt="Cinny Logo" />}
-            title="Bienvenido a Dulce Terciopelo"
-            subTitle={
-              <span>
-                Tu espacio de chat.{' '}
-                <a
-                  href="https://github.com/cinnyapp/cinny/releases"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  v4.12.2
-                </a>
+            icon={<img width="160" height="160" src={GatitoImg} alt="Dulce Terciopelo" style={{ borderRadius: '12px' }} />}
+            title={
+              <span style={{ fontFamily: "'Lora', serif", color: '#C9A97A', fontWeight: 600 }}>
+                Agencia Dulce Terciopelo
               </span>
             }
+            subTitle={<span>Tu espacio de chat.</span>}
           >
             <Box justifyContent="Center">
               <Box grow="Yes" style={{ maxWidth: toRem(300) }} direction="Column" gap="300">

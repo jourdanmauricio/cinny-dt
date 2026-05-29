@@ -20,8 +20,8 @@ export function SplashScreen({ children }: SplashScreenProps) {
         alignItems="Center"
         justifyContent="Center"
       >
-        <Text size="H2" align="Center">
-          Dulce Terciopelo
+        <Text size="H2" align="Center" style={{ fontFamily: "'Lora', serif", color: '#C9A97A', fontWeight: 600 }}>
+          Agencia Dulce Terciopelo
         </Text>
       </Box>
     </Box>
