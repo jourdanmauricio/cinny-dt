@@ -55,6 +55,10 @@ const copyFiles = {
       dest: '',
     },
     {
+      src: 'public/apple-touch-icon.png',
+      dest: '',
+    },
+    {
       src: 'public/res/android',
       dest: 'public/',
     },
