@@ -12,11 +12,16 @@ import {
   Avatar,
   Box,
   Button,
+  Dialog,
+  Header,
   Icon,
   IconButton,
   Icons,
   Menu,
   MenuItem,
+  Overlay,
+  OverlayBackdrop,
+  OverlayCenter,
   PopOut,
   RectCords,
   Text,
@@ -234,6 +239,7 @@ export function Direct() {
 
   const isAdmin = useMemo(() => localStorage.getItem('dt_is_admin') === 'true', []);
   const [dtAdmins, setDtAdmins] = useAtom(dtAdminsAtom);
+  const [confirmAdmin, setConfirmAdmin] = useState<DtAdmin | null>(null);
 
   useEffect(() => {
     if (isAdmin || dtAdmins !== null) return;
@@ -292,7 +298,7 @@ export function Direct() {
     <PageNav>
       <DirectHeader />
       {noRoomToDisplay ? (
-        <DirectEmpty isAdmin={isAdmin} dtAdmins={dtAdmins} onAdminClick={handleAdminClick} />
+        <DirectEmpty isAdmin={isAdmin} dtAdmins={dtAdmins} onAdminClick={setConfirmAdmin} />
       ) : (
         <PageNavContent scrollRef={scrollRef}>
           <Box direction="Column" gap="300">
@@ -319,7 +325,7 @@ export function Direct() {
               <NavCategory>
                 {(dtAdmins ?? []).map((admin) => (
                   <NavItem key={admin.synapseUserId} variant="Background" radii="400">
-                    <NavButton onClick={() => handleAdminClick(admin)}>
+                    <NavButton onClick={() => setConfirmAdmin(admin)}>
                       <NavItemContent>
                         <Box as="span" grow="Yes" alignItems="Center" gap="200">
                           <Avatar size="200" radii="400">
@@ -384,6 +390,57 @@ export function Direct() {
           </Box>
         </PageNavContent>
       )}
+      <Overlay open={confirmAdmin !== null} backdrop={<OverlayBackdrop />}>
+        <OverlayCenter>
+          <FocusTrap
+            focusTrapOptions={{
+              initialFocus: false,
+              onDeactivate: () => setConfirmAdmin(null),
+              clickOutsideDeactivates: true,
+              escapeDeactivates: true,
+            }}
+          >
+            <Dialog variant="Surface">
+              <Header
+                style={{
+                  padding: `0 ${config.space.S200} 0 ${config.space.S400}`,
+                  borderBottomWidth: config.borderWidth.B300,
+                }}
+                variant="Surface"
+                size="500"
+              >
+                <Box grow="Yes">
+                  <Text size="H4">Mensajes directos</Text>
+                </Box>
+              </Header>
+              <Box style={{ padding: config.space.S400 }} direction="Column" gap="400">
+                <Text priority="400">
+                  Solo podés escribirle a una administradora a la vez. Si ya le escribiste a otra,
+                  por favor no abras un nuevo chat para evitar atrasos en las respuestas.
+                </Text>
+                <Box direction="Column" gap="200">
+                  <Button
+                    variant="Primary"
+                    onClick={() => {
+                      if (confirmAdmin) handleAdminClick(confirmAdmin);
+                      setConfirmAdmin(null);
+                    }}
+                  >
+                    <Text size="B400">Entendido, continuar</Text>
+                  </Button>
+                  <Button
+                    variant="Secondary"
+                    fill="Soft"
+                    onClick={() => setConfirmAdmin(null)}
+                  >
+                    <Text size="B400">Cancelar</Text>
+                  </Button>
+                </Box>
+              </Box>
+            </Dialog>
+          </FocusTrap>
+        </OverlayCenter>
+      </Overlay>
     </PageNav>
   );
 }
