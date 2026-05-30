@@ -124,7 +124,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
             disabled={!unread}
           >
             <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-              Mark as Read
+              Marcar como leído
             </Text>
           </MenuItem>
           <RoomNotificationModeSwitcher roomId={room.roomId} value={notificationMode}>
@@ -143,7 +143,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
                 onClick={handleOpen}
               >
                 <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-                  Notifications
+                  Notificaciones
                 </Text>
               </MenuItem>
             )}
@@ -174,7 +174,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
             radii="300"
           >
             <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-              Copy Link
+              Copiar enlace
             </Text>
           </MenuItem>
           {/* DT: Room Settings - visible solo para admin */}
@@ -186,7 +186,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
               radii="300"
             >
               <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-                Room Settings
+                Configuración de la sala
               </Text>
             </MenuItem>
           )}

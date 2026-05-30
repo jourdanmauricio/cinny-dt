@@ -127,7 +127,7 @@ export function RoomView({ eventId }: { eventId?: string }) {
                   alignItems="Center"
                   justifyContent="Center"
                 >
-                  <Text align="Center">You do not have permission to post in this room</Text>
+                  <Text align="Center">Este es un canal de solo lectura</Text>
                 </RoomInputPlaceholder>
               )}
             </>
