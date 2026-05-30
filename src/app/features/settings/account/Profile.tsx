@@ -209,6 +209,7 @@ function ProfileDisplayName({ profile, userId }: ProfileProps) {
   const mx = useMatrixClient();
   const capabilities = useCapabilities();
   const disableSetDisplayname = capabilities['m.set_displayname']?.enabled === false;
+  const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
 
   const defaultDisplayName = profile.displayName ?? getMxIdLocalPart(userId) ?? userId;
   const [displayName, setDisplayName] = useState<string>(defaultDisplayName);
@@ -253,6 +254,8 @@ function ProfileDisplayName({ profile, userId }: ProfileProps) {
       }
     >
       <Box direction="Column" grow="Yes" gap="100">
+        {/* DT: Display name - solo lectura para no-admins; nombre gestionado por el backend de DT */}
+        <Box style={!isAdmin ? { opacity: 0.6, pointerEvents: 'none' } : undefined}>
         <Box
           as="form"
           onSubmit={handleSubmit}
@@ -297,6 +300,7 @@ function ProfileDisplayName({ profile, userId }: ProfileProps) {
             {changingDisplayName && <Spinner variant="Success" fill="Solid" size="300" />}
             <Text size="B400">Guardar</Text>
           </Button>
+        </Box>
         </Box>
       </Box>
     </SettingTile>
