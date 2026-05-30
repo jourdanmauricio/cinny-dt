@@ -43,6 +43,18 @@ const copyFiles = {
       dest: '',
     },
     {
+      src: 'public/favicon.svg',
+      dest: '',
+    },
+    {
+      src: 'public/favicon-192x192.png',
+      dest: '',
+    },
+    {
+      src: 'public/favicon-512x512.png',
+      dest: '',
+    },
+    {
       src: 'public/res/android',
       dest: 'public/',
     },
