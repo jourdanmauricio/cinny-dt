@@ -1089,25 +1089,15 @@ export const Message = as<'div', MessageProps>(
                             <MessagePinItem room={room} mEvent={mEvent} onClose={closeMenu} />
                           )}
                         </Box>
-                        {((!mEvent.isRedacted() && canDelete && (isAdmin || mEvent.getSender() === mx.getUserId())) ||
-                          mEvent.getSender() !== mx.getUserId()) && (
+                        {!mEvent.isRedacted() && canDelete && (isAdmin || mEvent.getSender() === mx.getUserId()) && (
                           <>
                             <Line size="300" />
                             <Box direction="Column" gap="100" className={css.MessageMenuGroup}>
-                              {!mEvent.isRedacted() && canDelete && (isAdmin || mEvent.getSender() === mx.getUserId()) && (
-                                <MessageDeleteItem
-                                  room={room}
-                                  mEvent={mEvent}
-                                  onClose={closeMenu}
-                                />
-                              )}
-                              {mEvent.getSender() !== mx.getUserId() && (
-                                <MessageReportItem
-                                  room={room}
-                                  mEvent={mEvent}
-                                  onClose={closeMenu}
-                                />
-                              )}
+                              <MessageDeleteItem
+                                room={room}
+                                mEvent={mEvent}
+                                onClose={closeMenu}
+                              />
                             </Box>
                           </>
                         )}
@@ -1256,25 +1246,15 @@ export const Event = as<'div', EventProps>(
                           )}
                           <MessageCopyLinkItem room={room} mEvent={mEvent} onClose={closeMenu} />
                         </Box>
-                        {((!mEvent.isRedacted() && canDelete && !stateEvent && (isAdmin || mEvent.getSender() === mx.getUserId())) ||
-                          (mEvent.getSender() !== mx.getUserId() && !stateEvent)) && (
+                        {!mEvent.isRedacted() && canDelete && !stateEvent && (isAdmin || mEvent.getSender() === mx.getUserId()) && (
                           <>
                             <Line size="300" />
                             <Box direction="Column" gap="100" className={css.MessageMenuGroup}>
-                              {!mEvent.isRedacted() && canDelete && (isAdmin || mEvent.getSender() === mx.getUserId()) && (
-                                <MessageDeleteItem
-                                  room={room}
-                                  mEvent={mEvent}
-                                  onClose={closeMenu}
-                                />
-                              )}
-                              {mEvent.getSender() !== mx.getUserId() && (
-                                <MessageReportItem
-                                  room={room}
-                                  mEvent={mEvent}
-                                  onClose={closeMenu}
-                                />
-                              )}
+                              <MessageDeleteItem
+                                room={room}
+                                mEvent={mEvent}
+                                onClose={closeMenu}
+                              />
                             </Box>
                           </>
                         )}
