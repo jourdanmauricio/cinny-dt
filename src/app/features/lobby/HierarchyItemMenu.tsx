@@ -283,7 +283,9 @@ export function HierarchyItemMenu({
                       requestClose={handleRequestClose}
                       disabled={!canInvite()}
                     />
-                    <SettingsMenuItem item={item} requestClose={handleRequestClose} />
+                    {localStorage.getItem('dt_is_admin') === 'true' && (
+                      <SettingsMenuItem item={item} requestClose={handleRequestClose} />
+                    )}
                     <UseStateProvider initial={false}>
                       {(promptLeave, setPromptLeave) => (
                         <>

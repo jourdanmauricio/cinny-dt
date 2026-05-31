@@ -178,7 +178,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
             </Text>
           </MenuItem>
           {/* DT: Room Settings - visible solo para admin */}
-          {isAdmin && (
+          {localStorage.getItem('dt_is_admin') === 'true' && (
             <MenuItem
               onClick={handleRoomSettings}
               size="300"
