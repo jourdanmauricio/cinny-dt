@@ -252,6 +252,7 @@ type RoomNavItemProps = {
   notificationMode?: RoomNotificationMode;
   showAvatar?: boolean;
   direct?: boolean;
+  onDirectClick?: () => void;
 };
 export function RoomNavItem({
   room,
@@ -260,6 +261,7 @@ export function RoomNavItem({
   direct,
   notificationMode,
   linkPath,
+  onDirectClick,
 }: RoomNavItemProps) {
   const mx = useMatrixClient();
   const useAuthentication = useMediaAuthentication();
@@ -334,7 +336,17 @@ export function RoomNavItem({
       {...hoverProps}
       {...focusWithinProps}
     >
-      <NavLink to={linkPath} onClick={room.isCallRoom() ? handleStartCall : undefined}>
+      <NavLink
+        to={linkPath}
+        onClick={(evt) => {
+          if (direct && !selected && onDirectClick) {
+            evt.preventDefault();
+            onDirectClick();
+            return;
+          }
+          if (room.isCallRoom()) handleStartCall(evt);
+        }}
+      >
         <NavItemContent>
           <Box as="span" grow="Yes" alignItems="Center" gap="200">
             <Avatar size="200" radii="400">

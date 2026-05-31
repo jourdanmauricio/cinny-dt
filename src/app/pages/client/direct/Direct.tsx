@@ -240,6 +240,7 @@ export function Direct() {
   const isAdmin = useMemo(() => localStorage.getItem('dt_is_admin') === 'true', []);
   const [dtAdmins, setDtAdmins] = useAtom(dtAdminsAtom);
   const [confirmAdmin, setConfirmAdmin] = useState<DtAdmin | null>(null);
+  const [confirmRoomPath, setConfirmRoomPath] = useState<string | null>(null);
 
   useEffect(() => {
     if (isAdmin || dtAdmins !== null) return;
@@ -381,6 +382,14 @@ export function Direct() {
                           notificationPreferences,
                           room.roomId
                         )}
+                        onDirectClick={
+                          !isAdmin
+                            ? () =>
+                                setConfirmRoomPath(
+                                  getDirectRoomPath(getCanonicalAliasOrRoomId(mx, roomId))
+                                )
+                            : undefined
+                        }
                       />
                     </VirtualTile>
                   );
@@ -390,12 +399,18 @@ export function Direct() {
           </Box>
         </PageNavContent>
       )}
-      <Overlay open={confirmAdmin !== null} backdrop={<OverlayBackdrop />}>
+      <Overlay
+        open={confirmAdmin !== null || confirmRoomPath !== null}
+        backdrop={<OverlayBackdrop />}
+      >
         <OverlayCenter>
           <FocusTrap
             focusTrapOptions={{
               initialFocus: false,
-              onDeactivate: () => setConfirmAdmin(null),
+              onDeactivate: () => {
+                setConfirmAdmin(null);
+                setConfirmRoomPath(null);
+              },
               clickOutsideDeactivates: true,
               escapeDeactivates: true,
             }}
@@ -423,7 +438,9 @@ export function Direct() {
                     variant="Primary"
                     onClick={() => {
                       if (confirmAdmin) handleAdminClick(confirmAdmin);
+                      else if (confirmRoomPath) navigate(confirmRoomPath);
                       setConfirmAdmin(null);
+                      setConfirmRoomPath(null);
                     }}
                   >
                     <Text size="B400">Entendido, continuar</Text>
@@ -431,7 +448,10 @@ export function Direct() {
                   <Button
                     variant="Secondary"
                     fill="Soft"
-                    onClick={() => setConfirmAdmin(null)}
+                    onClick={() => {
+                      setConfirmAdmin(null);
+                      setConfirmRoomPath(null);
+                    }}
                   >
                     <Text size="B400">Cancelar</Text>
                   </Button>
