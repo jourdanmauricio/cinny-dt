@@ -1,0 +1,17 @@
+services:
+  synapse:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+    volumes:
+      - synapse_data:/data
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.synapse.rule=Host(`synapse.dulceterciopelo.com`)'
+      - 'traefik.http.routers.synapse.entrypoints=websecure'
+      - 'traefik.http.services.synapse.loadbalancer.server.port=8008'
+volumes:
+  synapse_data:
