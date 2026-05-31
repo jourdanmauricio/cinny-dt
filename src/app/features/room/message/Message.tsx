@@ -719,6 +719,7 @@ export const Message = as<'div', MessageProps>(
   ) => {
     const mx = useMatrixClient();
     const useAuthentication = useMediaAuthentication();
+    const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
     const senderId = mEvent.getSender() ?? '';
 
     const [hover, setHover] = useState(false);
@@ -1088,12 +1089,12 @@ export const Message = as<'div', MessageProps>(
                             <MessagePinItem room={room} mEvent={mEvent} onClose={closeMenu} />
                           )}
                         </Box>
-                        {((!mEvent.isRedacted() && canDelete) ||
+                        {((!mEvent.isRedacted() && canDelete && (isAdmin || mEvent.getSender() === mx.getUserId())) ||
                           mEvent.getSender() !== mx.getUserId()) && (
                           <>
                             <Line size="300" />
                             <Box direction="Column" gap="100" className={css.MessageMenuGroup}>
-                              {!mEvent.isRedacted() && canDelete && (
+                              {!mEvent.isRedacted() && canDelete && (isAdmin || mEvent.getSender() === mx.getUserId()) && (
                                 <MessageDeleteItem
                                   room={room}
                                   mEvent={mEvent}
@@ -1175,6 +1176,7 @@ export const Event = as<'div', EventProps>(
     ref
   ) => {
     const mx = useMatrixClient();
+    const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
     const [hover, setHover] = useState(false);
     const { hoverProps } = useHover({ onHoverChange: setHover });
     const { focusWithinProps } = useFocusWithin({ onFocusWithinChange: setHover });
@@ -1254,12 +1256,12 @@ export const Event = as<'div', EventProps>(
                           )}
                           <MessageCopyLinkItem room={room} mEvent={mEvent} onClose={closeMenu} />
                         </Box>
-                        {((!mEvent.isRedacted() && canDelete && !stateEvent) ||
+                        {((!mEvent.isRedacted() && canDelete && !stateEvent && (isAdmin || mEvent.getSender() === mx.getUserId())) ||
                           (mEvent.getSender() !== mx.getUserId() && !stateEvent)) && (
                           <>
                             <Line size="300" />
                             <Box direction="Column" gap="100" className={css.MessageMenuGroup}>
-                              {!mEvent.isRedacted() && canDelete && (
+                              {!mEvent.isRedacted() && canDelete && (isAdmin || mEvent.getSender() === mx.getUserId()) && (
                                 <MessageDeleteItem
                                   room={room}
                                   mEvent={mEvent}
