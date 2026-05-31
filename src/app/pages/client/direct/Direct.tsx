@@ -266,6 +266,7 @@ export function Direct() {
               [currentUserId]: 0,
               [admin.synapseUserId]: 100,
             },
+            events_default: 0,
             redact: 50,
           }
         : undefined;

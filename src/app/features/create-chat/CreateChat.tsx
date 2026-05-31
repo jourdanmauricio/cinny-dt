@@ -58,6 +58,7 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
               [currentUserId]: adminIds.has(currentUserId) ? 100 : 0,
               [userId]: adminIds.has(userId) ? 100 : 0,
             },
+            events_default: 0,
             redact: 50,
           };
         }
