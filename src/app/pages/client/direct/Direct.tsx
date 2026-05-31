@@ -258,11 +258,24 @@ export function Direct() {
         navigate(getDirectRoomPath(getCanonicalAliasOrRoomId(mx, existing.roomId)));
         return;
       }
+
+      const currentUserId = mx.getUserId();
+      const powerLevelOverride = currentUserId
+        ? {
+            users: {
+              [currentUserId]: 0,
+              [admin.synapseUserId]: 100,
+            },
+            redact: 50,
+          }
+        : undefined;
+
       const result = await mx.createRoom({
         is_direct: true,
         invite: [admin.synapseUserId],
         visibility: 'private' as any,
         preset: 'trusted_private_chat' as any,
+        ...(powerLevelOverride ? { power_level_content_override: powerLevelOverride } : {}),
       });
       addRoomIdToMDirect(mx, result.room_id, admin.synapseUserId);
       navigate(getDirectRoomPath(result.room_id));
