@@ -180,14 +180,12 @@ export const eventWithShortcode = (ev: MatrixEvent) =>
   typeof ev.getContent().shortcode === 'string';
 
 export const getDMRoomFor = (mx: MatrixClient, userId: string): Room | undefined => {
-  const dmLikeRooms = mx
-    .getRooms()
-    .filter(
-      (room) =>
-        room.getMyMembership() === Membership.Join &&
-        room.hasEncryptionStateEvent() &&
-        room.getMembers().length <= 2
-    );
+  const dmLikeRooms = mx.getRooms().filter(
+    (room) =>
+      room.getMyMembership() === Membership.Join &&
+      // room.hasEncryptionStateEvent() &&
+      room.getMembers().length <= 2
+  );
 
   return dmLikeRooms.find((room) => room.getMember(userId));
 };
