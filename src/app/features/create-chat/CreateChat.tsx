@@ -1,7 +1,6 @@
 import { Box, Button, color, config, Icon, Icons, Input, Spinner, Switch, Text } from 'folds';
 import React, { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { ICreateRoomStateEvent, MatrixError, Preset, Visibility } from 'matrix-js-sdk';
-import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import { SettingTile } from '../../components/setting-tile';
 import { SequenceCard } from '../../components/sequence-card';
@@ -13,7 +12,6 @@ import { millisecondsToMinutes } from '../../utils/common';
 import { createRoomEncryptionState } from '../../components/create-room';
 import { useAlive } from '../../hooks/useAlive';
 import { getDirectPath, getDirectRoomPath } from '../../pages/pathUtils';
-import { dtAdminsAtom, DtAdmin } from '../../state/dtAdmins';
 
 type CreateChatProps = {
   defaultUserId?: string;
@@ -24,20 +22,10 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
   const navigate = useNavigate();
 
   const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
-  const [dtAdmins, setDtAdmins] = useAtom(dtAdminsAtom);
 
   useEffect(() => {
     if (!isAdmin) navigate(getDirectPath(), { replace: true });
   }, [isAdmin, navigate]);
-
-  useEffect(() => {
-    if (dtAdmins !== null) return;
-    const apiUrl = import.meta.env.VITE_DT_API_URL as string;
-    fetch(`${apiUrl}/matrix/admins`)
-      .then((r) => r.json())
-      .then((data: DtAdmin[]) => setDtAdmins(data))
-      .catch(() => setDtAdmins([]));
-  }, [dtAdmins, setDtAdmins]);
 
   const [encryption, setEncryption] = useState(false);
   const [invalidUserId, setInvalidUserId] = useState(false);
@@ -49,34 +37,19 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
 
         if (encrypted) initialState.push(createRoomEncryptionState());
 
-        const currentUserId = mx.getUserId();
-        let powerLevelOverride: Record<string, unknown> | undefined;
-        if (currentUserId && dtAdmins !== null) {
-          const adminIds = new Set(dtAdmins.map((a) => a.synapseUserId));
-          powerLevelOverride = {
-            users: {
-              [currentUserId]: adminIds.has(currentUserId) ? 100 : 0,
-              [userId]: adminIds.has(userId) ? 100 : 0,
-            },
-            events_default: 0,
-            redact: 50,
-          };
-        }
-
         const result = await mx.createRoom({
           is_direct: true,
           invite: [userId],
           visibility: Visibility.Private,
           preset: Preset.TrustedPrivateChat,
           initial_state: initialState,
-          ...(powerLevelOverride ? { power_level_content_override: powerLevelOverride } : {}),
         });
 
         addRoomIdToMDirect(mx, result.room_id, userId);
 
         return result.room_id;
       },
-      [mx, dtAdmins]
+      [mx]
     )
   );
   const loading = createState.status === AsyncStatus.Loading;
