@@ -190,7 +190,7 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
           </Text>
         </MenuItem>
         {/* DT: Room Settings - visible solo para admin */}
-        {isAdmin && (
+        {localStorage.getItem('dt_is_admin') === 'true' && (
           <MenuItem
             onClick={handleOpenSettings}
             size="300"
