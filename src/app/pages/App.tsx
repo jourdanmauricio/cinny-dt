@@ -5,6 +5,8 @@ import { RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
+const isDev = import.meta.env.DEV;
+
 import { ClientConfigLoader } from '../components/ClientConfigLoader';
 import { ClientConfigProvider } from '../hooks/useClientConfig';
 import { ConfigConfigError, ConfigConfigLoading } from './ConfigConfig';
@@ -39,7 +41,7 @@ function App() {
                       <JotaiProvider>
                         <RouterProvider router={createRouter(clientConfig, screenSize)} />
                       </JotaiProvider>
-                      <ReactQueryDevtools initialIsOpen={false} />
+                      {isDev && <ReactQueryDevtools initialIsOpen={false} />}
                     </QueryClientProvider>
                   </ClientConfigProvider>
                 )}
