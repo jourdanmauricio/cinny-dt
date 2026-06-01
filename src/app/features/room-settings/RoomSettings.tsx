@@ -47,11 +47,11 @@ const useRoomSettingsMenuItems = (): RoomSettingsMenuItem[] =>
         name: 'Emojis y stickers',
         icon: Icons.Smile,
       },
-      {
-        page: RoomSettingsPage.DeveloperToolsPage,
-        name: 'Herramientas de desarrollador',
-        icon: Icons.Terminal,
-      },
+      // {
+      //   page: RoomSettingsPage.DeveloperToolsPage,
+      //   name: 'Herramientas de desarrollador',
+      //   icon: Icons.Terminal,
+      // },
     ],
     []
   );

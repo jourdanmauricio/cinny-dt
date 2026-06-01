@@ -50,7 +50,7 @@ export function General({ requestClose }: GeneralProps) {
                 <Text size="L400">Opciones</Text>
                 <RoomJoinRules permissions={permissions} />
                 <RoomHistoryVisibility permissions={permissions} />
-                <RoomEncryption permissions={permissions} />
+                {/* <RoomEncryption permissions={permissions} /> */}
                 <RoomPublish permissions={permissions} />
               </Box>
               <Box direction="Column" gap="100">
