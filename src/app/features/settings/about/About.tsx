@@ -4,7 +4,7 @@ import { Page, PageContent, PageHeader } from '../../../components/page';
 import { SequenceCard } from '../../../components/sequence-card';
 import { SequenceCardStyle } from '../styles.css';
 import { SettingTile } from '../../../components/setting-tile';
-import CinnySVG from '../../../../../public/res/svg/cinny.svg';
+import LogoJPEG from '../../../../../public/res/img/logo.jpeg';
 import { clearCacheAndReload } from '../../../../client/initMatrix';
 import { useMatrixClient } from '../../../hooks/useMatrixClient';
 
@@ -37,8 +37,8 @@ export function About({ requestClose }: AboutProps) {
               <Box gap="400">
                 <Box shrink="No">
                   <img
-                    style={{ width: toRem(60), height: toRem(60) }}
-                    src={CinnySVG}
+                    style={{ width: toRem(60), height: toRem(60), borderRadius: '8px', objectFit: 'cover' }}
+                    src={LogoJPEG}
                     alt="Logo de Dulce Terciopelo"
                   />
                 </Box>

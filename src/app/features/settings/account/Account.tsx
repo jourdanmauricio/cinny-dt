@@ -35,7 +35,9 @@ export function Account({ requestClose }: AccountProps) {
               {/* DT: Matrix ID - oculto para todos los roles; expone el ID interno de Matrix
               <MatrixId />
               */}
+              {/* DT: Información de contacto - oculto para todos los roles
               <ContactInformation />
+              */}
               {/* DT: Blocked Users - oculto para todos los roles; no aplica para DT
               <IgnoredUserList />
               */}

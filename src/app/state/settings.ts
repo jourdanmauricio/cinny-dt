@@ -50,8 +50,8 @@ export interface Settings {
 }
 
 const defaultSettings: Settings = {
-  themeId: undefined,
-  useSystemTheme: true,
+  themeId: 'dt-light-theme',
+  useSystemTheme: false,
   lightThemeId: undefined,
   darkThemeId: undefined,
   monochromeMode: false,
@@ -63,8 +63,8 @@ const defaultSettings: Settings = {
 
   isPeopleDrawer: true,
   memberSortFilterIndex: 0,
-  enterForNewline: false,
-  messageLayout: 0,
+  enterForNewline: true,
+  messageLayout: MessageLayout.Bubble,
   messageSpacing: '400',
   hideMembershipEvents: true,
   hideNickAvatarEvents: true,
@@ -77,7 +77,7 @@ const defaultSettings: Settings = {
   showNotifications: true,
   isNotificationSounds: true,
 
-  hour24Clock: false,
+  hour24Clock: true,
   dateFormatString: 'D MMM YYYY',
 
   developerTools: false,

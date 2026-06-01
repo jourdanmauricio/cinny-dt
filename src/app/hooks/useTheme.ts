@@ -45,10 +45,7 @@ export const DtLightTheme: Theme = {
 };
 
 export const useThemes = (): Theme[] => {
-  const themes: Theme[] = useMemo(
-    () => [LightTheme, SilverTheme, DarkTheme, ButterTheme, DtLightTheme],
-    []
-  );
+  const themes: Theme[] = useMemo(() => [DtLightTheme, DarkTheme], []);
 
   return themes;
 };
@@ -56,11 +53,8 @@ export const useThemes = (): Theme[] => {
 export const useThemeNames = (): Record<string, string> =>
   useMemo(
     () => ({
-      [LightTheme.id]: 'Light',
-      [SilverTheme.id]: 'Silver',
-      [DarkTheme.id]: 'Dark',
-      [ButterTheme.id]: 'Butter',
-      [DtLightTheme.id]: 'DT Light',
+      [DtLightTheme.id]: 'Claro',
+      [DarkTheme.id]: 'Oscuro',
     }),
     []
   );
@@ -86,25 +80,10 @@ export const useSystemThemeKind = (): ThemeKind => {
 };
 
 export const useActiveTheme = (): Theme => {
-  const systemThemeKind = useSystemThemeKind();
   const themes = useThemes();
-  const [systemTheme] = useSetting(settingsAtom, 'useSystemTheme');
   const [themeId] = useSetting(settingsAtom, 'themeId');
-  const [lightThemeId] = useSetting(settingsAtom, 'lightThemeId');
-  const [darkThemeId] = useSetting(settingsAtom, 'darkThemeId');
 
-  if (!systemTheme) {
-    const selectedTheme = themes.find((theme) => theme.id === themeId) ?? DtLightTheme;
-
-    return selectedTheme;
-  }
-
-  const selectedTheme =
-    systemThemeKind === ThemeKind.Dark
-      ? themes.find((theme) => theme.id === darkThemeId) ?? DarkTheme
-      : themes.find((theme) => theme.id === lightThemeId) ?? DtLightTheme;
-
-  return selectedTheme;
+  return themes.find((theme) => theme.id === themeId) ?? DtLightTheme;
 };
 
 const ThemeContext = createContext<Theme | null>(null);

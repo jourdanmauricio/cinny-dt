@@ -38,7 +38,7 @@ import { KeySymbol } from '../../../utils/key-symbol';
 import { isMacOS } from '../../../utils/user-agent';
 import {
   DarkTheme,
-  LightTheme,
+  DtLightTheme,
   Theme,
   ThemeKind,
   useSystemThemeKind,
@@ -82,7 +82,7 @@ function SelectTheme({ disabled }: { disabled?: boolean }) {
   const themeNames = useThemeNames();
   const [themeId, setThemeId] = useSetting(settingsAtom, 'themeId');
   const [menuCords, setMenuCords] = useState<RectCords>();
-  const selectedTheme = themes.find((theme) => theme.id === themeId) ?? LightTheme;
+  const selectedTheme = themes.find((theme) => theme.id === themeId) ?? DtLightTheme;
 
   const handleThemeMenu: MouseEventHandler<HTMLButtonElement> = (evt) => {
     setMenuCords(evt.currentTarget.getBoundingClientRect());
@@ -286,66 +286,55 @@ function PageZoomInput() {
   };
 
   return (
-    <Input
-      style={{ width: toRem(100) }}
-      variant={pageZoom === parseInt(currentZoom, 10) ? 'Secondary' : 'Success'}
-      size="300"
-      radii="300"
-      type="number"
-      min="75"
-      max="150"
-      value={currentZoom}
-      onChange={handleZoomChange}
-      onKeyDown={handleZoomEnter}
-      after={<Text size="T300">%</Text>}
-      outlined
-    />
+    <Box direction="Row" alignItems="Center" gap="100">
+      <Input
+        style={{ width: toRem(100) }}
+        variant={pageZoom === parseInt(currentZoom, 10) ? 'Secondary' : 'Success'}
+        size="300"
+        radii="300"
+        type="number"
+        min="75"
+        max="150"
+        value={currentZoom}
+        onChange={handleZoomChange}
+        onKeyDown={handleZoomEnter}
+        outlined
+      />
+      <Text size="T300">%</Text>
+    </Box>
   );
 }
 
 function Appearance() {
-  const [systemTheme, setSystemTheme] = useSetting(settingsAtom, 'useSystemTheme');
-  const [monochromeMode, setMonochromeMode] = useSetting(settingsAtom, 'monochromeMode');
-  const [twitterEmoji, setTwitterEmoji] = useSetting(settingsAtom, 'twitterEmoji');
 
   return (
     <Box direction="Column" gap="100">
       <Text size="L400">Apariencia</Text>
-      <SequenceCard
-        className={SequenceCardStyle}
-        variant="SurfaceVariant"
-        direction="Column"
-        gap="400"
-      >
-        <SettingTile
-          title="Tema del sistema"
-          description="Elige entre tema claro u oscuro según la preferencia del sistema."
-          after={<Switch variant="Primary" value={systemTheme} onChange={setSystemTheme} />}
-        />
-        {systemTheme && <SystemThemePreferences />}
-      </SequenceCard>
-
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
+        {/* DT: description="Theme to use when system theme is not enabled." - oculto */}
         <SettingTile
           title="Tema"
-          description="Theme to use when system theme is not enabled."
-          after={<SelectTheme disabled={systemTheme} />}
+          after={<SelectTheme />}
         />
       </SequenceCard>
 
+      {/* DT: Modo monocromático - oculto para todos los roles
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Modo monocromático"
           after={<Switch variant="Primary" value={monochromeMode} onChange={setMonochromeMode} />}
         />
       </SequenceCard>
+      */}
 
+      {/* DT: Emoji de Twitter - oculto para todos los roles
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Emoji de Twitter"
           after={<Switch variant="Primary" value={twitterEmoji} onChange={setTwitterEmoji} />}
         />
       </SequenceCard>
+      */}
 
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile title="Zoom de la página" after={<PageZoomInput />} />
@@ -708,13 +697,11 @@ function DateAndTime() {
 }
 
 function Editor() {
-  const [enterForNewline, setEnterForNewline] = useSetting(settingsAtom, 'enterForNewline');
-  const [isMarkdown, setIsMarkdown] = useSetting(settingsAtom, 'isMarkdown');
-  const [hideActivity, setHideActivity] = useSetting(settingsAtom, 'hideActivity');
 
   return (
     <Box direction="Column" gap="100">
       <Text size="L400">Editor</Text>
+      {/* DT: ENTER para nueva línea - oculto; forzado a true en settings.ts
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="ENTER para nueva línea"
@@ -724,12 +711,16 @@ function Editor() {
           after={<Switch variant="Primary" value={enterForNewline} onChange={setEnterForNewline} />}
         />
       </SequenceCard>
+      */}
+      {/* DT: Formato Markdown - oculto; forzado a true en settings.ts
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Formato Markdown"
           after={<Switch variant="Primary" value={isMarkdown} onChange={setIsMarkdown} />}
         />
       </SequenceCard>
+      */}
+      {/* DT: Ocultar actividad - oculto; forzado a false en settings.ts
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Ocultar estado de escritura y confirmaciones de lectura"
@@ -737,6 +728,7 @@ function Editor() {
           after={<Switch variant="Primary" value={hideActivity} onChange={setHideActivity} />}
         />
       </SequenceCard>
+      */}
     </Box>
   );
 }
@@ -888,10 +880,6 @@ function Messages() {
     settingsAtom,
     'hideMembershipEvents'
   );
-  const [hideNickAvatarEvents, setHideNickAvatarEvents] = useSetting(
-    settingsAtom,
-    'hideNickAvatarEvents'
-  );
   const [mediaAutoLoad, setMediaAutoLoad] = useSetting(settingsAtom, 'mediaAutoLoad');
   const [urlPreview, setUrlPreview] = useSetting(settingsAtom, 'urlPreview');
   const [encUrlPreview, setEncUrlPreview] = useSetting(settingsAtom, 'encUrlPreview');
@@ -900,12 +888,16 @@ function Messages() {
   return (
     <Box direction="Column" gap="100">
       <Text size="L400">Mensajes</Text>
+      {/* DT: Diseño de mensajes - oculto; forzado a Bubble en settings.ts
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile title="Diseño de mensajes" after={<SelectMessageLayout />} />
       </SequenceCard>
+      */}
+      {/* DT: Espaciado de mensajes - oculto; forzado a Normal ('400') en settings.ts
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile title="Espaciado de mensajes" after={<SelectMessageSpacing />} />
       </SequenceCard>
+      */}
       {/* DT: Legacy Username Color - oculto para todos los roles
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
@@ -934,6 +926,7 @@ function Messages() {
         />
       </SequenceCard>
       */}
+      {/* DT: Ocultar cambios de perfil - oculto; forzado a true en settings.ts
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Ocultar cambios de perfil"
@@ -946,6 +939,7 @@ function Messages() {
           }
         />
       </SequenceCard>
+      */}
       <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
         <SettingTile
           title="Desactivar carga automática de medios"
@@ -1011,8 +1005,12 @@ export function General({ requestClose }: GeneralProps) {
           <PageContent>
             <Box direction="Column" gap="700">
               <Appearance />
+              {/* DT: Fecha y hora - oculto; hora 24h forzada a true en settings.ts
               <DateAndTime />
+              */}
+              {/* DT: Editor - oculto; todas las opciones forzadas en settings.ts
               <Editor />
+              */}
               <Messages />
             </Box>
           </PageContent>

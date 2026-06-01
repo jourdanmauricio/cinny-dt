@@ -35,8 +35,12 @@ export function Notifications({ requestClose }: NotificationsProps) {
             <Box direction="Column" gap="700">
               <SystemNotification />
               <AllMessagesNotifications />
+              {/* DT: Mensajes especiales - oculto; se mantienen los valores por defecto
               <SpecialMessagesNotifications />
+              */}
+              {/* DT: Mensajes por palabra clave - oculto para todos los roles
               <KeywordMessagesNotifications />
+              */}
               {/* DT: Block Messages - oculto para todos los roles; Blocked Users ya está comentado en Account
               <Box direction="Column" gap="100">
                 <Text size="L400">Block Messages</Text>
