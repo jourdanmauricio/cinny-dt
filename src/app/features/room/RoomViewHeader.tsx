@@ -605,28 +605,6 @@ export function RoomViewHeader({ callView }: { callView?: boolean }) {
           {!room.isCallRoom() && livekitSupported && rtcSupported && hasCallPermission && (
             <CallButton />
           )}
-          {screenSize === ScreenSize.Desktop && localStorage.getItem('dt_is_admin') === 'true' && (
-            <TooltipProvider
-              position="Bottom"
-              offset={4}
-              tooltip={
-                <Tooltip>
-                  {callView ? (
-                    <Text>Miembros</Text>
-                  ) : (
-                    <Text>{peopleDrawer ? 'Ocultar miembros' : 'Mostrar miembros'}</Text>
-                  )}
-                </Tooltip>
-              }
-            >
-              {(triggerRef) => (
-                <IconButton fill="None" ref={triggerRef} onClick={handleMemberToggle}>
-                  <Icon size="400" src={Icons.User} />
-                </IconButton>
-              )}
-            </TooltipProvider>
-          )}
-
           <TooltipProvider
             position="Bottom"
             align="End"

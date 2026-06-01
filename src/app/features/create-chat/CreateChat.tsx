@@ -1,15 +1,12 @@
-import { Box, Button, color, config, Icon, Icons, Input, Spinner, Switch, Text } from 'folds';
+import { Box, Button, color, Icon, Icons, Input, Spinner, Text } from 'folds';
 import React, { FormEventHandler, useCallback, useEffect, useState } from 'react';
-import { ICreateRoomStateEvent, MatrixError, Preset, Visibility } from 'matrix-js-sdk';
+import { MatrixError, Preset, Visibility } from 'matrix-js-sdk';
 import { useNavigate } from 'react-router-dom';
-import { SettingTile } from '../../components/setting-tile';
-import { SequenceCard } from '../../components/sequence-card';
 import { addRoomIdToMDirect, isUserId } from '../../utils/matrix';
 import { useMatrixClient } from '../../hooks/useMatrixClient';
 import { AsyncStatus, useAsyncCallback } from '../../hooks/useAsyncCallback';
 import { ErrorCode } from '../../cs-errorcode';
 import { millisecondsToMinutes } from '../../utils/common';
-import { createRoomEncryptionState } from '../../components/create-room';
 import { useAlive } from '../../hooks/useAlive';
 import { getDirectPath, getDirectRoomPath } from '../../pages/pathUtils';
 
@@ -27,22 +24,16 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
     if (!isAdmin) navigate(getDirectPath(), { replace: true });
   }, [isAdmin, navigate]);
 
-  const [encryption, setEncryption] = useState(false);
   const [invalidUserId, setInvalidUserId] = useState(false);
 
-  const [createState, create] = useAsyncCallback<string, Error | MatrixError, [string, boolean]>(
+  const [createState, create] = useAsyncCallback<string, Error | MatrixError, [string]>(
     useCallback(
-      async (userId, encrypted) => {
-        const initialState: ICreateRoomStateEvent[] = [];
-
-        if (encrypted) initialState.push(createRoomEncryptionState());
-
+      async (userId) => {
         const result = await mx.createRoom({
           is_direct: true,
           invite: [userId],
           visibility: Visibility.Private,
           preset: Preset.TrustedPrivateChat,
-          initial_state: initialState,
         });
 
         addRoomIdToMDirect(mx, result.room_id, userId);
@@ -72,7 +63,7 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
       return;
     }
 
-    create(userId, encryption).then((roomId) => {
+    create(userId).then((roomId) => {
       if (alive()) {
         userIdInput.value = '';
         navigate(getDirectRoomPath(roomId));
@@ -105,28 +96,7 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
           </Box>
         )}
       </Box>
-      <Box shrink="No" direction="Column" gap="100">
-        <Text size="L400">Opciones</Text>
-        <SequenceCard
-          style={{ padding: config.space.S300 }}
-          variant="SurfaceVariant"
-          direction="Column"
-          gap="500"
-        >
-          <SettingTile
-            title="Cifrado de extremo a extremo"
-            description="Una vez activada esta función no se puede desactivar después de crear la sala."
-            after={
-              <Switch
-                variant="Primary"
-                value={encryption}
-                onChange={setEncryption}
-                disabled={disabled}
-              />
-            }
-          />
-        </SequenceCard>
-      </Box>
+
       {error && (
         <Box style={{ color: color.Critical.Main }} alignItems="Center" gap="200">
           <Icon src={Icons.Warning} filled size="100" />

@@ -47,6 +47,7 @@ export const LogoutDialog = forwardRef<HTMLDivElement, LogoutDialogProps>(
           </Box>
         </Header>
         <Box style={{ padding: config.space.S400 }} direction="Column" gap="400">
+          {/* DT: Advertencias de cifrado - oculto; DT no usa cifrado de extremo a extremo
           {hasEncryptedRoom &&
             (crossSigningActive ? (
               verificationStatus === VerificationStatus.Unverified && (
@@ -63,6 +64,7 @@ export const LogoutDialog = forwardRef<HTMLDivElement, LogoutDialogProps>(
                 description="Activa la verificación del dispositivo o exporta tus datos cifrados desde configuración para no perder acceso a tus mensajes."
               />
             ))}
+          */}
           <Text priority="400">Estás por cerrar sesión. ¿Seguro?</Text>
           {logoutState.status === AsyncStatus.Error && (
             <Text style={{ color: color.Critical.Main }} size="T300">
