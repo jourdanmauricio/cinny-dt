@@ -255,53 +255,55 @@ function ProfileDisplayName({ profile, userId }: ProfileProps) {
     >
       <Box direction="Column" grow="Yes" gap="100">
         {/* DT: Display name - solo lectura para no-admins; nombre gestionado por el backend de DT */}
-        <Box style={!isAdmin ? { opacity: 0.6, pointerEvents: 'none' } : undefined}>
-        <Box
-          as="form"
-          onSubmit={handleSubmit}
-          gap="200"
-          aria-disabled={changingDisplayName || disableSetDisplayname}
-        >
-          <Box grow="Yes" direction="Column">
-            <Input
-              required
-              name="displayNameInput"
-              value={displayName}
-              onChange={handleChange}
-              variant="Secondary"
-              radii="300"
-              style={{ paddingRight: config.space.S200 }}
-              readOnly={changingDisplayName || disableSetDisplayname}
-              after={
-                hasChanges &&
-                !changingDisplayName && (
-                  <IconButton
-                    type="reset"
-                    onClick={handleReset}
-                    size="300"
-                    radii="300"
-                    variant="Secondary"
-                  >
-                    <Icon src={Icons.Cross} size="100" />
-                  </IconButton>
-                )
-              }
-            />
-          </Box>
-          <Button
-            size="400"
-            variant={hasChanges ? 'Success' : 'Secondary'}
-            fill={hasChanges ? 'Solid' : 'Soft'}
-            outlined
-            radii="300"
-            disabled={!hasChanges || changingDisplayName}
-            type="submit"
+        {isAdmin ? (
+          <Box
+            as="form"
+            onSubmit={handleSubmit}
+            gap="200"
+            aria-disabled={changingDisplayName || disableSetDisplayname}
           >
-            {changingDisplayName && <Spinner variant="Success" fill="Solid" size="300" />}
-            <Text size="B400">Guardar</Text>
-          </Button>
-        </Box>
-        </Box>
+            <Box grow="Yes" direction="Column">
+              <Input
+                required
+                name="displayNameInput"
+                value={displayName}
+                onChange={handleChange}
+                variant="Secondary"
+                radii="300"
+                style={{ paddingRight: config.space.S200 }}
+                readOnly={changingDisplayName || disableSetDisplayname}
+                after={
+                  hasChanges &&
+                  !changingDisplayName && (
+                    <IconButton
+                      type="reset"
+                      onClick={handleReset}
+                      size="300"
+                      radii="300"
+                      variant="Secondary"
+                    >
+                      <Icon src={Icons.Cross} size="100" />
+                    </IconButton>
+                  )
+                }
+              />
+            </Box>
+            <Button
+              size="400"
+              variant={hasChanges ? 'Success' : 'Secondary'}
+              fill={hasChanges ? 'Solid' : 'Soft'}
+              outlined
+              radii="300"
+              disabled={!hasChanges || changingDisplayName}
+              type="submit"
+            >
+              {changingDisplayName && <Spinner variant="Success" fill="Solid" size="300" />}
+              <Text size="B400">Guardar</Text>
+            </Button>
+          </Box>
+        ) : (
+          <Text size="T400" truncate>{displayName}</Text>
+        )}
       </Box>
     </SettingTile>
   );

@@ -1,5 +1,5 @@
 import { Box, Button, config, Icon, Icons, Text } from 'folds';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserHero, UserHeroName } from './UserHero';
 import { getMxIdServer, mxcUrlToHttp } from '../../utils/matrix';
@@ -22,6 +22,8 @@ import { useMemberPowerCompare } from '../../hooks/useMemberPowerCompare';
 import { CreatorChip } from './CreatorChip';
 import { getDirectCreatePath, withSearchParam } from '../../pages/pathUtils';
 import { DirectCreateSearchParams } from '../../pages/paths';
+
+const sugoIdCache = new Map<string, string | null>();
 
 type UserRoomProfileProps = {
   userId: string;
@@ -61,6 +63,32 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
 
   const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
 
+  const [sugoId, setSugoId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isAdmin || userId === myUserId) return;
+    const token = localStorage.getItem('dt_access_token');
+    if (!token) return;
+
+    const cached = sugoIdCache.get(userId);
+    if (cached !== undefined) {
+      setSugoId(cached);
+      return;
+    }
+
+    const apiUrl = import.meta.env.VITE_DT_API_URL;
+    fetch(`${apiUrl}/matrix/sugo-id?synapseUserId=${encodeURIComponent(userId)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        const value = data.sugoId ?? null;
+        sugoIdCache.set(userId, value);
+        setSugoId(value);
+      })
+      .catch(() => {});
+  }, [userId, isAdmin, myUserId]);
+
   const handleMessage = () => {
     closeUserRoomProfile();
     const directSearchParam: DirectCreateSearchParams = {
@@ -79,7 +107,7 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
       <Box direction="Column" gap="500" style={{ padding: config.space.S400 }}>
         <Box direction="Column" gap="400">
           <Box gap="400" alignItems="Start">
-            <UserHeroName displayName={displayName} userId={userId} />
+            <UserHeroName displayName={displayName} userId={userId} sugoId={isAdmin && userId !== myUserId ? sugoId : null} />
             {userId !== myUserId && isAdmin && (
               <Box shrink="No">
                 <Button

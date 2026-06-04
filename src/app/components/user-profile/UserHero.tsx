@@ -95,8 +95,9 @@ export function UserHero({ userId, avatarUrl, presence }: UserHeroProps) {
 type UserHeroNameProps = {
   displayName?: string;
   userId: string;
+  sugoId?: string | null;
 };
-export function UserHeroName({ displayName, userId }: UserHeroNameProps) {
+export function UserHeroName({ displayName, userId, sugoId }: UserHeroNameProps) {
   const username = getMxIdLocalPart(userId);
 
   return (
@@ -115,6 +116,13 @@ export function UserHeroName({ displayName, userId }: UserHeroNameProps) {
           @{username}
         </Text>
       </Box>
+      {sugoId && (
+        <Box alignItems="Center" gap="100" wrap="Wrap">
+          <Text size="T200" className={classNames(BreakWord, LineClamp3)}>
+            SugoId: {sugoId}
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 }
