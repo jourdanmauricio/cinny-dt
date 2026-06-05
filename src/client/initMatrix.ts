@@ -1,4 +1,9 @@
-import { createClient, MatrixClient, IndexedDBStore } from 'matrix-js-sdk';
+import { createClient, MatrixClient, IndexedDBStore, Filter } from 'matrix-js-sdk';
+
+// DT: exclude membership events from timeline pagination — broadcast rooms have
+// hundreds of join/invite events that block reaching actual messages
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(Filter.LAZY_LOADING_MESSAGES_FILTER as any).not_types = ['m.room.member'];
 
 // DT: E2E deshabilitado — salas son broadcast/admin, tokens sin device_id vinculado causan error 400 en key upload
 // import { IndexedDBCryptoStore } from 'matrix-js-sdk';

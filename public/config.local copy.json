@@ -1,0 +1,6 @@
+{
+  "defaultHomeserver": 0,
+  "homeserverList": ["http://localhost:8008"],
+  "allowCustomHomeservers": false,
+  "registerUrl": "http://localhost:3000/register"
+}
