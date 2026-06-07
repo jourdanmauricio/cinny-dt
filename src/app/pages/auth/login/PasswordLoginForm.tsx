@@ -46,6 +46,8 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
 
   useLoginComplete(loginData);
 
+  const webUrl = import.meta.env.VITE_DT_WEB_URL ?? 'http://localhost:3000';
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
     const { emailInput, passwordInput } = evt.target as HTMLFormElement & {
@@ -97,14 +99,12 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
       setLoginData(data);
     } catch (err: any) {
       if (err.status === 401) setServerError('Email o contraseña incorrectos.');
-      else if (err.status === 403) setServerError('Tu cuenta aún no fue aprobada.');
+      else if (err.status === 403) window.location.href = `${webUrl}/user`;
       else setServerError('Error al iniciar sesión. Intentá de nuevo.');
     } finally {
       setLoading(false);
     }
   };
-
-  const webUrl = import.meta.env.VITE_DT_WEB_URL ?? 'http://localhost:3000';
 
   return (
     <form

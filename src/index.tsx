@@ -60,6 +60,13 @@ async function init() {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
   const dtToken = params.get('dtToken');
+  const error = params.get('error');
+
+  if (error === 'not_approved') {
+    const webUrl = import.meta.env.VITE_DT_WEB_URL ?? 'https://dulceterciopelo.com';
+    window.location.href = `${webUrl}/user`;
+    return;
+  }
 
   if (code) {
     try {
