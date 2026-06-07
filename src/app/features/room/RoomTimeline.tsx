@@ -126,6 +126,7 @@ import { useAccessiblePowerTagColors, useGetMemberPowerTag } from '../../hooks/u
 import { useTheme } from '../../hooks/useTheme';
 import { useRoomCreatorsTag } from '../../hooks/useRoomCreatorsTag';
 import { usePowerLevelTags } from '../../hooks/usePowerLevelTags';
+import { useMissingMemberProfiles } from '../../hooks/useMissingMemberProfiles';
 
 const TimelineFloat = as<'div', css.TimelineFloatVariants>(
   ({ position, className, ...props }, ref) => (
@@ -546,6 +547,22 @@ export function RoomTimeline({ room, eventId, roomInputRef, editor }: RoomTimeli
   const rangeAtEnd = timeline.range.end === eventsLength;
   const atLiveEndRef = useRef(liveTimelineLinked && rangeAtEnd);
   atLiveEndRef.current = liveTimelineLinked && rangeAtEnd;
+
+  const [, setProfileRevision] = useState(0);
+  const visibleSenderIds = useMemo(() => {
+    const { range, linkedTimelines } = timeline;
+    const ids = new Set<string>();
+    for (let i = range.start; i < range.end; i++) {
+      const [evtTimeline, baseIndex] = getTimelineAndBaseIndex(linkedTimelines, i);
+      if (!evtTimeline) continue;
+      const mEvent = getTimelineEvent(evtTimeline, getTimelineRelativeIndex(i, baseIndex));
+      const sender = mEvent?.getSender();
+      if (sender) ids.add(sender);
+    }
+    return Array.from(ids);
+  }, [timeline]);
+  const handleProfilesResolved = useCallback(() => setProfileRevision((r) => r + 1), []);
+  useMissingMemberProfiles(mx, room, visibleSenderIds, handleProfilesResolved);
 
   const handleTimelinePagination = useTimelinePagination(
     mx,
