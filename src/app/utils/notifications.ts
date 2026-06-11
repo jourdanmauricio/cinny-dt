@@ -4,7 +4,7 @@ export async function markAsRead(mx: MatrixClient, roomId: string, privateReceip
   const room = mx.getRoom(roomId);
   if (!room) return;
 
-  const timeline = room.getLiveTimeline().getEvents();
+const timeline = room.getLiveTimeline().getEvents();
   const readEventId = room.getEventReadUpTo(mx.getUserId()!);
 
   const getLatestValidEvent = () => {

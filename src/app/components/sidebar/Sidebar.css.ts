@@ -145,6 +145,18 @@ export const SidebarItemBadge = recipe({
 });
 export type SidebarItemBadgeVariants = RecipeVariants<typeof SidebarItemBadge>;
 
+export const SidebarItemMarkedBadge = style([
+  DefaultReset,
+  {
+    pointerEvents: 'none',
+    position: 'absolute',
+    zIndex: 1,
+    lineHeight: 0,
+    top: toRem(-4),
+    right: toRem(-4),
+  },
+]);
+
 export const SidebarAvatar = recipe({
   base: [
     {

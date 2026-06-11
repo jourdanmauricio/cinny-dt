@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, forwardRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Icon, Icons, Menu, MenuItem, PopOut, RectCords, Text, config, toRem } from 'folds';
+import { Badge, Box, Icon, Icons, Menu, MenuItem, PopOut, RectCords, Text, config, toRem } from 'folds';
 import FocusTrap from 'focus-trap-react';
 import { useAtomValue } from 'jotai';
 import { useDirects } from '../../../state/hooks/roomList';
@@ -16,6 +16,8 @@ import {
   SidebarItemBadge,
   SidebarItemTooltip,
 } from '../../../components/sidebar';
+import * as css from '../../../components/sidebar/Sidebar.css';
+import { useDirectsHasMarkedUnread } from '../../../hooks/useMarkedUnread';
 import { useDirectSelected } from '../../../hooks/router/useDirectSelected';
 import { UnreadBadge } from '../../../components/unread-badge';
 import { ScreenSize, useScreenSizeContext } from '../../../hooks/useScreenSize';
@@ -69,6 +71,7 @@ export function DirectTab() {
   const mDirects = useAtomValue(mDirectAtom);
   const directs = useDirects(mx, allRoomsAtom, mDirects);
   const directUnread = useRoomsUnread(directs, roomToUnreadAtom);
+  const hasMarkedUnread = useDirectsHasMarkedUnread(directs);
   const [menuAnchor, setMenuAnchor] = useState<RectCords>();
 
   const directSelected = useDirectSelected();
@@ -110,6 +113,11 @@ export function DirectTab() {
         <SidebarItemBadge hasCount={directUnread.total > 0}>
           <UnreadBadge highlight={directUnread.highlight > 0} count={directUnread.total} />
         </SidebarItemBadge>
+      )}
+      {hasMarkedUnread && localStorage.getItem('dt_is_admin') === 'true' && (
+        <div className={css.SidebarItemMarkedBadge}>
+          <Badge size="200" variant="Secondary" fill="Solid" radii="Pill" />
+        </div>
       )}
       {menuAnchor && (
         <PopOut

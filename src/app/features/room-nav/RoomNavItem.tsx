@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, forwardRef, useState } from 'react';
-import { Room } from 'matrix-js-sdk';
+import { EventType, Room } from 'matrix-js-sdk';
 import {
   Avatar,
   Box,
@@ -20,6 +20,7 @@ import {
 import { useFocusWithin, useHover } from 'react-aria';
 import FocusTrap from 'focus-trap-react';
 import { useAtom, useAtomValue } from 'jotai';
+import { useRoomMarkedUnread } from '../../hooks/useMarkedUnread';
 import { NavItem, NavItemContent, NavItemOptions, NavLink } from '../../components/nav';
 import { UnreadBadge, UnreadBadgeCenter } from '../../components/unread-badge';
 import { RoomAvatar, RoomIcon } from '../../components/room-avatar';
@@ -83,8 +84,15 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
 
     const [invitePrompt, setInvitePrompt] = useState(false);
 
+    const markedUnread = useRoomMarkedUnread(room.roomId);
+
     const handleMarkAsRead = () => {
       markAsRead(mx, room.roomId, hideActivity);
+      requestClose();
+    };
+
+    const handleTogglePending = () => {
+      mx.setRoomAccountData(room.roomId, EventType.MarkedUnread, { unread: !markedUnread });
       requestClose();
     };
 
@@ -105,7 +113,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
     };
 
     return (
-      <Menu ref={ref} style={{ maxWidth: toRem(160), width: '100vw' }}>
+      <Menu ref={ref} style={{ maxWidth: toRem(220), width: '100vw' }}>
         {invitePrompt && room && (
           <InviteUserPrompt
             room={room}
@@ -127,6 +135,26 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
               Marcar como leído
             </Text>
           </MenuItem>
+          {localStorage.getItem('dt_is_admin') === 'true' && (
+            <MenuItem
+              onClick={handleTogglePending}
+              size="300"
+              after={
+                <Badge
+                  size="200"
+                  variant="Secondary"
+                  fill={markedUnread ? 'Solid' : 'None'}
+                  radii="Pill"
+                  outlined={!markedUnread}
+                />
+              }
+              radii="300"
+            >
+              <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
+                {markedUnread ? 'Desmarcar pendiente' : 'Marcar pendiente'}
+              </Text>
+            </MenuItem>
+          )}
           <RoomNotificationModeSwitcher roomId={room.roomId} value={notificationMode}>
             {(handleOpen, opened, changing) => (
               <MenuItem
@@ -269,7 +297,9 @@ export function RoomNavItem({
   const { hoverProps } = useHover({ onHoverChange: setHover });
   const { focusWithinProps } = useFocusWithin({ onFocusWithinChange: setHover });
   const [menuAnchor, setMenuAnchor] = useState<RectCords>();
+  const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
   const unread = useRoomUnread(room.roomId, roomToUnreadAtom);
+  const markedUnread = useRoomMarkedUnread(room.roomId);
   const typingMember = useRoomTypingMember(room.roomId).filter(
     (receipt) => receipt.userId !== mx.getUserId()
   );
@@ -349,34 +379,50 @@ export function RoomNavItem({
       >
         <NavItemContent>
           <Box as="span" grow="Yes" alignItems="Center" gap="200">
-            <Avatar size="200" radii="400">
-              {showAvatar ? (
-                <RoomAvatar
-                  roomId={room.roomId}
-                  src={
-                    direct
-                      ? getDirectRoomAvatarUrl(mx, room, 96, useAuthentication)
-                      : getRoomAvatarUrl(mx, room, 96, useAuthentication)
-                  }
-                  alt={roomName}
-                  renderFallback={() => (
-                    <Text as="span" size="H6">
-                      {nameInitials(roomName)}
-                    </Text>
-                  )}
-                />
-              ) : (
-                <RoomIcon
+            <Box as="span" style={{ position: 'relative', lineHeight: 0, flexShrink: 0 }}>
+              <Avatar size="200" radii="400">
+                {showAvatar ? (
+                  <RoomAvatar
+                    roomId={room.roomId}
+                    src={
+                      direct
+                        ? getDirectRoomAvatarUrl(mx, room, 96, useAuthentication)
+                        : getRoomAvatarUrl(mx, room, 96, useAuthentication)
+                    }
+                    alt={roomName}
+                    renderFallback={() => (
+                      <Text as="span" size="H6">
+                        {nameInitials(roomName)}
+                      </Text>
+                    )}
+                  />
+                ) : (
+                  <RoomIcon
+                    style={{
+                      opacity: unread ? config.opacity.P500 : config.opacity.P300,
+                    }}
+                    filled={selected}
+                    size="100"
+                    joinRule={room.getJoinRule()}
+                    roomType={room.getType()}
+                  />
+                )}
+              </Avatar>
+              {isAdmin && markedUnread && (
+                <Box
+                  as="span"
                   style={{
-                    opacity: unread ? config.opacity.P500 : config.opacity.P300,
+                    position: 'absolute',
+                    top: toRem(-3),
+                    right: toRem(-3),
+                    lineHeight: 0,
+                    pointerEvents: 'none',
                   }}
-                  filled={selected}
-                  size="100"
-                  joinRule={room.getJoinRule()}
-                  roomType={room.getType()}
-                />
+                >
+                  <Badge size="200" variant="Secondary" fill="Solid" radii="Pill" />
+                </Box>
               )}
-            </Avatar>
+            </Box>
             <Box as="span" grow="Yes">
               <Text priority={unread ? '500' : '300'} as="span" size="Inherit" truncate>
                 {roomName}
@@ -387,7 +433,7 @@ export function RoomNavItem({
                 <TypingIndicator size="300" disableAnimation />
               </Badge>
             )}
-            {!optionsVisible && unread && (
+{!optionsVisible && unread && (
               <UnreadBadgeCenter>
                 <UnreadBadge highlight={unread.highlight > 0} count={unread.total} />
               </UnreadBadgeCenter>
