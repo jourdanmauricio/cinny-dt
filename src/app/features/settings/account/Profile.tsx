@@ -6,6 +6,8 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+
+const DT_API_URL = import.meta.env.VITE_DT_API_URL as string;
 import {
   Box,
   Text,
@@ -34,7 +36,6 @@ import { getMxIdLocalPart, mxcUrlToHttp } from '../../../utils/matrix';
 import { UserAvatar } from '../../../components/user-avatar';
 import { useMediaAuthentication } from '../../../hooks/useMediaAuthentication';
 import { nameInitials } from '../../../utils/common';
-import { AsyncStatus, useAsyncCallback } from '../../../hooks/useAsyncCallback';
 import { useFilePicker } from '../../../hooks/useFilePicker';
 import { useObjectURL } from '../../../hooks/useObjectURL';
 import { stopPropagation } from '../../../utils/keyboard';
@@ -209,30 +210,26 @@ function ProfileDisplayName({ profile, userId }: ProfileProps) {
   const mx = useMatrixClient();
   const capabilities = useCapabilities();
   const disableSetDisplayname = capabilities['m.set_displayname']?.enabled === false;
-  const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
 
   const defaultDisplayName = profile.displayName ?? getMxIdLocalPart(userId) ?? userId;
   const [displayName, setDisplayName] = useState<string>(defaultDisplayName);
-
-  const [changeState, changeDisplayName] = useAsyncCallback(
-    useCallback((name: string) => mx.setDisplayName(name), [mx])
-  );
-  const changingDisplayName = changeState.status === AsyncStatus.Loading;
+  const [changingDisplayName, setChangingDisplayName] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setDisplayName(defaultDisplayName);
   }, [defaultDisplayName]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
-    const name = evt.currentTarget.value;
-    setDisplayName(name);
+    setDisplayName(evt.currentTarget.value);
   };
 
   const handleReset = () => {
     setDisplayName(defaultDisplayName);
+    setError(null);
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
     if (changingDisplayName) return;
 
@@ -241,7 +238,39 @@ function ProfileDisplayName({ profile, userId }: ProfileProps) {
     const name = displayNameInput?.value;
     if (!name) return;
 
-    changeDisplayName(name);
+    setChangingDisplayName(true);
+    setError(null);
+
+    let synapseUpdated = false;
+    try {
+      await mx.setDisplayName(name);
+      synapseUpdated = true;
+
+      const token = localStorage.getItem('dt_access_token');
+      const response = await fetch(`${DT_API_URL}/user/me/display-name`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ displayName: name }),
+      });
+
+      if (!response.ok) {
+        throw new Error('dt-api error');
+      }
+    } catch {
+      if (synapseUpdated) {
+        try {
+          await mx.setDisplayName(defaultDisplayName);
+        } catch {
+          // rollback failed, nothing more we can do
+        }
+      }
+      setError('No se pudo actualizar el nombre. Por favor, intenta de nuevo.');
+    } finally {
+      setChangingDisplayName(false);
+    }
   };
 
   const hasChanges = displayName !== defaultDisplayName;
@@ -254,55 +283,55 @@ function ProfileDisplayName({ profile, userId }: ProfileProps) {
       }
     >
       <Box direction="Column" grow="Yes" gap="100">
-        {/* DT: Display name - solo lectura para no-admins; nombre gestionado por el backend de DT */}
-        {isAdmin ? (
-          <Box
-            as="form"
-            onSubmit={handleSubmit}
-            gap="200"
-            aria-disabled={changingDisplayName || disableSetDisplayname}
-          >
-            <Box grow="Yes" direction="Column">
-              <Input
-                required
-                name="displayNameInput"
-                value={displayName}
-                onChange={handleChange}
-                variant="Secondary"
-                radii="300"
-                style={{ paddingRight: config.space.S200 }}
-                readOnly={changingDisplayName || disableSetDisplayname}
-                after={
-                  hasChanges &&
-                  !changingDisplayName && (
-                    <IconButton
-                      type="reset"
-                      onClick={handleReset}
-                      size="300"
-                      radii="300"
-                      variant="Secondary"
-                    >
-                      <Icon src={Icons.Cross} size="100" />
-                    </IconButton>
-                  )
-                }
-              />
-            </Box>
-            <Button
-              size="400"
-              variant={hasChanges ? 'Success' : 'Secondary'}
-              fill={hasChanges ? 'Solid' : 'Soft'}
-              outlined
+        <Box
+          as="form"
+          onSubmit={handleSubmit}
+          gap="200"
+          aria-disabled={changingDisplayName || disableSetDisplayname}
+        >
+          <Box grow="Yes" direction="Column">
+            <Input
+              required
+              name="displayNameInput"
+              value={displayName}
+              onChange={handleChange}
+              variant="Secondary"
               radii="300"
-              disabled={!hasChanges || changingDisplayName}
-              type="submit"
-            >
-              {changingDisplayName && <Spinner variant="Success" fill="Solid" size="300" />}
-              <Text size="B400">Guardar</Text>
-            </Button>
+              style={{ paddingRight: config.space.S200 }}
+              readOnly={changingDisplayName || disableSetDisplayname}
+              after={
+                hasChanges &&
+                !changingDisplayName && (
+                  <IconButton
+                    type="reset"
+                    onClick={handleReset}
+                    size="300"
+                    radii="300"
+                    variant="Secondary"
+                  >
+                    <Icon src={Icons.Cross} size="100" />
+                  </IconButton>
+                )
+              }
+            />
           </Box>
-        ) : (
-          <Text size="T400" truncate>{displayName}</Text>
+          <Button
+            size="400"
+            variant={hasChanges ? 'Success' : 'Secondary'}
+            fill={hasChanges ? 'Solid' : 'Soft'}
+            outlined
+            radii="300"
+            disabled={!hasChanges || changingDisplayName}
+            type="submit"
+          >
+            {changingDisplayName && <Spinner variant="Success" fill="Solid" size="300" />}
+            <Text size="B400">Guardar</Text>
+          </Button>
+        </Box>
+        {error && (
+          <Text size="T300" style={{ color: 'var(--mx-danger)' }}>
+            {error}
+          </Text>
         )}
       </Box>
     </SettingTile>
