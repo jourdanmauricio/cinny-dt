@@ -234,7 +234,7 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
         </UseStateProvider>
       </Box>
       {/* DT: Leave Room - solo admin en salas DM */}
-      {isDtAdmin && isDirect && (
+      {isDtAdmin && (isDirect || room.getJoinedMemberCount() <= 2) && (
         <>
           <Line variant="Surface" size="300" />
           <Box direction="Column" gap="100" style={{ padding: config.space.S100 }}>
