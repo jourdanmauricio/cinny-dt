@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { ClientEvent } from 'matrix-js-sdk';
 import { useAtom, useAtomValue } from 'jotai';
 import {
   Avatar,
@@ -42,12 +43,8 @@ import {
   NavItem,
   NavItemContent,
 } from '../../../components/nav';
-import { getDirectCreatePath, getDirectRoomPath } from '../../pathUtils';
-import {
-  addRoomIdToMDirect,
-  getCanonicalAliasOrRoomId,
-  getDMRoomFor,
-} from '../../../utils/matrix';
+import { getDirectCreatePath, getDirectPath, getDirectRoomPath } from '../../pathUtils';
+import { addRoomIdToMDirect, getCanonicalAliasOrRoomId, getDMRoomFor } from '../../../utils/matrix';
 import { useSelectedRoom } from '../../../hooks/router/useSelectedRoom';
 import { VirtualTile } from '../../../components/virtualizer';
 import { RoomNavCategoryButton, RoomNavItem } from '../../../features/room-nav';
@@ -274,6 +271,32 @@ export function Direct() {
   const createDirectSelected = useDirectCreateSelected();
 
   const selectedRoomId = useSelectedRoom();
+
+  // Chequeo al cargar: salas DM ya vacías (admin salió mientras el user estaba offline)
+  useEffect(() => {
+    if (isAdmin) return;
+
+    const checkEmptyDMs = () => {
+      directs.forEach((roomId) => {
+        const room = mx.getRoom(roomId);
+        if (!room) return;
+        const hasLeftMember = room
+          .getMembers()
+          .some((m: { membership?: string }) => m.membership === 'leave');
+        if (hasLeftMember && room.getJoinedMemberCount() <= 1) {
+          mx.leave(roomId);
+          navigate(getDirectPath());
+        }
+      });
+    };
+
+    checkEmptyDMs();
+    mx.on(ClientEvent.Sync, checkEmptyDMs);
+    return () => {
+      mx.removeListener(ClientEvent.Sync, checkEmptyDMs);
+    };
+  }, [mx, isAdmin, directs, navigate]);
+
   const noRoomToDisplay = directs.length === 0;
   const [closedCategories, setClosedCategories] = useAtom(useClosedNavCategoriesAtom());
 

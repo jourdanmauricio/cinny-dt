@@ -36,7 +36,7 @@ import { useIsDirectRoom, useRoom } from '../../hooks/useRoom';
 import { useSetting } from '../../state/hooks/settings';
 import { settingsAtom } from '../../state/settings';
 import { useSpaceOptionally } from '../../hooks/useSpace';
-import { getHomeSearchPath, getSpaceSearchPath, withSearchParam } from '../../pages/pathUtils';
+import { getDirectPath, getHomeSearchPath, getSpaceSearchPath, withSearchParam } from '../../pages/pathUtils';
 import { getCanonicalAliasOrRoomId, isRoomAlias, mxcUrlToHttp } from '../../utils/matrix';
 import { _SearchPathSearchParams } from '../../pages/paths';
 import * as css from './RoomViewHeader.css';
@@ -84,9 +84,12 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
   const powerLevels = usePowerLevelsContext();
   const creators = useRoomCreators(room);
 
+  const navigate = useNavigate();
   const permissions = useRoomPermissions(creators, powerLevels);
   const canInvite = permissions.action('invite', mx.getSafeUserId());
   const isAdmin = readPowerLevel.user(powerLevels, mx.getSafeUserId()) >= 100;
+  const isDtAdmin = localStorage.getItem('dt_is_admin') === 'true';
+  const isDirect = useIsDirectRoom();
   const notificationPreferences = useRoomsNotificationPreferencesContext();
   const notificationMode = getRoomNotificationMode(notificationPreferences, room.roomId);
   const { navigateRoom } = useRoomNavigate();
@@ -230,37 +233,40 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
           )}
         </UseStateProvider>
       </Box>
-      {/* DT: Leave Room - oculto para rol user
-      <Line variant="Surface" size="300" />
-      <Box direction="Column" gap="100" style={{ padding: config.space.S100 }}>
-        <UseStateProvider initial={false}>
-          {(promptLeave, setPromptLeave) => (
-            <>
-              <MenuItem
-                onClick={() => setPromptLeave(true)}
-                variant="Critical"
-                fill="None"
-                size="300"
-                after={<Icon size="100" src={Icons.ArrowGoLeft} />}
-                radii="300"
-                aria-pressed={promptLeave}
-              >
-                <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-                  Leave Room
-                </Text>
-              </MenuItem>
-              {promptLeave && (
-                <LeaveRoomPrompt
-                  roomId={room.roomId}
-                  onDone={requestClose}
-                  onCancel={() => setPromptLeave(false)}
-                />
+      {/* DT: Leave Room - solo admin en salas DM */}
+      {isDtAdmin && isDirect && (
+        <>
+          <Line variant="Surface" size="300" />
+          <Box direction="Column" gap="100" style={{ padding: config.space.S100 }}>
+            <UseStateProvider initial={false}>
+              {(promptLeave, setPromptLeave) => (
+                <>
+                  <MenuItem
+                    onClick={() => setPromptLeave(true)}
+                    variant="Critical"
+                    fill="None"
+                    size="300"
+                    after={<Icon size="100" src={Icons.ArrowGoLeft} />}
+                    radii="300"
+                    aria-pressed={promptLeave}
+                  >
+                    <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
+                      Salir de la sala
+                    </Text>
+                  </MenuItem>
+                  {promptLeave && (
+                    <LeaveRoomPrompt
+                      roomId={room.roomId}
+                      onDone={() => navigate(getDirectPath())}
+                      onCancel={() => setPromptLeave(false)}
+                    />
+                  )}
+                </>
               )}
-            </>
-          )}
-        </UseStateProvider>
-      </Box>
-      */}
+            </UseStateProvider>
+          </Box>
+        </>
+      )}
     </Menu>
   );
 });
