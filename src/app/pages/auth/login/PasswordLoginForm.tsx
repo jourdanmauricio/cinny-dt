@@ -207,6 +207,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
 
       <Turnstile
         siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY ?? ''}
+        options={{ size: 'invisible' }}
         onSuccess={setTurnstileToken}
         onError={() => setTurnstileToken('')}
         onExpire={() => setTurnstileToken('')}
@@ -226,9 +227,9 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
           fontSize: '16px',
           fontWeight: 600,
           textAlign: 'center',
-          cursor: loading ? 'not-allowed' : 'pointer',
+          cursor: loading || !turnstileToken ? 'not-allowed' : 'pointer',
           fontFamily: 'inherit',
-          opacity: loading ? 0.7 : 1,
+          opacity: loading || !turnstileToken ? 0.7 : 1,
           transition: 'background-color 0.15s',
         }}
         onMouseOver={(e) => {
