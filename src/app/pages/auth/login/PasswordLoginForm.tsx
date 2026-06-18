@@ -1,5 +1,6 @@
 import React, { FormEventHandler, useState } from 'react';
 import { Overlay, OverlayBackdrop, OverlayCenter, Spinner } from 'folds';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { CustomLoginResponse, useLoginComplete } from './loginUtil';
 import { dtLogin } from './dtLogin';
 import { clearPreviousSessionData } from '../../../state/sessions';
@@ -43,6 +44,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
   const [serverError, setServerError] = useState<string | null>(null);
   const [loginData, setLoginData] = useState<CustomLoginResponse | undefined>();
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string>('');
 
   useLoginComplete(loginData);
 
@@ -84,7 +86,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
     setLoading(true);
     setServerError(null);
     try {
-      const dtRes = await dtLogin(email, password);
+      const dtRes = await dtLogin(email, password, turnstileToken);
       clearPreviousSessionData();
       localStorage.setItem('dt_access_token', dtRes.dtToken);
       localStorage.setItem('dt_is_admin', String(dtRes.isAdmin === true));
@@ -203,10 +205,17 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
         {serverError && <p className={css.dtFieldError}>{serverError}</p>}
       </div>
 
+      <Turnstile
+        siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY ?? ''}
+        onSuccess={setTurnstileToken}
+        onError={() => setTurnstileToken('')}
+        onExpire={() => setTurnstileToken('')}
+      />
+
       {/* Botón ingresar */}
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || !turnstileToken}
         style={{
           width: '100%',
           padding: '12px 16px',
