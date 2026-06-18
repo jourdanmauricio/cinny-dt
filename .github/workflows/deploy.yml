@@ -36,6 +36,7 @@ jobs:
             VITE_API_URL=${{ secrets.VITE_API_URL }}
             VITE_DT_API_URL=${{ secrets.VITE_DT_API_URL }}
             VITE_DT_WEB_URL=${{ secrets.VITE_DT_WEB_URL }}
+            VITE_TURNSTILE_SITE_KEY=${{ secrets.VITE_TURNSTILE_SITE_KEY }}
 
       - name: Trigger Dokploy deploy
         run: |
