@@ -14,6 +14,7 @@ export function useRoomMarkedUnread(roomId: string): boolean {
 
   useEffect(() => {
     const room = mx.getRoom(roomId);
+    setMarked(room ? isRoomMarkedUnread(room) : false);
     if (!room) return;
 
     const handler: RoomEventHandlerMap[RoomEvent.AccountData] = (event) => {
