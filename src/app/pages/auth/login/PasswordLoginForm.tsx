@@ -45,7 +45,6 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
   const [loginData, setLoginData] = useState<CustomLoginResponse | undefined>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string>('');
-  const [turnstileError, setTurnstileError] = useState(false);
 
   useLoginComplete(loginData);
 
@@ -83,12 +82,6 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
     }
 
     if (hasError) return;
-
-    if (!turnstileToken) {
-      setTurnstileError(true);
-      return;
-    }
-    setTurnstileError(false);
 
     setLoading(true);
     setServerError(null);
@@ -214,22 +207,16 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
 
       <Turnstile
         siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY ?? ''}
-        options={{ size: 'invisible' }}
+        options={{ size: 'flexible', theme: 'light' }}
         onSuccess={setTurnstileToken}
         onError={() => setTurnstileToken('')}
         onExpire={() => setTurnstileToken('')}
       />
 
-      {turnstileError && (
-        <p className={css.dtFieldError}>
-          Verificación de seguridad en proceso. Intentá de nuevo en un momento.
-        </p>
-      )}
-
       {/* Botón ingresar */}
       <button
         type="submit"
-        disabled={loading}
+        disabled={!turnstileToken || loading}
         style={{
           width: '100%',
           padding: '12px 16px',
@@ -240,13 +227,13 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
           fontSize: '16px',
           fontWeight: 600,
           textAlign: 'center',
-          cursor: loading ? 'not-allowed' : 'pointer',
+          cursor: !turnstileToken || loading ? 'not-allowed' : 'pointer',
           fontFamily: 'inherit',
-          opacity: loading ? 0.7 : 1,
+          opacity: !turnstileToken || loading ? 0.7 : 1,
           transition: 'background-color 0.15s',
         }}
         onMouseOver={(e) => {
-          if (!loading)
+          if (turnstileToken && !loading)
             (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#D4637E';
         }}
         onMouseOut={(e) => {
