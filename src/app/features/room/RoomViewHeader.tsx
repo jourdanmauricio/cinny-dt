@@ -24,7 +24,7 @@ import {
   Button,
 } from 'folds';
 import { useNavigate } from 'react-router-dom';
-import { Room } from 'matrix-js-sdk';
+import { EventType, Room } from 'matrix-js-sdk';
 import { useStateEvent } from '../../hooks/useStateEvent';
 import { PageHeader } from '../../components/page';
 import { RoomAvatar, RoomIcon } from '../../components/room-avatar';
@@ -72,6 +72,7 @@ import { RoomSettingsPage } from '../../state/roomSettings';
 import { useCallEmbed, useCallStart } from '../../hooks/useCallEmbed';
 import { useLivekitSupport } from '../../hooks/useLivekitSupport';
 import { webRTCSupported } from '../../utils/rtc';
+import { useRoomMarkedUnread } from '../../hooks/useMarkedUnread';
 
 type RoomMenuProps = {
   room: Room;
@@ -96,8 +97,15 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
 
   const [invitePrompt, setInvitePrompt] = useState(false);
 
+  const markedUnread = useRoomMarkedUnread(room.roomId);
+
   const handleMarkAsRead = () => {
     markAsRead(mx, room.roomId, hideActivity);
+    requestClose();
+  };
+
+  const handleTogglePending = () => {
+    mx.setRoomAccountData(room.roomId, EventType.MarkedUnread, { unread: !markedUnread });
     requestClose();
   };
 
@@ -120,7 +128,7 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
   };
 
   return (
-    <Menu ref={ref} style={{ maxWidth: toRem(160), width: '100vw' }}>
+    <Menu ref={ref} style={{ maxWidth: toRem(220), width: '100vw' }}>
       {invitePrompt && (
         <InviteUserPrompt
           room={room}
@@ -142,6 +150,26 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
             Marcar como leído
           </Text>
         </MenuItem>
+        {isDtAdmin && (
+          <MenuItem
+            onClick={handleTogglePending}
+            size="300"
+            after={
+              <Badge
+                size="200"
+                variant="Secondary"
+                fill={markedUnread ? 'Solid' : 'None'}
+                radii="Pill"
+                outlined={!markedUnread}
+              />
+            }
+            radii="300"
+          >
+            <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
+              {markedUnread ? 'Desmarcar pendiente' : 'Marcar pendiente'}
+            </Text>
+          </MenuItem>
+        )}
         <RoomNotificationModeSwitcher roomId={room.roomId} value={notificationMode}>
           {(handleOpen, opened, changing) => (
             <MenuItem

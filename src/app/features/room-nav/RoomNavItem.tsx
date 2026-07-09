@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, forwardRef, useState } from 'react';
-import { EventType, Room } from 'matrix-js-sdk';
+import { Room } from 'matrix-js-sdk';
 import {
   Avatar,
   Box,
@@ -84,15 +84,8 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
 
     const [invitePrompt, setInvitePrompt] = useState(false);
 
-    const markedUnread = useRoomMarkedUnread(room.roomId);
-
     const handleMarkAsRead = () => {
       markAsRead(mx, room.roomId, hideActivity);
-      requestClose();
-    };
-
-    const handleTogglePending = () => {
-      mx.setRoomAccountData(room.roomId, EventType.MarkedUnread, { unread: !markedUnread });
       requestClose();
     };
 
@@ -135,26 +128,6 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
               Marcar como leído
             </Text>
           </MenuItem>
-          {localStorage.getItem('dt_is_admin') === 'true' && (
-            <MenuItem
-              onClick={handleTogglePending}
-              size="300"
-              after={
-                <Badge
-                  size="200"
-                  variant="Secondary"
-                  fill={markedUnread ? 'Solid' : 'None'}
-                  radii="Pill"
-                  outlined={!markedUnread}
-                />
-              }
-              radii="300"
-            >
-              <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-                {markedUnread ? 'Desmarcar pendiente' : 'Marcar pendiente'}
-              </Text>
-            </MenuItem>
-          )}
           <RoomNotificationModeSwitcher roomId={room.roomId} value={notificationMode}>
             {(handleOpen, opened, changing) => (
               <MenuItem
