@@ -63,6 +63,18 @@ const copyFiles = {
       dest: '',
     },
     {
+      src: 'public/sugo.webp',
+      dest: '',
+    },
+    {
+      src: 'public/contigo.webp',
+      dest: '',
+    },
+    {
+      src: 'public/corona-dt.png',
+      dest: '',
+    },
+    {
       src: 'public/res/android',
       dest: 'public/',
     },

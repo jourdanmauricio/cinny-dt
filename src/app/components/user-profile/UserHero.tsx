@@ -92,12 +92,16 @@ export function UserHero({ userId, avatarUrl, presence }: UserHeroProps) {
   );
 }
 
+type AppOrigin = 'sugo' | 'contigo';
+const APP_ORIGIN_LABEL: Record<AppOrigin, string> = { sugo: 'Sugo', contigo: 'Contigo' };
+
 type UserHeroNameProps = {
   displayName?: string;
   userId: string;
   sugoId?: string | null;
+  appOrigin?: AppOrigin | null;
 };
-export function UserHeroName({ displayName, userId, sugoId }: UserHeroNameProps) {
+export function UserHeroName({ displayName, userId, sugoId, appOrigin }: UserHeroNameProps) {
   const username = getMxIdLocalPart(userId);
 
   return (
@@ -116,10 +120,17 @@ export function UserHeroName({ displayName, userId, sugoId }: UserHeroNameProps)
           @{username}
         </Text>
       </Box>
+      {appOrigin && (
+        <Box alignItems="Center" gap="100" wrap="Wrap">
+          <Text size="T200" className={classNames(BreakWord, LineClamp3)}>
+            Cuenta: {APP_ORIGIN_LABEL[appOrigin]}
+          </Text>
+        </Box>
+      )}
       {sugoId && (
         <Box alignItems="Center" gap="100" wrap="Wrap">
           <Text size="T200" className={classNames(BreakWord, LineClamp3)}>
-            SugoId: {sugoId}
+            ID: {sugoId}
           </Text>
         </Box>
       )}

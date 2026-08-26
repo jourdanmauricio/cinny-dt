@@ -7,12 +7,17 @@ export type DtLoginResponse = {
   isAdmin: boolean;
 };
 
-export const dtLogin = async (email: string, password: string, turnstileToken?: string): Promise<DtLoginResponse> => {
+export const dtLogin = async (
+  email: string,
+  password: string,
+  turnstileToken?: string,
+  appOrigin?: 'sugo' | 'contigo'
+): Promise<DtLoginResponse> => {
   const apiUrl = import.meta.env.VITE_DT_API_URL;
   const res = await fetch(`${apiUrl}/auth/cinny-login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, turnstileToken }),
+    body: JSON.stringify({ email, password, turnstileToken, appOrigin }),
   });
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));

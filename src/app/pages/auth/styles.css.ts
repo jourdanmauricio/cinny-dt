@@ -11,11 +11,16 @@ export const AuthLayout = style({
 export const AuthCard = style({
   maxWidth: toRem(460),
   width: '100%',
-  backgroundColor: '#ffffff',
-  borderRadius: toRem(12),
-  boxShadow: '0 2px 16px rgba(200, 100, 130, 0.10)',
-  border: '1px solid #EDB5C0',
+  background: 'linear-gradient(to bottom, #ffffff, rgba(253, 242, 248, 0.6))',
+  borderRadius: toRem(32),
+  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.06)',
+  border: '2px solid #FCE7F3',
   overflow: 'hidden',
+});
+
+export const AuthCrown = style({
+  height: toRem(56),
+  width: 'auto',
 });
 
 export const AuthLogo = style([
@@ -39,7 +44,7 @@ export const AuthBrandTitle = style({
   fontFamily: "'Lora', Georgia, serif",
   fontSize: toRem(24),
   fontWeight: 500,
-  color: '#C9A97A',
+  color: '#8B6B3E',
   margin: 0,
   lineHeight: 1.3,
   textAlign: 'center',

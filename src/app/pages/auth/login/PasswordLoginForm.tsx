@@ -5,6 +5,7 @@ import { CustomLoginResponse, useLoginComplete } from './loginUtil';
 import { dtLogin } from './dtLogin';
 import { clearPreviousSessionData } from '../../../state/sessions';
 import * as css from './loginForm.css';
+import type { AppOrigin } from './Login';
 
 const baseInputStyle: React.CSSProperties = {
   width: '100%',
@@ -35,9 +36,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 type PasswordLoginFormProps = {
   defaultUsername?: string;
   defaultEmail?: string;
+  appOrigin: AppOrigin;
 };
 
-export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
+export function PasswordLoginForm({ defaultEmail, appOrigin }: PasswordLoginFormProps) {
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -86,7 +88,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
     setLoading(true);
     setServerError(null);
     try {
-      const dtRes = await dtLogin(email, password, turnstileToken);
+      const dtRes = await dtLogin(email, password, turnstileToken, appOrigin);
       clearPreviousSessionData();
       localStorage.setItem('dt_access_token', dtRes.dtToken);
       localStorage.setItem('dt_is_admin', String(dtRes.isAdmin === true));
@@ -101,7 +103,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
       setLoginData(data);
     } catch (err: any) {
       if (err.status === 401) setServerError('Email o contraseña incorrectos.');
-      else if (err.status === 403) window.location.href = `${webUrl}/user`;
+      else if (err.status === 403) window.location.href = `${webUrl}/user?appOrigin=${appOrigin}`;
       else setServerError('Error al iniciar sesión. Intentá de nuevo.');
     } finally {
       setLoading(false);
@@ -133,7 +135,7 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <label style={labelStyle}>Contraseña</label>
           <a
-            href={`${webUrl}/forgot-password?redirect=chat`}
+            href={`${webUrl}/forgot-password?appOrigin=${appOrigin}`}
             style={{ fontSize: '13px' }}
           >
             ¿Olvidaste tu contraseña?
@@ -218,12 +220,16 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
         type="submit"
         disabled={!turnstileToken || loading}
         style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '4px',
           width: '100%',
           padding: '12px 16px',
-          backgroundColor: '#E8829F',
-          color: '#FFFFFF',
+          backgroundColor: '#F7BBC4',
+          color: '#8B3A4A',
           border: 'none',
-          borderRadius: '8px',
+          borderRadius: '16px',
           fontSize: '16px',
           fontWeight: 600,
           textAlign: 'center',
@@ -234,13 +240,26 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
         }}
         onMouseOver={(e) => {
           if (turnstileToken && !loading)
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#D4637E';
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#F2A2AF';
         }}
         onMouseOut={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#E8829F';
+          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#F7BBC4';
         }}
       >
         Ingresar
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m9 18 6-6-6-6" />
+        </svg>
       </button>
 
       {/* Separador OAuth */}
@@ -264,59 +283,59 @@ export function PasswordLoginForm({ defaultEmail }: PasswordLoginFormProps) {
       <button
         type="button"
         onClick={() => {
-          window.location.href = `${import.meta.env.VITE_DT_API_URL}/auth/google?state=chat`;
+          window.location.href = `${import.meta.env.VITE_DT_API_URL}/auth/google?state=chat:${appOrigin}`;
         }}
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '10px',
-          width: '100%',
-          padding: '10px 16px',
-          border: '1.5px solid #dadce0',
-          borderRadius: '8px',
-          background: '#ffffff',
-          color: '#3c4043',
-          fontSize: '15px',
-          fontWeight: 500,
-          cursor: 'pointer',
-          fontFamily: 'inherit',
-          transition: 'box-shadow 0.15s',
-        }}
-        onMouseOver={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 6px rgba(0,0,0,0.12)';
-        }}
-        onMouseOut={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-        }}
-      >
-        <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path
-            fill="#EA4335"
-            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-          />
-          <path
-            fill="#4285F4"
-            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
-          />
-          <path
-            fill="#FBBC05"
-            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
-          />
-          <path
-            fill="#34A853"
-            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
-          />
-          <path fill="none" d="M0 0h48v48H0z" />
-        </svg>
-        Continuar con Google
-      </button>
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            width: '100%',
+            padding: '10px 16px',
+            border: '1.5px solid #dadce0',
+            borderRadius: '8px',
+            background: '#ffffff',
+            color: '#3c4043',
+            fontSize: '15px',
+            fontWeight: 500,
+            cursor: 'pointer',
+            fontFamily: 'inherit',
+            transition: 'box-shadow 0.15s',
+          }}
+          onMouseOver={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 6px rgba(0,0,0,0.12)';
+          }}
+          onMouseOut={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+          }}
+        >
+          <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill="#EA4335"
+              d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+            />
+            <path
+              fill="#4285F4"
+              d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+            />
+            <path
+              fill="#34A853"
+              d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+            />
+            <path fill="none" d="M0 0h48v48H0z" />
+          </svg>
+          Continuar con Google
+        </button>
 
       {/* Link de registro */}
       <div style={{ textAlign: 'center', fontSize: '14px', color: '#6b7280' }}>
         ¿No tenés cuenta?{' '}
         <a
-          href={`${webUrl}/register`}
+          href={`${webUrl}/register?appOrigin=${appOrigin}`}
           style={{ fontWeight: 600, color: '#1C1719' }}
         >
           Registrate

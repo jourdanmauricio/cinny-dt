@@ -23,7 +23,10 @@ import { CreatorChip } from './CreatorChip';
 import { getDirectCreatePath, withSearchParam } from '../../pages/pathUtils';
 import { DirectCreateSearchParams } from '../../pages/paths';
 
-const sugoIdCache = new Map<string, string | null>();
+type AppOrigin = 'sugo' | 'contigo';
+type ProfileInfo = { sugoId: string | null; appOrigin: AppOrigin | null };
+
+const profileInfoCache = new Map<string, ProfileInfo>();
 
 type UserRoomProfileProps = {
   userId: string;
@@ -63,16 +66,16 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
 
   const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
 
-  const [sugoId, setSugoId] = useState<string | null>(null);
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({ sugoId: null, appOrigin: null });
 
   useEffect(() => {
     if (!isAdmin || userId === myUserId) return;
     const token = localStorage.getItem('dt_access_token');
     if (!token) return;
 
-    const cached = sugoIdCache.get(userId);
+    const cached = profileInfoCache.get(userId);
     if (cached !== undefined) {
-      setSugoId(cached);
+      setProfileInfo(cached);
       return;
     }
 
@@ -82,9 +85,12 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
     })
       .then((r) => r.json())
       .then((data) => {
-        const value = data.sugoId ?? null;
-        sugoIdCache.set(userId, value);
-        setSugoId(value);
+        const value: ProfileInfo = {
+          sugoId: data.sugoId ?? null,
+          appOrigin: data.appOrigin ?? null,
+        };
+        profileInfoCache.set(userId, value);
+        setProfileInfo(value);
       })
       .catch(() => {});
   }, [userId, isAdmin, myUserId]);
@@ -107,7 +113,12 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
       <Box direction="Column" gap="500" style={{ padding: config.space.S400 }}>
         <Box direction="Column" gap="400">
           <Box gap="400" alignItems="Start">
-            <UserHeroName displayName={displayName} userId={userId} sugoId={isAdmin && userId !== myUserId ? sugoId : null} />
+            <UserHeroName
+              displayName={displayName}
+              userId={userId}
+              sugoId={isAdmin && userId !== myUserId ? profileInfo.sugoId : null}
+              appOrigin={isAdmin && userId !== myUserId ? profileInfo.appOrigin : null}
+            />
             {userId !== myUserId && isAdmin && (
               <Box shrink="No">
                 <Button

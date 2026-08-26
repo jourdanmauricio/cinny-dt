@@ -129,6 +129,7 @@ export function AuthLayout() {
       >
         <Box direction="Column" className={css.AuthCard} style={{ color: '#3c4043' }}>
           <div className={css.AuthHeader}>
+            <img src="/corona-dt.png" alt="" className={css.AuthCrown} />
             <p className={css.AuthBrandTitle}>Agencia Dulce Terciopelo</p>
           </div>
           <Box className={css.AuthCardContent} direction="Column">

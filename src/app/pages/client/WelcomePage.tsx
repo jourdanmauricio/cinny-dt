@@ -16,7 +16,7 @@ export function WelcomePage() {
           <PageHero
             icon={<img width="160" height="160" src={GatitoImg} alt="Dulce Terciopelo" style={{ borderRadius: '12px' }} />}
             title={
-              <span style={{ fontFamily: "'Lora', serif", color: '#C9A97A', fontWeight: 600 }}>
+              <span style={{ fontFamily: "'Lora', serif", color: '#8B6B3E', fontWeight: 600 }}>
                 Agencia Dulce Terciopelo
               </span>
             }
