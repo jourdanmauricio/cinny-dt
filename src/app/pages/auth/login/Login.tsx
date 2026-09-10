@@ -370,7 +370,7 @@ export function Login() {
             ¿Tenés dudas o problemas para registrarte?
             <br />
             <a
-              href="https://t.me/celidulceterciopelo"
+              href="https://t.me/CelinaDulceTerciopelo"
               target="_blank"
               rel="noopener noreferrer"
               style={{
