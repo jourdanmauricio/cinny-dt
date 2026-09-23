@@ -221,7 +221,9 @@ export const useCommands = (mx: MatrixClient, room: Room): CommandRecord => {
             preset: Preset.TrustedPrivateChat,
             initial_state: [createRoomEncryptionState()],
           });
-          addRoomIdToMDirect(mx, result.room_id, userIds[0]);
+          // Wait for the m.direct echo before navigating, otherwise
+          // navigateRoom won't see the room as a DM yet.
+          await addRoomIdToMDirect(mx, result.room_id, userIds[0]);
           navigateRoom(result.room_id);
         },
       },

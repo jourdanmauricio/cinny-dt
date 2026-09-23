@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Badge,
@@ -30,6 +31,7 @@ import {
   PageHeroEmpty,
   PageHeroSection,
 } from '../../../components/page';
+import { getDirectRoomPath } from '../../pathUtils';
 import { useMatrixClient } from '../../../hooks/useMatrixClient';
 import { allInvitesAtom } from '../../../state/room-list/inviteList';
 import { SequenceCard } from '../../../components/sequence-card';
@@ -47,6 +49,7 @@ import { nameInitials } from '../../../utils/common';
 import { RoomAvatar } from '../../../components/room-avatar';
 import {
   addRoomIdToMDirect,
+  getCanonicalAliasOrRoomId,
   getMxIdLocalPart,
   guessDmRoomUserId,
   rateLimitedActions,
@@ -141,7 +144,7 @@ const hasBadWords = (invite: InviteData): boolean =>
   testBadWords(invite.senderId) ||
   testBadWords(invite.reason || '');
 
-type NavigateHandler = (roomId: string, space: boolean) => void;
+type NavigateHandler = (roomId: string, space: boolean, direct?: boolean) => void;
 
 type InviteCardProps = {
   invite: InviteData;
@@ -160,7 +163,6 @@ function InviteCard({
   hideAvatar,
 }: InviteCardProps) {
   const mx = useMatrixClient();
-  const userId = mx.getSafeUserId();
 
   const [viewTopic, setViewTopic] = useState(false);
   const closeTopic = () => setViewTopic(false);
@@ -168,16 +170,19 @@ function InviteCard({
 
   const [joinState, join] = useAsyncCallback<void, MatrixError, []>(
     useCallback(async () => {
-      const dmUserId = isDirectInvite(invite.room, userId)
-        ? guessDmRoomUserId(invite.room, userId)
+      const dmUserId = invite.isDirect
+        ? guessDmRoomUserId(invite.room, mx.getSafeUserId())
         : undefined;
 
       await mx.joinRoom(invite.roomId);
       if (dmUserId) {
+        // Await this so mDirectAtom is already updated by the time we
+        // navigate - otherwise DirectRouteRoomProvider won't recognize the
+        // room as a DM yet and will bounce back to the Direct list.
         await addRoomIdToMDirect(mx, invite.roomId, dmUserId);
       }
-      onNavigate(invite.roomId, invite.isSpace);
-    }, [mx, invite, userId, onNavigate])
+      onNavigate(invite.roomId, invite.isSpace, invite.isDirect);
+    }, [mx, invite, onNavigate])
   );
   const [leaveState, leave] = useAsyncCallback<Record<string, never>, MatrixError, []>(
     useCallback(() => mx.leave(invite.roomId), [mx, invite])
@@ -694,6 +699,7 @@ function SpamInvites({
 export function Invites() {
   const mx = useMatrixClient();
   const useAuthentication = useMediaAuthentication();
+  const navigate = useNavigate();
   const { navigateRoom, navigateSpace } = useRoomNavigate();
   const allRooms = useAtomValue(allRoomsAtom);
   const allInviteIds = useAtomValue(allInvitesAtom);
@@ -737,9 +743,18 @@ export function Invites() {
   const [hour24Clock] = useSetting(settingsAtom, 'hour24Clock');
   const [dateFormatString] = useSetting(settingsAtom, 'dateFormatString');
 
-  const handleNavigate = (roomId: string, space: boolean) => {
+  const handleNavigate = (roomId: string, space: boolean, direct?: boolean) => {
     if (space) {
       navigateSpace(roomId);
+      return;
+    }
+    if (direct) {
+      // We already know this is a DM at accept-time (before the invite's
+      // is_direct flag disappears from the member event's current content).
+      // Route straight to the Direct path instead of asking navigateRoom to
+      // guess from the mDirect atom, which may not have caught up yet with
+      // the just-completed m.direct write.
+      navigate(getDirectRoomPath(getCanonicalAliasOrRoomId(mx, roomId)));
       return;
     }
     navigateRoom(roomId);

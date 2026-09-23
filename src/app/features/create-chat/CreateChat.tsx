@@ -2,7 +2,12 @@ import { Box, Button, color, Icon, Icons, Input, Spinner, Text } from 'folds';
 import React, { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { MatrixError, Preset, Visibility } from 'matrix-js-sdk';
 import { useNavigate } from 'react-router-dom';
-import { addRoomIdToMDirect, isUserId } from '../../utils/matrix';
+import {
+  addRoomIdToMDirect,
+  getCanonicalAliasOrRoomId,
+  getDMRoomFor,
+  isUserId,
+} from '../../utils/matrix';
 import { useMatrixClient } from '../../hooks/useMatrixClient';
 import { AsyncStatus, useAsyncCallback } from '../../hooks/useAsyncCallback';
 import { ErrorCode } from '../../cs-errorcode';
@@ -29,6 +34,11 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
   const [createState, create] = useAsyncCallback<string, Error | MatrixError, [string]>(
     useCallback(
       async (userId) => {
+        const existing = getDMRoomFor(mx, userId);
+        if (existing) {
+          return getCanonicalAliasOrRoomId(mx, existing.roomId);
+        }
+
         const result = await mx.createRoom({
           is_direct: true,
           invite: [userId],
@@ -36,7 +46,10 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
           preset: Preset.TrustedPrivateChat,
         });
 
-        addRoomIdToMDirect(mx, result.room_id, userId);
+        // Wait for the m.direct echo before returning, otherwise
+        // DirectRouteRoomProvider won't recognize the room yet when we
+        // navigate to it and will bounce back to the Direct list.
+        await addRoomIdToMDirect(mx, result.room_id, userId);
 
         return result.room_id;
       },

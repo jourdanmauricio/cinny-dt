@@ -9,3 +9,5 @@ devAssets
 !.env.example
 
 public/config.local.json
+
+docs

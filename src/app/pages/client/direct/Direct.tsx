@@ -262,7 +262,10 @@ export function Direct() {
         visibility: 'private' as any,
         preset: 'trusted_private_chat' as any,
       });
-      addRoomIdToMDirect(mx, result.room_id, admin.synapseUserId);
+      // Wait for the m.direct echo before navigating, otherwise
+      // DirectRouteRoomProvider won't recognize the room yet and will
+      // bounce back to the Direct list.
+      await addRoomIdToMDirect(mx, result.room_id, admin.synapseUserId);
       navigate(getDirectRoomPath(result.room_id));
     },
     [mx, navigate]

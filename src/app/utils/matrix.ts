@@ -182,7 +182,10 @@ export const eventWithShortcode = (ev: MatrixEvent) =>
 export const getDMRoomFor = (mx: MatrixClient, userId: string): Room | undefined => {
   const dmLikeRooms = mx.getRooms().filter(
     (room) =>
-      room.getMyMembership() === Membership.Join &&
+      // include pending (not yet accepted) invites too, so we don't create
+      // a duplicate DM while the other room is still waiting to be joined
+      (room.getMyMembership() === Membership.Join ||
+        room.getMyMembership() === Membership.Invite) &&
       // room.hasEncryptionStateEvent() &&
       room.getMembers().length <= 2
   );

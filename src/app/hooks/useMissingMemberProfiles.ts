@@ -2,10 +2,44 @@ import { useEffect, useRef } from 'react';
 import { MatrixClient, MatrixEvent, Room } from 'matrix-js-sdk';
 
 type ProfileData = { displayname?: string; avatar_url?: string };
+type CacheEntry = { data: ProfileData | null; fetchedAt: number };
 
-// Session-scoped: stores profile data to reuse across rooms without re-fetching.
-// null means the fetch was attempted and failed or returned empty.
-const profileDataCache = new Map<string, ProfileData | null>();
+const STORAGE_KEY = 'cinny_dt_profile_cache';
+const CACHE_TTL_MS = 48 * 60 * 60 * 1000; // 48 hours
+
+// In-memory mirror of the persisted (localStorage) cache, for synchronous
+// reads. Persisting profiles avoids re-fetching them on every fresh
+// login/reload - a profile is only re-fetched once its entry goes stale.
+const profileDataCache = new Map<string, CacheEntry>();
+
+const isFresh = (entry: CacheEntry | undefined): entry is CacheEntry =>
+  !!entry && Date.now() - entry.fetchedAt < CACHE_TTL_MS;
+
+function loadPersistedCache(): void {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw) as Record<string, CacheEntry>;
+    Object.entries(parsed).forEach(([userId, entry]) => {
+      if (isFresh(entry)) profileDataCache.set(userId, entry);
+    });
+  } catch {
+    // Corrupt data or storage unavailable (e.g. private browsing) - start fresh.
+  }
+}
+loadPersistedCache();
+
+function persistCache(): void {
+  try {
+    const obj: Record<string, CacheEntry> = {};
+    profileDataCache.forEach((entry, userId) => {
+      obj[userId] = entry;
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+  } catch {
+    // Storage unavailable/quota exceeded - cache stays in-memory only.
+  }
+}
 
 // Tracks in-flight requests to deduplicate concurrent fetches for the same userId.
 const inFlight = new Map<string, Promise<ProfileData | null>>();
@@ -17,11 +51,13 @@ async function fetchProfileData(mx: MatrixClient, userId: string): Promise<Profi
     .getProfileInfo(userId)
     .then((p) => {
       const data = p.displayname || p.avatar_url ? p : null;
-      profileDataCache.set(userId, data);
+      profileDataCache.set(userId, { data, fetchedAt: Date.now() });
+      persistCache();
       return data;
     })
     .catch(() => {
-      profileDataCache.set(userId, null);
+      profileDataCache.set(userId, { data: null, fetchedAt: Date.now() });
+      persistCache();
       return null;
     })
     .finally(() => inFlight.delete(userId));
@@ -71,20 +107,21 @@ export function useMissingMemberProfiles(
     const toFetch: string[] = [];
     let anyCacheResolved = false;
 
-    // Inject immediately from cache for users already fetched in other rooms.
-    for (const userId of needsResolution) {
-      if (profileDataCache.has(userId)) {
-        const cached = profileDataCache.get(userId);
-        if (cached && injectIntoRoom(room, userId, cached)) anyCacheResolved = true;
+    // Inject immediately from cache for users already fetched (in this or
+    // a previous session, as long as the entry hasn't gone stale).
+    needsResolution.forEach((userId) => {
+      const cached = profileDataCache.get(userId);
+      if (isFresh(cached)) {
+        if (cached.data && injectIntoRoom(room, userId, cached.data)) anyCacheResolved = true;
       } else {
         toFetch.push(userId);
       }
-    }
+    });
 
     if (anyCacheResolved) onResolvedRef.current();
     if (toFetch.length === 0) return;
 
-    // Fetch profiles not yet in cache.
+    // Fetch profiles not yet in cache (or gone stale).
     let anyFetchResolved = false;
     const fetches = toFetch.map(async (userId) => {
       const profile = await fetchProfileData(mx, userId);
