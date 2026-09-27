@@ -18,6 +18,12 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useAtom, useAtomValue } from 'jotai';
 import FocusTrap from 'focus-trap-react';
+import {
+  DT_APP_LABEL,
+  DtAppOrigin,
+  formatUserCount,
+  useCommunityStats,
+} from '../../../hooks/useCommunityStats';
 import { factoryRoomIdByActivity, factoryRoomIdByAtoZ } from '../../../utils/sort';
 import {
   NavButton,
@@ -100,8 +106,25 @@ const HomeMenu = forwardRef<HTMLDivElement, HomeMenuProps>(({ requestClose }, re
   );
 });
 
-function HomeHeader() {
+function HomeHeader({ rooms }: { rooms: string[] }) {
   const [menuAnchor, setMenuAnchor] = useState<RectCords>();
+
+  // DT: total de usuarias aprobadas de la(s) app(s) a la(s) que pertenecen las salas de la usuaria
+  const stats = useCommunityStats();
+  const totalLabel = useMemo(() => {
+    if (!stats) return undefined;
+    const apps = new Set<DtAppOrigin>();
+    rooms.forEach((roomId) => {
+      const info = stats.rooms[roomId];
+      if (info) apps.add(info.appOrigin);
+    });
+    const appList = (['sugo', 'contigo'] as DtAppOrigin[]).filter((app) => apps.has(app));
+    if (appList.length === 0) return undefined;
+    if (appList.length === 1) return formatUserCount(stats.counts[appList[0]]);
+    return appList
+      .map((app) => `${DT_APP_LABEL[app]} ${stats.counts[app].toLocaleString('es-AR')}`)
+      .join(' · ');
+  }, [stats, rooms]);
 
   const handleOpenMenu: MouseEventHandler<HTMLButtonElement> = (evt) => {
     const cords = evt.currentTarget.getBoundingClientRect();
@@ -115,10 +138,15 @@ function HomeHeader() {
     <>
       <PageNavHeader>
         <Box alignItems="Center" grow="Yes" gap="300">
-          <Box grow="Yes">
+          <Box grow="Yes" direction="Column">
             <Text size="H4" truncate>
               Inicio
             </Text>
+            {totalLabel && (
+              <Text size="T200" priority="300" truncate>
+                {totalLabel}
+              </Text>
+            )}
           </Box>
           <Box>
             <IconButton aria-pressed={!!menuAnchor} variant="Background" onClick={handleOpenMenu}>
@@ -224,7 +252,7 @@ export function Home() {
   const virtualizer = useVirtualizer({
     count: sortedRooms.length,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => 38,
+    estimateSize: () => 50,
     overscan: 10,
   });
 
@@ -234,7 +262,7 @@ export function Home() {
 
   return (
     <PageNav>
-      <HomeHeader />
+      <HomeHeader rooms={rooms} />
       {noRoomToDisplay ? (
         <HomeEmpty />
       ) : (

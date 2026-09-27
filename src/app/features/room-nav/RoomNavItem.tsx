@@ -26,6 +26,7 @@ import { UnreadBadge, UnreadBadgeCenter } from '../../components/unread-badge';
 import { RoomAvatar, RoomIcon } from '../../components/room-avatar';
 import { getDirectRoomAvatarUrl, getRoomAvatarUrl, getStateEvent } from '../../utils/room';
 import { nameInitials } from '../../utils/common';
+import { formatUserCount, useCommunityStats } from '../../hooks/useCommunityStats';
 import { useMatrixClient } from '../../hooks/useMatrixClient';
 import { useRoomUnread } from '../../state/hooks/unread';
 import { roomToUnreadAtom } from '../../state/room/roomToUnread';
@@ -282,6 +283,16 @@ export function RoomNavItem({
   );
 
   const roomName = useRoomName(room);
+  // DT: subtítulo con usuarias de la app (grupos) o "Solo lectura" (difusión)
+  const communityStats = useCommunityStats();
+  const dtRoom = communityStats?.rooms[room.roomId];
+  let dtSubtitle: string | undefined;
+  if (communityStats && dtRoom) {
+    dtSubtitle =
+      dtRoom.type === 'broadcast'
+        ? 'Solo lectura'
+        : formatUserCount(communityStats.counts[dtRoom.appOrigin]);
+  }
   const avatarUrl = direct
     ? getDirectRoomAvatarUrl(mx, room, 96, useAuthentication)
     : getRoomAvatarUrl(mx, room, 96, useAuthentication);
@@ -407,10 +418,20 @@ export function RoomNavItem({
                 </Box>
               )}
             </Box>
-            <Box as="span" grow="Yes">
+            <Box
+              as="span"
+              grow="Yes"
+              direction="Column"
+              style={dtSubtitle ? { paddingBlock: config.space.S100 } : undefined}
+            >
               <Text priority={unread ? '500' : '300'} as="span" size="Inherit" truncate>
                 {roomName}
               </Text>
+              {dtSubtitle && (
+                <Text as="span" size="T200" priority="300" truncate>
+                  {dtSubtitle}
+                </Text>
+              )}
             </Box>
             {!optionsVisible && !unread && !selected && typingMember.length > 0 && (
               <Badge size="300" variant="Secondary" fill="Soft" radii="Pill" outlined>
