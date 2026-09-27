@@ -1,9 +1,11 @@
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isYesterday from 'dayjs/plugin/isYesterday';
+import 'dayjs/locale/es';
 
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
+dayjs.locale('es');
 
 export const today = (ts: number): boolean => dayjs(ts).isToday();
 
@@ -24,7 +26,7 @@ export const timeHourMinute = (ts: number, hour24Clock: boolean): string =>
 export const timeDayMonYear = (ts: number, dateFormatString: string): string =>
   dayjs(ts).format(dateFormatString);
 
-export const timeDayMonthYear = (ts: number): string => dayjs(ts).format('D MMMM YYYY');
+export const timeDayMonthYear = (ts: number): string => dayjs(ts).format('D [de] MMMM [de] YYYY');
 
 export const daysInMonth = (month: number, year: number): number =>
   dayjs(`${year}-${month}-1`).daysInMonth();

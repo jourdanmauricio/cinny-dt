@@ -31,7 +31,7 @@ export const Time = as<'span', TimeProps & ComponentProps<typeof Text>>(
     } else if (today(ts)) {
       time = formattedTime;
     } else if (yesterday(ts)) {
-      time = `Yesterday ${formattedTime}`;
+      time = `Ayer ${formattedTime}`;
     } else {
       time = `${timeDayMonYear(ts, dateFormatString)} ${formattedTime}`;
     }

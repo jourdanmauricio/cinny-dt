@@ -52,8 +52,8 @@ function DeviceActiveTime({ ts }: { ts: number }) {
         {'Last activity: '}
       </Text>
       <>
-        {today(ts) && 'Today'}
-        {yesterday(ts) && 'Yesterday'}
+        {today(ts) && 'Hoy'}
+        {yesterday(ts) && 'Ayer'}
         {!today(ts) && !yesterday(ts) && timeDayMonYear(ts, dateFormatString)}{' '}
         {timeHourMinute(ts, hour24Clock)}
       </>

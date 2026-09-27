@@ -41,7 +41,7 @@ const renderErrorButton = (retry: () => void, text: string) => (
   <TooltipProvider
     tooltip={
       <Tooltip variant="Critical">
-        <Text>Failed to load file!</Text>
+        <Text>¡No se pudo cargar el archivo!</Text>
       </Tooltip>
     }
     position="Top"
@@ -130,7 +130,7 @@ export function ReadTextFile({ body, mimeType, url, encInfo, renderViewer }: Rea
         </Overlay>
       )}
       {textState.status === AsyncStatus.Error ? (
-        renderErrorButton(loadText, 'Open File')
+        renderErrorButton(loadText, 'Abrir archivo')
       ) : (
         <Button
           variant="Secondary"
@@ -150,7 +150,7 @@ export function ReadTextFile({ body, mimeType, url, encInfo, renderViewer }: Rea
           }
         >
           <Text size="B400" truncate>
-            Open File
+            Abrir archivo
           </Text>
         </Button>
       )}
@@ -216,7 +216,7 @@ export function ReadPdfFile({ body, mimeType, url, encInfo, renderViewer }: Read
         </Overlay>
       )}
       {pdfState.status === AsyncStatus.Error ? (
-        renderErrorButton(loadPdf, 'Open PDF')
+        renderErrorButton(loadPdf, 'Abrir PDF')
       ) : (
         <Button
           variant="Secondary"
@@ -234,7 +234,7 @@ export function ReadPdfFile({ body, mimeType, url, encInfo, renderViewer }: Read
           }
         >
           <Text size="B400" truncate>
-            Open PDF
+            Abrir PDF
           </Text>
         </Button>
       )}
@@ -268,7 +268,7 @@ export function DownloadFile({ body, mimeType, url, info, encInfo }: DownloadFil
   );
 
   return downloadState.status === AsyncStatus.Error ? (
-    renderErrorButton(download, `Retry Download (${bytesToSize(info.size ?? 0)})`)
+    renderErrorButton(download, `Reintentar descarga (${bytesToSize(info.size ?? 0)})`)
   ) : (
     <Button
       variant="Secondary"
@@ -289,7 +289,7 @@ export function DownloadFile({ body, mimeType, url, info, encInfo }: DownloadFil
         )
       }
     >
-      <Text size="B400" truncate>{`Download (${bytesToSize(info.size ?? 0)})`}</Text>
+      <Text size="B400" truncate>{`Descargar (${bytesToSize(info.size ?? 0)})`}</Text>
     </Button>
   );
 }
