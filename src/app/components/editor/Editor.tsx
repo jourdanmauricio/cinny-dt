@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import classNames from 'classnames';
 import React, {
   ClipboardEventHandler,
   KeyboardEventHandler,
@@ -59,6 +60,7 @@ export const useEditor = (): Editor => {
 
 export type EditorChangeHandler = (value: Descendant[]) => void;
 type CustomEditorProps = {
+  className?: string;
   editableName?: string;
   top?: ReactNode;
   bottom?: ReactNode;
@@ -75,6 +77,7 @@ type CustomEditorProps = {
 export const CustomEditor = forwardRef<HTMLDivElement, CustomEditorProps>(
   (
     {
+      className,
       editableName,
       top,
       bottom,
@@ -119,7 +122,7 @@ export const CustomEditor = forwardRef<HTMLDivElement, CustomEditorProps>(
     );
 
     return (
-      <div className={css.Editor} ref={ref}>
+      <div className={classNames(css.Editor, className)} ref={ref}>
         <Slate editor={editor} initialValue={initialValue} onChange={onChange}>
           {top}
           <Box alignItems="Start">

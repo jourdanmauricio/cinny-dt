@@ -95,12 +95,12 @@ export function RoomView({ eventId }: { eventId?: string }) {
   );
 
   return (
-    <Page ref={roomViewRef}>
-      <Box grow="Yes" direction="Column" className={css.RoomPatternContainer}>
-        <div
-          className={css.RoomPattern}
-          style={{ opacity: theme.kind === ThemeKind.Dark ? 0.12 : 0.18 }}
-        />
+    <Page ref={roomViewRef} className={css.RoomPatternContainer}>
+      <div
+        className={css.RoomPattern}
+        style={{ opacity: theme.kind === ThemeKind.Dark ? 0.12 : 0.18 }}
+      />
+      <Box grow="Yes" direction="Column">
         <RoomTimeline
           key={roomId}
           room={room}

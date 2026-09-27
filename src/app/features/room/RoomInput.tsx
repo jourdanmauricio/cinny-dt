@@ -118,6 +118,7 @@ import { useRoomCreatorsTag } from '../../hooks/useRoomCreatorsTag';
 import { usePowerLevelTags } from '../../hooks/usePowerLevelTags';
 import { useComposingCheck } from '../../hooks/useComposingCheck';
 import { useMediaRecorder } from '../../hooks/useMediaRecorder';
+import * as css from './RoomInput.css';
 
 interface RoomInputProps {
   editor: Editor;
@@ -559,6 +560,7 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
           />
         )}
         <CustomEditor
+          className={css.RoomInputGlass}
           editableName="RoomInput"
           editor={editor}
           placeholder="Escribe un mensaje..."
