@@ -22,6 +22,8 @@ import { useSetting } from '../../state/hooks/settings';
 import { useRoomPermissions } from '../../hooks/useRoomPermissions';
 import { useRoomCreators } from '../../hooks/useRoomCreators';
 import { useRoom, useIsDirectRoom } from '../../hooks/useRoom';
+import { ThemeKind, useActiveTheme } from '../../hooks/useTheme';
+import * as css from './RoomView.css';
 
 const FN_KEYS_REGEX = /^F\d+$/;
 const shouldFocusMessageField = (evt: KeyboardEvent): boolean => {
@@ -60,6 +62,7 @@ export function RoomView({ eventId }: { eventId?: string }) {
 
   const [hideActivity] = useSetting(settingsAtom, 'hideActivity');
   const isDirect = useIsDirectRoom();
+  const theme = useActiveTheme();
 
   const room = useRoom();
   const { roomId } = room;
@@ -93,7 +96,11 @@ export function RoomView({ eventId }: { eventId?: string }) {
 
   return (
     <Page ref={roomViewRef}>
-      <Box grow="Yes" direction="Column">
+      <Box grow="Yes" direction="Column" className={css.RoomPatternContainer}>
+        <div
+          className={css.RoomPattern}
+          style={{ opacity: theme.kind === ThemeKind.Dark ? 0.12 : 0.18 }}
+        />
         <RoomTimeline
           key={roomId}
           room={room}
@@ -134,7 +141,11 @@ export function RoomView({ eventId }: { eventId?: string }) {
             </>
           )}
         </div>
-        {hideActivity || !isDirect ? <RoomViewFollowingPlaceholder /> : <RoomViewFollowing room={room} />}
+        {hideActivity || !isDirect ? (
+          <RoomViewFollowingPlaceholder />
+        ) : (
+          <RoomViewFollowing room={room} />
+        )}
       </Box>
     </Page>
   );

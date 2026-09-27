@@ -75,6 +75,10 @@ const copyFiles = {
       dest: '',
     },
     {
+      src: 'public/dt-pattern.png',
+      dest: '',
+    },
+    {
       src: 'public/res/android',
       dest: 'public/',
     },
