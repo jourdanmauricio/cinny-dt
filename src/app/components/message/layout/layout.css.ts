@@ -1,6 +1,7 @@
 import { createVar, keyframes, style, styleVariants } from '@vanilla-extract/css';
 import { recipe, RecipeVariants } from '@vanilla-extract/recipes';
 import { DefaultReset, color, config, toRem } from 'folds';
+import { darkTheme } from '../../../../colors.css';
 
 export const StickySection = style({
   position: 'sticky',
@@ -149,6 +150,39 @@ export const BubbleContent = style({
 
 export const BubbleContentArrowLeft = style({
   borderTopLeftRadius: 0,
+});
+
+// DT: burbuja de mensajes propios (estilo WhatsApp)
+const OwnBubbleColor = createVar();
+
+export const BubbleContentOwn = style({
+  vars: {
+    [OwnBubbleColor]: color.Primary.ContainerActive,
+  },
+  backgroundColor: OwnBubbleColor,
+  selectors: {
+    [`${darkTheme} &`]: {
+      vars: {
+        [OwnBubbleColor]: '#5A3542',
+      },
+    },
+  },
+});
+
+export const BubbleContentArrowRight = style({
+  borderTopRightRadius: 0,
+});
+
+export const BubbleRightArrow = style({
+  width: toRem(9),
+  height: toRem(8),
+
+  position: 'absolute',
+  top: 0,
+  right: toRem(-8),
+  zIndex: 1,
+  transform: 'scaleX(-1)',
+  color: OwnBubbleColor,
 });
 
 export const BubbleLeftArrow = style({

@@ -75,7 +75,9 @@ import { getMatrixToRoomEvent } from '../../../plugins/matrix-to';
 import { getViaServers } from '../../../plugins/via-servers';
 import { useMediaAuthentication } from '../../../hooks/useMediaAuthentication';
 import { useRoomPinnedEvents } from '../../../hooks/useRoomPinnedEvents';
-import { MemberPowerTag, StateEvent } from '../../../../types/matrix/room';
+import { useIsDirectRoom } from '../../../hooks/useRoom';
+import { readPowerLevel, usePowerLevelsContext } from '../../../hooks/usePowerLevels';
+import { MemberPowerTag, MessageEvent, StateEvent } from '../../../../types/matrix/room';
 import { PowerIcon } from '../../../components/power';
 import colorMXID from '../../../../util/colorMXID';
 import { getPowerTagIconSrc } from '../../../hooks/useMemberPowerTag';
@@ -721,6 +723,15 @@ export const Message = as<'div', MessageProps>(
     const useAuthentication = useMediaAuthentication();
     const isAdmin = localStorage.getItem('dt_is_admin') === 'true';
     const senderId = mEvent.getSender() ?? '';
+    const direct = useIsDirectRoom();
+    const powerLevels = usePowerLevelsContext();
+    // DT: canal de difusión = las usuarias por defecto no pueden enviar mensajes
+    const broadcast =
+      readPowerLevel.event(powerLevels, MessageEvent.RoomMessage) >
+      readPowerLevel.user(powerLevels, undefined);
+    // DT: mensajes propios a la derecha (estilo WhatsApp), solo en layout Bubble y fuera de canales de difusión
+    const ownBubble =
+      messageLayout === MessageLayout.Bubble && !broadcast && senderId === mx.getUserId();
 
     const [hover, setHover] = useState(false);
     const { hoverProps } = useHover({ onHoverChange: setHover });
@@ -749,24 +760,26 @@ export const Message = as<'div', MessageProps>(
         alignItems="Baseline"
         grow="Yes"
       >
-        <Box alignItems="Center" gap="200">
-          <Username
-            as="button"
-            style={{ color: usernameColor }}
-            data-user-id={senderId}
-            onContextMenu={onUserClick}
-            onClick={onUsernameClick}
-          >
-            <Text
-              as="span"
-              size={messageLayout === MessageLayout.Bubble ? 'T300' : 'T400'}
-              truncate
+        {!ownBubble && (
+          <Box alignItems="Center" gap="200">
+            <Username
+              as="button"
+              style={{ color: usernameColor }}
+              data-user-id={senderId}
+              onContextMenu={onUserClick}
+              onClick={onUsernameClick}
             >
-              <UsernameBold>{senderDisplayName}</UsernameBold>
-            </Text>
-          </Username>
-          {tagIconSrc && <PowerIcon size="100" iconSrc={tagIconSrc} />}
-        </Box>
+              <Text
+                as="span"
+                size={messageLayout === MessageLayout.Bubble ? 'T300' : 'T400'}
+                truncate
+              >
+                <UsernameBold>{senderDisplayName}</UsernameBold>
+              </Text>
+            </Username>
+            {tagIconSrc && <PowerIcon size="100" iconSrc={tagIconSrc} />}
+          </Box>
+        )}
         <Box shrink="No" gap="100">
           {messageLayout === MessageLayout.Modern && hover && (
             <>
@@ -1089,18 +1102,20 @@ export const Message = as<'div', MessageProps>(
                             <MessagePinItem room={room} mEvent={mEvent} onClose={closeMenu} />
                           )}
                         </Box>
-                        {!mEvent.isRedacted() && canDelete && (isAdmin || mEvent.getSender() === mx.getUserId()) && (
-                          <>
-                            <Line size="300" />
-                            <Box direction="Column" gap="100" className={css.MessageMenuGroup}>
-                              <MessageDeleteItem
-                                room={room}
-                                mEvent={mEvent}
-                                onClose={closeMenu}
-                              />
-                            </Box>
-                          </>
-                        )}
+                        {!mEvent.isRedacted() &&
+                          canDelete &&
+                          (isAdmin || mEvent.getSender() === mx.getUserId()) && (
+                            <>
+                              <Line size="300" />
+                              <Box direction="Column" gap="100" className={css.MessageMenuGroup}>
+                                <MessageDeleteItem
+                                  room={room}
+                                  mEvent={mEvent}
+                                  onClose={closeMenu}
+                                />
+                              </Box>
+                            </>
+                          )}
                       </Menu>
                     </FocusTrap>
                   }
@@ -1125,7 +1140,13 @@ export const Message = as<'div', MessageProps>(
           </CompactLayout>
         )}
         {messageLayout === MessageLayout.Bubble && (
-          <BubbleLayout before={avatarJSX} header={headerJSX} onContextMenu={handleContextMenu}>
+          <BubbleLayout
+            before={avatarJSX}
+            header={headerJSX}
+            own={ownBubble}
+            hideBefore={ownBubble && direct}
+            onContextMenu={handleContextMenu}
+          >
             {msgContentJSX}
           </BubbleLayout>
         )}
@@ -1246,18 +1267,21 @@ export const Event = as<'div', EventProps>(
                           )}
                           <MessageCopyLinkItem room={room} mEvent={mEvent} onClose={closeMenu} />
                         </Box>
-                        {!mEvent.isRedacted() && canDelete && !stateEvent && (isAdmin || mEvent.getSender() === mx.getUserId()) && (
-                          <>
-                            <Line size="300" />
-                            <Box direction="Column" gap="100" className={css.MessageMenuGroup}>
-                              <MessageDeleteItem
-                                room={room}
-                                mEvent={mEvent}
-                                onClose={closeMenu}
-                              />
-                            </Box>
-                          </>
-                        )}
+                        {!mEvent.isRedacted() &&
+                          canDelete &&
+                          !stateEvent &&
+                          (isAdmin || mEvent.getSender() === mx.getUserId()) && (
+                            <>
+                              <Line size="300" />
+                              <Box direction="Column" gap="100" className={css.MessageMenuGroup}>
+                                <MessageDeleteItem
+                                  room={room}
+                                  mEvent={mEvent}
+                                  onClose={closeMenu}
+                                />
+                              </Box>
+                            </>
+                          )}
                       </Menu>
                     </FocusTrap>
                   }
