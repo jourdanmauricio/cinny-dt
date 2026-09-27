@@ -36,7 +36,12 @@ import { useIsDirectRoom, useRoom } from '../../hooks/useRoom';
 import { useSetting } from '../../state/hooks/settings';
 import { settingsAtom } from '../../state/settings';
 import { useSpaceOptionally } from '../../hooks/useSpace';
-import { getDirectPath, getHomeSearchPath, getSpaceSearchPath, withSearchParam } from '../../pages/pathUtils';
+import {
+  getDirectPath,
+  getHomeSearchPath,
+  getSpaceSearchPath,
+  withSearchParam,
+} from '../../pages/pathUtils';
 import { getCanonicalAliasOrRoomId, isRoomAlias, mxcUrlToHttp } from '../../utils/matrix';
 import { _SearchPathSearchParams } from '../../pages/paths';
 import * as css from './RoomViewHeader.css';
@@ -45,6 +50,7 @@ import { readPowerLevel, usePowerLevelsContext } from '../../hooks/usePowerLevel
 import { markAsRead } from '../../utils/notifications';
 import { roomToUnreadAtom } from '../../state/room/roomToUnread';
 import { copyToClipboard } from '../../utils/dom';
+import { nameInitials } from '../../utils/common';
 import { LeaveRoomPrompt } from '../../components/leave-room-prompt';
 import { useRoomAvatar, useRoomName, useRoomTopic } from '../../hooks/useRoomMeta';
 import { ScreenSize, useScreenSizeContext } from '../../hooks/useScreenSize';
@@ -369,7 +375,9 @@ function CallButton() {
         tooltip={
           <Tooltip>
             {inAnotherCall ? (
-              <Text size="L400">Ya estás en otra llamada. Finaliza la llamada actual para unirte.</Text>
+              <Text size="L400">
+                Ya estás en otra llamada. Finaliza la llamada actual para unirte.
+              </Text>
             ) : (
               <Text>Call</Text>
             )}
@@ -511,9 +519,13 @@ export function RoomViewHeader({ callView }: { callView?: boolean }) {
                 roomId={room.roomId}
                 src={avatarUrl}
                 alt={name}
-                renderFallback={() => (
-                  <RoomIcon size="200" joinRule={room.getJoinRule()} roomType={room.getType()} />
-                )}
+                renderFallback={() =>
+                  direct ? (
+                    <Text size="H4">{nameInitials(name)}</Text>
+                  ) : (
+                    <RoomIcon size="200" joinRule={room.getJoinRule()} roomType={room.getType()} />
+                  )
+                }
               />
             </Avatar>
           )}

@@ -9,7 +9,7 @@ import { getMxIdLocalPart, mxcUrlToHttp } from '../../utils/matrix';
 import { AsyncStatus, useAsyncCallback } from '../../hooks/useAsyncCallback';
 import { timeDayMonthYear, timeHourMinute } from '../../utils/time';
 import { useRoomNavigate } from '../../hooks/useRoomNavigate';
-import { RoomAvatar } from '../room-avatar';
+import { RoomAvatar, RoomIcon } from '../room-avatar';
 import { nameInitials } from '../../utils/common';
 import { useRoomAvatar, useRoomName, useRoomTopic } from '../../hooks/useRoomMeta';
 import { mDirectAtom } from '../../state/mDirectList';
@@ -30,7 +30,8 @@ export const RoomIntro = as<'div', RoomIntroProps>(({ room, ...props }, ref) => 
   const [invitePrompt, setInvitePrompt] = useState(false);
 
   const createEvent = getStateEvent(room, StateEvent.RoomCreate);
-  const avatarMxc = useRoomAvatar(room, mDirects.has(room.roomId));
+  const direct = mDirects.has(room.roomId);
+  const avatarMxc = useRoomAvatar(room, direct);
   const name = useRoomName(room);
   const topic = useRoomTopic(room);
   const avatarHttpUrl = avatarMxc ? mxcUrlToHttp(mx, avatarMxc, useAuthentication) : undefined;
@@ -56,7 +57,13 @@ export const RoomIntro = as<'div', RoomIntroProps>(({ room, ...props }, ref) => 
             roomId={room.roomId}
             src={avatarHttpUrl ?? undefined}
             alt={name}
-            renderFallback={() => <Text size="H2">{nameInitials(name)}</Text>}
+            renderFallback={() =>
+              direct ? (
+                <Text size="H2">{nameInitials(name)}</Text>
+              ) : (
+                <RoomIcon size="400" joinRule={room.getJoinRule()} roomType={room.getType()} />
+              )
+            }
           />
         </Avatar>
       </Box>

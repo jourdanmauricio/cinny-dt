@@ -29,7 +29,11 @@ import { nameInitials } from '../../utils/common';
 import { useMatrixClient } from '../../hooks/useMatrixClient';
 import { useRoomUnread } from '../../state/hooks/unread';
 import { roomToUnreadAtom } from '../../state/room/roomToUnread';
-import { getPowersLevelFromMatrixEvent, readPowerLevel, usePowerLevels } from '../../hooks/usePowerLevels';
+import {
+  getPowersLevelFromMatrixEvent,
+  readPowerLevel,
+  usePowerLevels,
+} from '../../hooks/usePowerLevels';
 import { copyToClipboard } from '../../utils/dom';
 import { markAsRead } from '../../utils/notifications';
 import { UseStateProvider } from '../../components/UseStateProvider';
@@ -278,6 +282,9 @@ export function RoomNavItem({
   );
 
   const roomName = useRoomName(room);
+  const avatarUrl = direct
+    ? getDirectRoomAvatarUrl(mx, room, 96, useAuthentication)
+    : getRoomAvatarUrl(mx, room, 96, useAuthentication);
 
   const handleContextMenu: MouseEventHandler<HTMLElement> = (evt) => {
     evt.preventDefault();
@@ -354,20 +361,24 @@ export function RoomNavItem({
           <Box as="span" grow="Yes" alignItems="Center" gap="200">
             <Box as="span" style={{ position: 'relative', lineHeight: 0, flexShrink: 0 }}>
               <Avatar size="200" radii="400">
-                {showAvatar ? (
+                {showAvatar || avatarUrl ? (
                   <RoomAvatar
                     roomId={room.roomId}
-                    src={
-                      direct
-                        ? getDirectRoomAvatarUrl(mx, room, 96, useAuthentication)
-                        : getRoomAvatarUrl(mx, room, 96, useAuthentication)
-                    }
+                    src={avatarUrl}
                     alt={roomName}
-                    renderFallback={() => (
-                      <Text as="span" size="H6">
-                        {nameInitials(roomName)}
-                      </Text>
-                    )}
+                    renderFallback={() =>
+                      direct ? (
+                        <Text as="span" size="H6">
+                          {nameInitials(roomName)}
+                        </Text>
+                      ) : (
+                        <RoomIcon
+                          size="100"
+                          joinRule={room.getJoinRule()}
+                          roomType={room.getType()}
+                        />
+                      )
+                    }
                   />
                 ) : (
                   <RoomIcon
@@ -406,7 +417,7 @@ export function RoomNavItem({
                 <TypingIndicator size="300" disableAnimation />
               </Badge>
             )}
-{!optionsVisible && unread && (
+            {!optionsVisible && unread && (
               <UnreadBadgeCenter>
                 <UnreadBadge highlight={unread.highlight > 0} count={unread.total} />
               </UnreadBadgeCenter>
