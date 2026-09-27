@@ -236,6 +236,10 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
 
     const { recordingState, startRecording, stopRecording } = useMediaRecorder(handleVoiceStop);
 
+    const [editorEmpty, setEditorEmpty] = useState(() => isEmptyEditor(editor));
+    const handleEditorChange = useCallback(() => setEditorEmpty(isEmptyEditor(editor)), [editor]);
+    const showSend = recordingState !== 'recording' && (!editorEmpty || selectedFiles.length > 0);
+
     const isComposing = useComposingCheck();
 
     useElementSizeObserver(
@@ -560,6 +564,7 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
           placeholder="Escribe un mensaje..."
           onKeyDown={handleKeyDown}
           onKeyUp={handleKeyUp}
+          onChange={handleEditorChange}
           onPaste={handlePaste}
           top={
             replyDraft && (
@@ -687,26 +692,37 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
                   </PopOut>
                 )}
               </UseStateProvider>
-              <IconButton
-                onClick={recordingState === 'recording' ? stopRecording : startRecording}
-                variant={recordingState === 'recording' ? 'Critical' : 'SurfaceVariant'}
-                size="300"
-                radii="300"
-                aria-label={recordingState === 'recording' ? 'Detener grabación' : 'Grabar mensaje de voz'}
-                title={
-                  recordingState === 'denied'
-                    ? 'Acceso al micrófono denegado'
-                    : recordingState === 'recording'
-                    ? 'Detener grabación'
-                    : 'Grabar mensaje de voz'
-                }
-                disabled={recordingState === 'denied'}
-              >
-                <Icon src={recordingState === 'denied' ? Icons.MicMute : Icons.Mic} />
-              </IconButton>
-              <IconButton onClick={submit} variant="SurfaceVariant" size="300" radii="300">
-                <Icon src={Icons.Send} />
-              </IconButton>
+              {showSend ? (
+                <IconButton
+                  onClick={submit}
+                  variant="SurfaceVariant"
+                  size="300"
+                  radii="300"
+                  aria-label="Enviar"
+                >
+                  <Icon src={Icons.Send} />
+                </IconButton>
+              ) : (
+                <IconButton
+                  onClick={recordingState === 'recording' ? stopRecording : startRecording}
+                  variant={recordingState === 'recording' ? 'Critical' : 'SurfaceVariant'}
+                  size="300"
+                  radii="300"
+                  aria-label={
+                    recordingState === 'recording' ? 'Detener grabación' : 'Grabar mensaje de voz'
+                  }
+                  title={
+                    recordingState === 'denied'
+                      ? 'Acceso al micrófono denegado'
+                      : recordingState === 'recording'
+                      ? 'Detener grabación'
+                      : 'Grabar mensaje de voz'
+                  }
+                  disabled={recordingState === 'denied'}
+                >
+                  <Icon src={recordingState === 'denied' ? Icons.MicMute : Icons.Mic} />
+                </IconButton>
+              )}
             </>
           }
           bottom={
