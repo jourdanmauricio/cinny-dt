@@ -1,5 +1,6 @@
 import { RecipeVariants, recipe } from '@vanilla-extract/recipes';
 import { DefaultReset, config } from 'folds';
+import { COMPOSER_HEIGHT } from './RoomView.css';
 
 export const TimelineFloat = recipe({
   base: [
@@ -18,7 +19,7 @@ export const TimelineFloat = recipe({
         top: config.space.S400,
       },
       Bottom: {
-        bottom: config.space.S400,
+        bottom: `calc(${config.space.S400} + ${COMPOSER_HEIGHT})`,
       },
     },
   },

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useRef } from 'react';
 import { Box, Text, config } from 'folds';
 import { EventType } from 'matrix-js-sdk';
 import { ReactEditor } from 'slate-react';
@@ -24,6 +24,7 @@ import { useRoomCreators } from '../../hooks/useRoomCreators';
 import { useRoom, useIsDirectRoom } from '../../hooks/useRoom';
 import { ThemeKind, useActiveTheme } from '../../hooks/useTheme';
 import * as css from './RoomView.css';
+import { useResizeObserver } from '../../hooks/useResizeObserver';
 
 const FN_KEYS_REGEX = /^F\d+$/;
 const shouldFocusMessageField = (evt: KeyboardEvent): boolean => {
@@ -59,6 +60,8 @@ const shouldFocusMessageField = (evt: KeyboardEvent): boolean => {
 export function RoomView({ eventId }: { eventId?: string }) {
   const roomInputRef = useRef<HTMLDivElement>(null);
   const roomViewRef = useRef<HTMLDivElement>(null);
+  const timelineAreaRef = useRef<HTMLDivElement>(null);
+  const composerRef = useRef<HTMLDivElement>(null);
 
   const [hideActivity] = useSetting(settingsAtom, 'hideActivity');
   const isDirect = useIsDirectRoom();
@@ -94,24 +97,27 @@ export function RoomView({ eventId }: { eventId?: string }) {
     )
   );
 
+  // DT: la barra de escritura flota sobre el timeline; exponemos su altura como
+  // variable CSS para ubicar encima el indicador de escritura y "Ir al último mensaje"
+  const syncComposerHeight = useCallback(() => {
+    const height = composerRef.current?.offsetHeight ?? 0;
+    timelineAreaRef.current?.style.setProperty(css.COMPOSER_HEIGHT_PROP, `${height}px`);
+  }, []);
+  useLayoutEffect(syncComposerHeight, [syncComposerHeight]);
+  useResizeObserver(
+    syncComposerHeight,
+    useCallback(() => composerRef.current, [])
+  );
+
   return (
     <Page ref={roomViewRef} className={css.RoomPatternContainer}>
       <div
         className={css.RoomPattern}
         style={{ opacity: theme.kind === ThemeKind.Dark ? 0.12 : 0.18 }}
       />
-      <Box grow="Yes" direction="Column">
-        <RoomTimeline
-          key={roomId}
-          room={room}
-          eventId={eventId}
-          roomInputRef={roomInputRef}
-          editor={editor}
-        />
-        <RoomViewTyping room={room} />
-      </Box>
-      <Box shrink="No" direction="Column">
-        <div style={{ padding: `0 ${config.space.S400}` }}>
+      <Box grow="Yes" direction="Column" className={css.TimelineArea} ref={timelineAreaRef}>
+        {/* DT: se renderiza antes del timeline para que su ref exista en los layout effects de este */}
+        <div ref={composerRef} className={css.ComposerOverlay}>
           {tombstoneEvent ? (
             <RoomTombstone
               roomId={roomId}
@@ -141,6 +147,17 @@ export function RoomView({ eventId }: { eventId?: string }) {
             </>
           )}
         </div>
+        <RoomTimeline
+          key={roomId}
+          room={room}
+          eventId={eventId}
+          roomInputRef={roomInputRef}
+          composerRef={composerRef}
+          editor={editor}
+        />
+        <RoomViewTyping room={room} />
+      </Box>
+      <Box shrink="No" direction="Column">
         {hideActivity || !isDirect ? (
           <RoomViewFollowingPlaceholder />
         ) : (

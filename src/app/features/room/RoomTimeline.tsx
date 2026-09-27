@@ -228,6 +228,8 @@ type RoomTimelineProps = {
   room: Room;
   eventId?: string;
   roomInputRef: RefObject<HTMLElement>;
+  // DT: contenedor de la barra de escritura flotante (el timeline pasa por detrás)
+  composerRef?: RefObject<HTMLElement>;
   editor: Editor;
 };
 
@@ -431,7 +433,13 @@ const getRoomUnreadInfo = (room: Room, scrollTo = false) => {
   };
 };
 
-export function RoomTimeline({ room, eventId, roomInputRef, editor }: RoomTimelineProps) {
+export function RoomTimeline({
+  room,
+  eventId,
+  roomInputRef,
+  composerRef,
+  editor,
+}: RoomTimelineProps) {
   const mx = useMatrixClient();
   const useAuthentication = useMediaAuthentication();
   const [hideActivity] = useSetting(settingsAtom, 'hideActivity');
@@ -494,6 +502,16 @@ export function RoomTimeline({ room, eventId, roomInputRef, editor }: RoomTimeli
   }
 
   const atBottomAnchorRef = useRef<HTMLElement>(null);
+
+  // DT: espacio al final del timeline con la altura de la barra flotante,
+  // para que el último mensaje no quede tapado
+  const composerSpacerRef = useRef<HTMLDivElement>(null);
+  const syncComposerSpacer = useCallback(() => {
+    const spacer = composerSpacerRef.current;
+    if (!spacer) return;
+    spacer.style.height = `${composerRef?.current?.offsetHeight ?? 0}px`;
+  }, [composerRef]);
+  useLayoutEffect(syncComposerSpacer, [syncComposerSpacer]);
   const [atBottom, setAtBottom] = useState<boolean>(true);
   const atBottomRef = useRef(atBottom);
   atBottomRef.current = atBottom;
@@ -705,13 +723,15 @@ export function RoomTimeline({ room, eventId, roomInputRef, editor }: RoomTimeli
     useMemo(() => {
       let mounted = false;
       return (entries) => {
+        syncComposerSpacer();
         if (!mounted) {
           // skip initial mounting call
           mounted = true;
           return;
         }
-        if (!roomInputRef.current) return;
-        const editorBaseEntry = getResizeObserverEntry(roomInputRef.current, entries);
+        const editorBase = composerRef?.current ?? roomInputRef.current;
+        if (!editorBase) return;
+        const editorBaseEntry = getResizeObserverEntry(editorBase, entries);
         const scrollElement = getScrollElement();
         if (!editorBaseEntry || !scrollElement) return;
 
@@ -719,8 +739,8 @@ export function RoomTimeline({ room, eventId, roomInputRef, editor }: RoomTimeli
           scrollToBottom(scrollElement);
         }
       };
-    }, [getScrollElement, roomInputRef]),
-    useCallback(() => roomInputRef.current, [roomInputRef])
+    }, [getScrollElement, roomInputRef, composerRef, syncComposerSpacer]),
+    useCallback(() => composerRef?.current ?? roomInputRef.current, [composerRef, roomInputRef])
   );
 
   const tryAutoMarkAsRead = useCallback(() => {
@@ -1840,6 +1860,7 @@ export function RoomTimeline({ room, eventId, roomInputRef, editor }: RoomTimeli
                 </MessageBase>
               </>
             ))}
+          <div ref={composerSpacerRef} style={{ flexShrink: 0 }} aria-hidden />
           <span ref={atBottomAnchorRef} />
         </Box>
       </Scroll>

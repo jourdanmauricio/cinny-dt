@@ -1,5 +1,6 @@
 import { keyframes, style } from '@vanilla-extract/css';
 import { DefaultReset, color, config } from 'folds';
+import { COMPOSER_HEIGHT } from './RoomView.css';
 
 const SlideUpAnime = keyframes({
   from: {
@@ -18,7 +19,7 @@ export const RoomViewTyping = style([
     backgroundColor: color.Surface.Container,
     color: color.Surface.OnContainer,
     position: 'absolute',
-    bottom: 0,
+    bottom: COMPOSER_HEIGHT,
     animation: `${SlideUpAnime} 100ms ease-in-out`,
   },
 ]);
