@@ -59,6 +59,7 @@ import { useSpaceOptionally } from '../../hooks/useSpace';
 import { ContainerColor } from '../../styles/ContainerColor.css';
 import { useFlattenPowerTagMembers, useGetMemberPowerTag } from '../../hooks/useMemberPowerTag';
 import { useRoomCreators } from '../../hooks/useRoomCreators';
+import { AppIdSearchField } from '../../components/app-id-search';
 
 type MemberDrawerHeaderProps = {
   room: Room;
@@ -189,6 +190,8 @@ export function MembersDrawer({ room, members }: MembersDrawerProps) {
 
   const fetchingMembers = members.length < room.getJoinedMemberCount();
   const openUserRoomProfile = useOpenUserRoomProfile();
+  // DT: búsqueda por ID de Sugo/Contigo, solo para admins
+  const isDtAdmin = localStorage.getItem('dt_is_admin') === 'true';
   const space = useSpaceOptionally();
   const openProfileUserId = useUserRoomProfileState()?.userId;
 
@@ -354,6 +357,19 @@ export function MembersDrawer({ room, members }: MembersDrawerProps) {
                     )
                   }
                 />
+                {isDtAdmin && (
+                  <AppIdSearchField
+                    onSelect={(match, target) =>
+                      openUserRoomProfile(
+                        room.roomId,
+                        space?.roomId,
+                        match.synapseUserId,
+                        target.getBoundingClientRect(),
+                        'Left'
+                      )
+                    }
+                  />
+                )}
               </Box>
             </Box>
 
