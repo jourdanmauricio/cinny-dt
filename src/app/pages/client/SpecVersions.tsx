@@ -12,7 +12,7 @@ export function SpecVersions({ baseUrl, children }: { baseUrl: string; children:
         <SplashScreen>
           <Box direction="Column" grow="Yes" alignItems="Center" justifyContent="Center" gap="400">
             <Spinner variant="Secondary" size="600" />
-            <Text>Connecting to server</Text>
+            <Text>Conectando con el servidor</Text>
           </Box>
         </SplashScreen>
       )}
@@ -22,16 +22,17 @@ export function SpecVersions({ baseUrl, children }: { baseUrl: string; children:
             <Dialog>
               <Box direction="Column" gap="400" style={{ padding: config.space.S400 }}>
                 <Text>
-                  Unable to connect to the homeserver. The homeserver or your internet connection may be down.
+                  No se pudo conectar con el servidor. Puede que el servidor o tu conexión a
+                  internet no estén disponibles.
                 </Text>
                 <Button variant="Critical" onClick={retry}>
                   <Text as="span" size="B400">
-                    Retry
+                    Reintentar
                   </Text>
                 </Button>
                 <Button variant="Critical" onClick={ignore} fill="Soft">
                   <Text as="span" size="B400">
-                    Continue
+                    Continuar
                   </Text>
                 </Button>
               </Box>
