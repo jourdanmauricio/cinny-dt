@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { color, config } from 'folds';
+import { color, config, toRem } from 'folds';
 import { Editor } from '../../components/editor/Editor.css';
 import { darkTheme } from '../../../colors.css';
 
@@ -9,6 +9,8 @@ const GLASS_BLUR = 'blur(14px) saturate(140%)';
 export const RoomInputGlass = style({
   selectors: {
     [`${Editor}&`]: {
+      // DT: forma de píldora (con una línea la barra mide ~48px: extremos completamente redondos)
+      borderRadius: toRem(24),
       backgroundColor: [
         color.SurfaceVariant.Container,
         `color-mix(in srgb, ${color.SurfaceVariant.Container} 65%, transparent)`,
