@@ -3,6 +3,7 @@ import { Avatar, Box, ContainerColor, as, color, toRem } from 'folds';
 import { randomNumberBetween } from '../../../utils/common';
 import { LinePlaceholder } from './LinePlaceholder';
 import { ModernLayout } from '../layout';
+import { PlaceholderPulse } from './LinePlaceholder.css';
 
 const contentMargin: CSSProperties = { marginTop: toRem(3) };
 
@@ -18,6 +19,7 @@ export const DefaultPlaceholder = as<'div', { variant?: ContainerColor }>(
         ref={ref}
         before={
           <Avatar
+            className={PlaceholderPulse}
             style={{ backgroundColor: color[variant ?? 'SurfaceVariant'].Container }}
             size="300"
           />
