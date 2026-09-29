@@ -139,8 +139,16 @@ export const BubbleBefore = style({
   minWidth: toRem(36),
 });
 
+// DT: limita la columna al ancho disponible para que el contenido en una línea
+// (ej. cita de respuesta) se recorte con "..." en lugar de desbordar
+export const BubbleColumn = style({
+  minWidth: 0,
+  maxWidth: '100%',
+});
+
 export const BubbleContent = style({
-  maxWidth: toRem(800),
+  minWidth: 0,
+  maxWidth: `min(${toRem(800)}, 100%)`,
   padding: config.space.S200,
   backgroundColor: color.SurfaceVariant.Container,
   color: color.SurfaceVariant.OnContainer,

@@ -67,12 +67,17 @@ export const BubbleLayout = as<'div', BubbleLayoutProps>(
             {before}
           </Box>
         )}
-        <Box grow="Yes" direction="Column" alignItems={own ? 'End' : undefined}>
+        <Box
+          className={css.BubbleColumn}
+          grow="Yes"
+          direction="Column"
+          alignItems={own ? 'End' : undefined}
+        >
           {header}
           {hideBubble ? (
             children
           ) : (
-            <Box>
+            <Box className={css.BubbleColumn}>
               <Box
                 className={classNames(
                   css.BubbleContent,

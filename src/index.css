@@ -41,6 +41,9 @@
 html {
   height: 100%;
   overflow: hidden;
+  /* DT: evita que Safari iOS agrande el texto por su cuenta */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
