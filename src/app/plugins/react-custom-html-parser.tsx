@@ -41,6 +41,12 @@ import {
 import { onEnterOrSpace } from '../utils/keyboard';
 import { copyToClipboard, tryDecodeURIComponent } from '../utils/dom';
 import { useTimeoutToggle } from '../hooks/useTimeoutToggle';
+import { isInviteLink, openPushActivation } from '../features/dt-push/pushNotifications';
+
+const handleInviteLinkClick = (evt: React.MouseEvent) => {
+  evt.preventDefault();
+  openPushActivation();
+};
 
 const ReactPrism = lazy(() => import('./react-prism/ReactPrism'));
 
@@ -158,6 +164,15 @@ export const factoryRenderLinkifyWithMention = (
     if (tagName === 'a' && testMatrixTo(tryDecodeURIComponent(attributes.href))) {
       const mention = mentionRender(tryDecodeURIComponent(attributes.href));
       if (mention) return mention;
+    }
+
+    // DT: link de invitación a notificaciones → se abre dentro de la app
+    if (tagName === 'a' && isInviteLink(attributes.href)) {
+      return (
+        <a {...attributes} target={undefined} onClick={handleInviteLinkClick}>
+          {content}
+        </a>
+      );
     }
 
     return <a {...attributes}>{content}</a>;
@@ -454,6 +469,15 @@ export const getReactCustomHtmlParser = (
           );
 
           if (mention) return mention;
+        }
+
+        // DT: link de invitación a notificaciones → se abre dentro de la app
+        if (name === 'a' && isInviteLink(props.href)) {
+          return (
+            <a {...props} target={undefined} onClick={handleInviteLinkClick}>
+              {domToReact(children, opts)}
+            </a>
+          );
         }
 
         if (name === 'span' && 'data-mx-spoiler' in props) {

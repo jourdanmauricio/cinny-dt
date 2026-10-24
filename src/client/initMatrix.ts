@@ -10,6 +10,7 @@ import { createClient, MatrixClient, IndexedDBStore, Filter } from 'matrix-js-sd
 // import { cryptoCallbacks } from './secretStorageKeys';
 import { clearNavToActivePathStore } from '../app/state/navToActivePath';
 import { pushSessionToSW } from '../sw-session';
+import { disablePush } from '../app/features/dt-push/pushNotifications';
 
 type Session = {
   baseUrl: string;
@@ -65,6 +66,8 @@ export const clearCacheAndReload = async (mx: MatrixClient) => {
 
 export const logoutClient = async (mx: MatrixClient) => {
   pushSessionToSW();
+  // DT: baja de notificaciones de este dispositivo, antes de invalidar el token
+  await disablePush(mx);
   mx.stopClient();
   try {
     await mx.logout();

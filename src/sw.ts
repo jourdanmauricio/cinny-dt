@@ -156,3 +156,47 @@ self.addEventListener('fetch', (event: FetchEvent) => {
     })
   );
 });
+
+/**
+ * DT: notificaciones push de capacitación (Oct-26 Req 7).
+ * Payload enviado por la API de DT: { title, body, url }.
+ */
+type DtPushPayload = { title?: string; body?: string; url?: string | null };
+
+self.addEventListener('push', (event: PushEvent) => {
+  let payload: DtPushPayload = {};
+  try {
+    payload = event.data?.json() ?? {};
+  } catch {
+    payload = { body: event.data?.text() };
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(payload.title || 'Dulce Terciopelo', {
+      body: payload.body ?? '',
+      icon: '/favicon-192x192.png',
+      badge: '/favicon-192x192.png',
+      data: { url: payload.url ?? null },
+    })
+  );
+});
+
+self.addEventListener('notificationclick', (event: NotificationEvent) => {
+  event.notification.close();
+  const url: string | null = event.notification.data?.url ?? null;
+
+  event.waitUntil(
+    (async () => {
+      // Con link (el de la capacitación): se abre ese link, no el chat
+      if (url) {
+        await self.clients.openWindow(url);
+        return;
+      }
+      // Sin link: se enfoca el chat si ya está abierto, si no se abre
+      const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      const existing = windows[0];
+      if (existing) await existing.focus();
+      else await self.clients.openWindow('/');
+    })()
+  );
+});

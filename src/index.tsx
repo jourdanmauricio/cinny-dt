@@ -17,8 +17,12 @@ import App from './app/pages/App';
 import './app/i18n';
 import { pushSessionToSW } from './sw-session';
 import { clearPreviousSessionData, getFallbackSession, setFallbackSession } from './app/state/sessions';
+import { capturePendingActivationFromUrl } from './app/features/dt-push/pushNotifications';
 
 document.body.classList.add(configClass, varsClass);
+
+// DT: link de invitación a notificaciones abierto desde fuera de la app
+capturePendingActivationFromUrl();
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {

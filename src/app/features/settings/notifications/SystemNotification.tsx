@@ -10,6 +10,8 @@ import { getNotificationState, usePermissionState } from '../../../hooks/usePerm
 import { useEmailNotifications } from '../../../hooks/useEmailNotifications';
 import { AsyncStatus, useAsyncCallback } from '../../../hooks/useAsyncCallback';
 import { useMatrixClient } from '../../../hooks/useMatrixClient';
+import { PushSettingTile } from '../../dt-push/PushSettingTile';
+import { isDtAdminSession } from '../../dt-push/pushNotifications';
 
 function EmailNotification() {
   const mx = useMatrixClient();
@@ -99,6 +101,17 @@ export function SystemNotification() {
   return (
     <Box direction="Column" gap="100">
       <Text size="L400">Sistema</Text>
+      {/* DT: avisos de capacitación (push), solo para usuarias */}
+      {!isDtAdminSession() && (
+        <SequenceCard
+          className={SequenceCardStyle}
+          variant="SurfaceVariant"
+          direction="Column"
+          gap="400"
+        >
+          <PushSettingTile />
+        </SequenceCard>
+      )}
       <SequenceCard
         className={SequenceCardStyle}
         variant="SurfaceVariant"
@@ -106,7 +119,7 @@ export function SystemNotification() {
         gap="400"
       >
         <SettingTile
-          title="Notificaciones de escritorio"
+          title="Notificaciones de mensajes"
           description={
             notifPermission === 'denied' ? (
               <Text as="span" style={{ color: color.Critical.Main }} size="T200">
@@ -115,7 +128,7 @@ export function SystemNotification() {
                   : 'Las notificaciones no son compatibles con este sistema.'}
               </Text>
             ) : (
-              <span>Mostrar notificaciones de escritorio al recibir mensajes.</span>
+              <span>Avisar cuando llega un mensaje nuevo mientras el chat está abierto.</span>
             )
           }
           after={
