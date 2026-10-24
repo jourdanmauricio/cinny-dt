@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import React from 'react';
+import React, { useState } from 'react';
 import FileSaver from 'file-saver';
 import classNames from 'classnames';
 import { Box, Chip, Header, Icon, IconButton, Icons, Text, as } from 'folds';
@@ -7,16 +7,22 @@ import * as css from './ImageViewer.css';
 import { useZoom } from '../../hooks/useZoom';
 import { usePan } from '../../hooks/usePan';
 import { downloadMedia } from '../../utils/matrix';
+import { DtImageEditor } from '../../features/dt-image-editor/DtImageEditor';
 
 export type ImageViewerProps = {
   alt: string;
   src: string;
   requestClose: () => void;
+  /** DT: si se pasa, muestra "Editar" (solo admins, ver RoomTimeline) */
+  onEdit?: (file: File) => void;
 };
 
 export const ImageViewer = as<'div', ImageViewerProps>(
-  ({ className, alt, src, requestClose, ...props }, ref) => {
+  ({ className, alt, src, requestClose, onEdit, ...props }, ref) => {
     const { zoom, zoomIn, zoomOut, setZoom } = useZoom(0.2);
+    const [editing, setEditing] = useState(false);
+    // En pantallas angostas (iPhone), "Editar" queda solo con el ícono
+    const compactEdit = window.matchMedia('(max-width: 480px)').matches;
     const { pan, cursor, onMouseDown } = usePan(zoom !== 1);
 
     const handleDownload = async () => {
@@ -64,6 +70,17 @@ export const ImageViewer = as<'div', ImageViewerProps>(
             >
               <Icon size="50" src={Icons.Plus} />
             </IconButton>
+            {onEdit && (
+              <Chip
+                variant="Secondary"
+                aria-label="Editar imagen"
+                onClick={() => setEditing(true)}
+                radii="300"
+                before={<Icon size="50" src={Icons.Pencil} />}
+              >
+                {!compactEdit && <Text size="B300">Editar</Text>}
+              </Chip>
+            )}
             <Chip
               variant="Primary"
               onClick={handleDownload}
@@ -91,6 +108,18 @@ export const ImageViewer = as<'div', ImageViewerProps>(
             onMouseDown={onMouseDown}
           />
         </Box>
+        {editing && onEdit && (
+          <DtImageEditor
+            src={src}
+            name={alt}
+            onClose={() => setEditing(false)}
+            onDone={(file) => {
+              setEditing(false);
+              onEdit(file);
+              requestClose();
+            }}
+          />
+        )}
       </Box>
     );
   }

@@ -91,17 +91,13 @@ export function UploadBoardHeader({
         <Text size="H6">Archivos</Text>
       </Box>
       <Box className={css.UploadBoardHeaderContent} alignItems="Center" gap="100">
+        {/* DT: un solo botón de enviar, el de la barra de mensajes (manda archivos
+            y texto juntos). Antes había otro acá que mandaba solo los archivos y
+            dejaba el texto sin enviar. */}
         {isSuccess && (
-          <Chip
-            as="button"
-            onClick={handleSend}
-            variant="Primary"
-            radii="Pill"
-            outlined
-            after={<Icon src={Icons.Send} size="50" filled />}
-          >
-            <Text size="B300">Enviar</Text>
-          </Chip>
+          <Badge variant="Success" fill="Soft" radii="Pill">
+            <Text size="L400">Listo para enviar</Text>
+          </Badge>
         )}
         {isError && !open && (
           <Badge variant="Critical" fill="Solid" radii="300">

@@ -277,6 +277,23 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
       [setSelectedFiles]
     );
 
+    // DT: editar una imagen de la bandeja antes de enviarla (solo admins, salas
+    // sin cifrado). Reemplaza el ítem; la subida del original la cancela la tarjeta.
+    const canEditUploads =
+      localStorage.getItem('dt_is_admin') === 'true' && !room.hasEncryptionStateEvent();
+    const handleEditUpload = useCallback(
+      (fileItem: TUploadItem, edited: File) => {
+        const safe = safeFile(edited);
+        setSelectedFiles({
+          type: 'REPLACE',
+          item: fileItem,
+          replacement: { ...fileItem, file: safe, originalFile: safe, encInfo: undefined },
+        });
+        roomUploadAtomFamily.remove(fileItem.file);
+      },
+      [setSelectedFiles]
+    );
+
     const handleRemoveUpload = useCallback(
       (upload: TUploadContent | TUploadContent[]) => {
         const uploads = Array.isArray(upload) ? upload : [upload];
@@ -316,7 +333,29 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
       });
       handleCancelUpload(uploads);
       const contents = fulfilledPromiseSettledResult(await Promise.allSettled(contentsPromises));
-      contents.forEach((content) => mx.sendMessage(roomId, content as any));
+
+      // DT: si hay una respuesta en curso, los adjuntos también salen como
+      // respuesta (Cinny solo se la ponía al texto). Lo usa el editor de
+      // imágenes: la imagen editada responde a la original.
+      const replyRelation = replyDraft
+        ? {
+            'm.in_reply_to': { event_id: replyDraft.eventId },
+            ...(replyDraft.relation?.rel_type === RelationType.Thread
+              ? {
+                  event_id: replyDraft.relation.event_id,
+                  rel_type: RelationType.Thread,
+                  is_falling_back: false,
+                }
+              : {}),
+          }
+        : undefined;
+      contents.forEach((content) =>
+        mx.sendMessage(
+          roomId,
+          (replyRelation ? { ...content, 'm.relates_to': replyRelation } : content) as any
+        )
+      );
+      if (replyDraft) setReplyDraft(undefined);
     };
 
     const submit = useCallback(() => {
@@ -497,6 +536,7 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
                         fileItem={fileItem}
                         setMetadata={handleFileMetadata}
                         onRemove={handleRemoveUpload}
+                        onEdit={canEditUploads ? handleEditUpload : undefined}
                       />
                     ))}
                 </UploadBoardContent>

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Box, Chip, Icon, IconButton, Icons, Text, color, config, toRem } from 'folds';
 import { UploadCard, UploadCardError, UploadCardProgress } from './UploadCard';
 import { UploadStatus, UploadSuccess, useBindUploadAtom } from '../../state/upload';
@@ -12,6 +12,7 @@ import {
 } from '../../state/room/roomInputDrafts';
 import { useObjectURL } from '../../hooks/useObjectURL';
 import { useMediaConfig } from '../../hooks/useMediaConfig';
+import { DtImageEditor } from '../../features/dt-image-editor/DtImageEditor';
 
 type PreviewImageProps = {
   fileItem: TUploadItem;
@@ -58,9 +59,11 @@ function PreviewVideo({ fileItem }: PreviewVideoProps) {
 type MediaPreviewProps = {
   fileItem: TUploadItem;
   onSpoiler: (marked: boolean) => void;
+  /** DT: editar la imagen antes de enviarla (solo admins) */
+  onEdit?: () => void;
   children: ReactNode;
 };
-function MediaPreview({ fileItem, onSpoiler, children }: MediaPreviewProps) {
+function MediaPreview({ fileItem, onSpoiler, onEdit, children }: MediaPreviewProps) {
   const { originalFile, metadata } = fileItem;
   const fileUrl = useObjectURL(originalFile);
 
@@ -76,6 +79,7 @@ function MediaPreview({ fileItem, onSpoiler, children }: MediaPreviewProps) {
       {children}
       <Box
         justifyContent="End"
+        gap="100"
         style={{
           position: 'absolute',
           bottom: config.space.S100,
@@ -83,6 +87,17 @@ function MediaPreview({ fileItem, onSpoiler, children }: MediaPreviewProps) {
           right: config.space.S100,
         }}
       >
+        {onEdit && (
+          <Chip
+            variant="Secondary"
+            fill="Soft"
+            radii="Pill"
+            before={<Icon src={Icons.Pencil} size="50" />}
+            onClick={onEdit}
+          >
+            <Text size="B300">Editar</Text>
+          </Chip>
+        )}
         <Chip
           variant={metadata.markedAsSpoiler ? 'Warning' : 'Secondary'}
           fill="Soft"
@@ -104,6 +119,8 @@ type UploadCardRendererProps = {
   setMetadata: (fileItem: TUploadItem, metadata: TUploadMetadata) => void;
   onRemove: (file: TUploadContent) => void;
   onComplete?: (upload: UploadSuccess) => void;
+  /** DT: reemplazar el archivo por la versión editada (solo admins, no para GIFs) */
+  onEdit?: (fileItem: TUploadItem, edited: File) => void;
 };
 export function UploadCardRenderer({
   isEncrypted,
@@ -111,7 +128,14 @@ export function UploadCardRenderer({
   setMetadata,
   onRemove,
   onComplete,
+  onEdit,
 }: UploadCardRendererProps) {
+  const [editing, setEditing] = useState(false);
+  const editSrc = useObjectURL(editing ? fileItem.originalFile : undefined);
+  const canEdit =
+    !!onEdit &&
+    fileItem.originalFile.type.startsWith('image') &&
+    fileItem.originalFile.type !== 'image/gif';
   const mx = useMatrixClient();
   const mediaConfig = useMediaConfig();
   const allowSize = mediaConfig['m.upload.size'] || Infinity;
@@ -142,75 +166,94 @@ export function UploadCardRenderer({
   }, [upload, onComplete]);
 
   return (
-    <UploadCard
-      radii="300"
-      before={<Icon src={getFileTypeIcon(Icons, file.type)} />}
-      after={
-        <>
-          {upload.status === UploadStatus.Error && (
-            <Chip
-              as="button"
-              onClick={startUpload}
-              aria-label="Retry Upload"
-              variant="Critical"
+    <>
+      <UploadCard
+        radii="300"
+        before={<Icon src={getFileTypeIcon(Icons, file.type)} />}
+        after={
+          <>
+            {upload.status === UploadStatus.Error && (
+              <Chip
+                as="button"
+                onClick={startUpload}
+                aria-label="Retry Upload"
+                variant="Critical"
+                radii="Pill"
+                outlined
+              >
+                <Text size="B300">Retry</Text>
+              </Chip>
+            )}
+            <IconButton
+              onClick={removeUpload}
+              aria-label="Cancel Upload"
+              variant="SurfaceVariant"
               radii="Pill"
-              outlined
+              size="300"
             >
-              <Text size="B300">Retry</Text>
-            </Chip>
-          )}
-          <IconButton
-            onClick={removeUpload}
-            aria-label="Cancel Upload"
-            variant="SurfaceVariant"
-            radii="Pill"
-            size="300"
-          >
-            <Icon src={Icons.Cross} size="200" />
-          </IconButton>
-        </>
-      }
-      bottom={
-        <>
-          {fileItem.originalFile.type.startsWith('image') && (
-            <MediaPreview fileItem={fileItem} onSpoiler={handleSpoiler}>
-              <PreviewImage fileItem={fileItem} />
-            </MediaPreview>
-          )}
-          {fileItem.originalFile.type.startsWith('video') && (
-            <MediaPreview fileItem={fileItem} onSpoiler={handleSpoiler}>
-              <PreviewVideo fileItem={fileItem} />
-            </MediaPreview>
-          )}
-          {upload.status === UploadStatus.Idle && !fileSizeExceeded && (
-            <UploadCardProgress sentBytes={0} totalBytes={file.size} />
-          )}
-          {upload.status === UploadStatus.Loading && (
-            <UploadCardProgress sentBytes={upload.progress.loaded} totalBytes={file.size} />
-          )}
-          {upload.status === UploadStatus.Error && (
-            <UploadCardError>
-              <Text size="T200">{upload.error.message}</Text>
-            </UploadCardError>
-          )}
-          {upload.status === UploadStatus.Idle && fileSizeExceeded && (
-            <UploadCardError>
-              <Text size="T200">
-                The file size exceeds the limit. Maximum allowed size is{' '}
-                <b>{bytesToSize(allowSize)}</b>, but the uploaded file is{' '}
-                <b>{bytesToSize(file.size)}</b>.
-              </Text>
-            </UploadCardError>
-          )}
-        </>
-      }
-    >
-      <Text size="H6" truncate>
-        {file.name}
-      </Text>
-      {upload.status === UploadStatus.Success && (
-        <Icon style={{ color: color.Success.Main }} src={Icons.Check} size="100" />
+              <Icon src={Icons.Cross} size="200" />
+            </IconButton>
+          </>
+        }
+        bottom={
+          <>
+            {fileItem.originalFile.type.startsWith('image') && (
+              <MediaPreview
+                fileItem={fileItem}
+                onSpoiler={handleSpoiler}
+                onEdit={canEdit ? () => setEditing(true) : undefined}
+              >
+                <PreviewImage fileItem={fileItem} />
+              </MediaPreview>
+            )}
+            {fileItem.originalFile.type.startsWith('video') && (
+              <MediaPreview fileItem={fileItem} onSpoiler={handleSpoiler}>
+                <PreviewVideo fileItem={fileItem} />
+              </MediaPreview>
+            )}
+            {upload.status === UploadStatus.Idle && !fileSizeExceeded && (
+              <UploadCardProgress sentBytes={0} totalBytes={file.size} />
+            )}
+            {upload.status === UploadStatus.Loading && (
+              <UploadCardProgress sentBytes={upload.progress.loaded} totalBytes={file.size} />
+            )}
+            {upload.status === UploadStatus.Error && (
+              <UploadCardError>
+                <Text size="T200">{upload.error.message}</Text>
+              </UploadCardError>
+            )}
+            {upload.status === UploadStatus.Idle && fileSizeExceeded && (
+              <UploadCardError>
+                <Text size="T200">
+                  The file size exceeds the limit. Maximum allowed size is{' '}
+                  <b>{bytesToSize(allowSize)}</b>, but the uploaded file is{' '}
+                  <b>{bytesToSize(file.size)}</b>.
+                </Text>
+              </UploadCardError>
+            )}
+          </>
+        }
+      >
+        <Text size="H6" truncate>
+          {file.name}
+        </Text>
+        {upload.status === UploadStatus.Success && (
+          <Icon style={{ color: color.Success.Main }} src={Icons.Check} size="100" />
+        )}
+      </UploadCard>
+      {editing && editSrc && onEdit && (
+        <DtImageEditor
+          src={editSrc}
+          name={fileItem.originalFile.name}
+          onClose={() => setEditing(false)}
+          onDone={(edited) => {
+            setEditing(false);
+            // La subida del original ya arrancó: se cancela y se sube el editado
+            cancelUpload();
+            onEdit(fileItem, edited);
+          }}
+        />
       )}
-    </UploadCard>
+    </>
   );
 }

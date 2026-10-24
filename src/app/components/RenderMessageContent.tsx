@@ -44,6 +44,8 @@ type RenderMessageContentProps = {
   htmlReactParserOptions: HTMLReactParserOptions;
   linkifyOpts: Opts;
   outlineAttachment?: boolean;
+  /** DT: editar una imagen del chat (solo admins). No se ofrece para GIFs. */
+  onEditImage?: (file: File) => void;
 };
 export function RenderMessageContent({
   displayName,
@@ -57,6 +59,7 @@ export function RenderMessageContent({
   htmlReactParserOptions,
   linkifyOpts,
   outlineAttachment,
+  onEditImage,
 }: RenderMessageContentProps) {
   const renderUrlsPreview = (urls: string[]) => {
     const filteredUrls = urls.filter((url) => !testMatrixTo(url));
@@ -193,7 +196,16 @@ export function RenderMessageContent({
               {...props}
               autoPlay={mediaAutoLoad}
               renderImage={(p) => <Image {...p} loading="lazy" />}
-              renderViewer={(p) => <ImageViewer {...p} />}
+              renderViewer={(p) => (
+                <ImageViewer
+                  {...p}
+                  onEdit={
+                    getContent<IImageContent>().info?.mimetype === 'image/gif'
+                      ? undefined
+                      : onEditImage
+                  }
+                />
+              )}
             />
           )}
           outlined={outlineAttachment}

@@ -100,7 +100,11 @@ import { getResizeObserverEntry, useResizeObserver } from '../../hooks/useResize
 import * as css from './RoomTimeline.css';
 import { inSameDay, minuteDifference, timeDayMonthYear, today, yesterday } from '../../utils/time';
 import { createMentionElement, isEmptyEditor, moveCursor } from '../../components/editor';
-import { roomIdToReplyDraftAtomFamily } from '../../state/room/roomInputDrafts';
+import {
+  roomIdToReplyDraftAtomFamily,
+  roomIdToUploadItemsAtomFamily,
+} from '../../state/room/roomInputDrafts';
+import { safeFile } from '../../utils/mimeTypes';
 import { usePowerLevelsContext } from '../../hooks/usePowerLevels';
 import { GetContentCallback, MessageEvent, StateEvent } from '../../../types/matrix/room';
 import { useKeyDown } from '../../hooks/useKeyDown';
@@ -463,6 +467,10 @@ export function RoomTimeline({
   const ignoredUsersSet = useMemo(() => new Set(ignoredUsersList), [ignoredUsersList]);
 
   const setReplyDraft = useSetAtom(roomIdToReplyDraftAtomFamily(room.roomId));
+  const setUploadItems = useSetAtom(roomIdToUploadItemsAtomFamily(room.roomId));
+  // DT: editar imágenes del chat, solo admins (salas sin cifrado: E2E está deshabilitado)
+  const canEditImages =
+    localStorage.getItem('dt_is_admin') === 'true' && !room.hasEncryptionStateEvent();
   const powerLevels = usePowerLevelsContext();
   const creators = useRoomCreators(room);
 
@@ -1018,6 +1026,37 @@ export function RoomTimeline({
     [room, setReplyDraft, editor]
   );
 
+  // DT: la imagen editada queda en la bandeja de envío de la sala, como
+  // respuesta a la imagen original (no se puede reemplazar un mensaje enviado)
+  const handleEditedImage = useCallback(
+    (eventId: string, file: File) => {
+      const safe = safeFile(file);
+      setUploadItems({
+        type: 'PUT',
+        item: [
+          {
+            file: safe,
+            originalFile: safe,
+            encInfo: undefined,
+            metadata: { markedAsSpoiler: false },
+          },
+        ],
+      });
+      const original = room.findEventById(eventId);
+      const senderId = original?.getSender();
+      const body = original?.getContent().body;
+      if (original && senderId && typeof body === 'string') {
+        setReplyDraft({
+          userId: senderId,
+          eventId,
+          body,
+          relation: original.getWireContent()['m.relates_to'],
+        });
+      }
+    },
+    [room, setUploadItems, setReplyDraft]
+  );
+
   const handleReactionToggle = useCallback(
     (targetEventId: string, key: string, shortcode?: string) => {
       const relations = getEventReactions(room.getUnfilteredTimelineSet(), targetEventId);
@@ -1143,6 +1182,9 @@ export function RoomTimeline({
                 htmlReactParserOptions={htmlReactParserOptions}
                 linkifyOpts={linkifyOpts}
                 outlineAttachment={messageLayout === MessageLayout.Bubble}
+                onEditImage={
+                  canEditImages ? (file) => handleEditedImage(mEventId, file) : undefined
+                }
               />
             )}
           </Message>
