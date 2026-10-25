@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Box, Icon, IconButton, Icons, Scroll } from 'folds';
+import { Box, Icon, IconButton, Icons, Scroll, Spinner } from 'folds';
 import { useMatrixClient } from '../../../hooks/useMatrixClient';
 import { getDirectCreateSearchParams } from '../../pathSearchParam';
 import { getDirectRoomPath } from '../../pathUtils';
@@ -17,6 +17,7 @@ import {
 } from '../../../components/page';
 import { BackRouteHandler } from '../../../components/BackRouteHandler';
 import { CreateChat } from '../../../features/create-chat';
+import { recoverArchivedDmWith } from '../../../features/dt-archive/archivedDms';
 
 export function DirectCreate() {
   const mx = useMatrixClient();
@@ -27,6 +28,8 @@ export function DirectCreate() {
   const { userId } = getDirectCreateSearchParams(searchParams);
 
   const directs = useDirectRooms();
+  const [recovering, setRecovering] = useState(false);
+  const recoverTried = useRef<string>();
 
   useEffect(() => {
     if (userId) {
@@ -36,6 +39,20 @@ export function DirectCreate() {
       }
     }
   }, [mx, navigate, directs, userId]);
+
+  // DT: si no hay DM abierto pero la admin tiene uno archivado con esta
+  // persona, se recupera y se abre directo (sin pasar por "Crear chat")
+  useEffect(() => {
+    if (!userId || recoverTried.current === userId || getDMRoomFor(mx, userId)) return;
+    recoverTried.current = userId;
+    setRecovering(true);
+    recoverArchivedDmWith(mx, userId)
+      .then((roomId) => {
+        if (roomId) navigate(getDirectRoomPath(roomId), { replace: true });
+      })
+      .catch(() => undefined)
+      .finally(() => setRecovering(false));
+  }, [mx, navigate, userId]);
 
   return (
     <Page>
@@ -63,7 +80,13 @@ export function DirectCreate() {
                     title="Crear chat"
                     subTitle="Iniciá un chat privado ingresando el ID de usuario."
                   />
-                  <CreateChat defaultUserId={userId} />
+                  {recovering ? (
+                    <Box justifyContent="Center">
+                      <Spinner size="400" />
+                    </Box>
+                  ) : (
+                    <CreateChat defaultUserId={userId} />
+                  )}
                 </Box>
               </PageHeroSection>
             </PageContentCenter>

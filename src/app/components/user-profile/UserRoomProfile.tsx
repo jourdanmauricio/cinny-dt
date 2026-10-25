@@ -11,6 +11,7 @@ import { useRoom } from '../../hooks/useRoom';
 import { useUserPresence } from '../../hooks/useUserPresence';
 import { IgnoredUserAlert, MutualRoomsChip, OptionsChip, ServerChip, ShareChip } from './UserChips';
 import { useCloseUserRoomProfile } from '../../state/hooks/userRoomProfile';
+import { useCloseRoomSettings } from '../../state/hooks/roomSettings';
 import { PowerChip } from './PowerChip';
 import { UserInviteAlert, UserBanAlert, UserModeration, UserKickAlert } from './UserModeration';
 import { useIgnoredUsers } from '../../hooks/useIgnoredUsers';
@@ -36,6 +37,7 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
   const useAuthentication = useMediaAuthentication();
   const navigate = useNavigate();
   const closeUserRoomProfile = useCloseUserRoomProfile();
+  const closeRoomSettings = useCloseRoomSettings();
   const ignoredUsers = useIgnoredUsers();
   const ignored = ignoredUsers.includes(userId);
 
@@ -97,6 +99,9 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
 
   const handleMessage = () => {
     closeUserRoomProfile();
+    // DT: si el perfil se abrió desde Miembros de la configuración de la sala,
+    // esa ventana también se cierra para que se vea el chat
+    closeRoomSettings();
     const directSearchParam: DirectCreateSearchParams = {
       userId,
     };
@@ -129,7 +134,7 @@ export function UserRoomProfile({ userId }: UserRoomProfileProps) {
                   before={<Icon size="50" src={Icons.Message} filled />}
                   onClick={handleMessage}
                 >
-                  <Text size="B300">Message</Text>
+                  <Text size="B300">Mensaje</Text>
                 </Button>
               </Box>
             )}
