@@ -15,6 +15,7 @@ import { millisecondsToMinutes } from '../../utils/common';
 import { useAlive } from '../../hooks/useAlive';
 import { getDirectPath, getDirectRoomPath } from '../../pages/pathUtils';
 import { AppIdMatch, AppIdMatches, searchByAppId } from '../../components/app-id-search';
+import { recoverArchivedDmWith } from '../dt-archive/archivedDms';
 
 type CreateChatProps = {
   defaultUserId?: string;
@@ -46,6 +47,11 @@ export function CreateChat({ defaultUserId }: CreateChatProps) {
         if (existing) {
           return getCanonicalAliasOrRoomId(mx, existing.roomId);
         }
+
+        // DT: si la admin tiene un DM archivado con esta persona, se recupera
+        // (con todo el historial) en lugar de crear uno nuevo
+        const archivedRoomId = await recoverArchivedDmWith(mx, userId);
+        if (archivedRoomId) return archivedRoomId;
 
         const result = await mx.createRoom({
           is_direct: true,

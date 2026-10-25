@@ -75,6 +75,9 @@ import { getFallbackSession } from '../state/sessions';
 import { CallStatusRenderer } from './CallStatusRenderer';
 import { CallEmbedProvider } from '../components/CallEmbedProvider';
 import { DtPushFeature } from '../features/dt-push/PushActivation';
+import { DtArchiveFeature } from '../features/dt-archive/DtArchiveFeature';
+import { ArchivedDmsPage } from '../features/dt-archive/ArchivedDmsPage';
+import { ARCHIVED_DMS_PATH } from '../features/dt-archive/archivedDms';
 
 export const createRouter = (clientConfig: ClientConfig, screenSize: ScreenSize) => {
   const { hashRouter } = clientConfig;
@@ -164,6 +167,7 @@ export const createRouter = (clientConfig: ClientConfig, screenSize: ScreenSize)
                       <ReceiveSelfDeviceVerification />
                       <AutoRestoreBackupOnVerification />
                       <DtPushFeature />
+                      <DtArchiveFeature />
                     </ClientNonUIFeatures>
                   </ClientBindAtoms>
                 </ClientRoomsNotificationPreferences>
@@ -291,6 +295,15 @@ export const createRouter = (clientConfig: ClientConfig, screenSize: ScreenSize)
         <Route path={EXPLORE_PATH} loader={() => redirect(getHomePath())} element={null} />
         {/* <Route path={CREATE_PATH} element={<Create />} /> */}
         <Route path={CREATE_PATH} loader={() => redirect(getHomePath())} element={null} />
+        {/* DT: DMs archivados (solo admins) */}
+        <Route
+          path={ARCHIVED_DMS_PATH}
+          element={
+            <PageRoot nav={null}>
+              <ArchivedDmsPage />
+            </PageRoot>
+          }
+        />
         <Route
           path={INBOX_PATH}
           element={

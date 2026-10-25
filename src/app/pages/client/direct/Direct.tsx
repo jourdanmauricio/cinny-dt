@@ -66,6 +66,7 @@ import {
 } from '../../../hooks/useRoomsNotificationPreferences';
 import { useDirectCreateSelected } from '../../../hooks/router/useDirectSelected';
 import { dtAdminsAtom, DtAdmin } from '../../../state/dtAdmins';
+import { ARCHIVED_REASON } from '../../../features/dt-archive/archivedDms';
 
 type DirectMenuProps = {
   requestClose: () => void;
@@ -283,9 +284,14 @@ export function Direct() {
       directs.forEach((roomId) => {
         const room = mx.getRoom(roomId);
         if (!room) return;
+        // DT: si la admin archivó el DM (salió con reason dt:archived) la
+        // usuaria se queda, para poder escribirle y que el DM vuelva
         const hasLeftMember = room
           .getMembers()
-          .some((m: { membership?: string }) => m.membership === 'leave');
+          .some(
+            (m) =>
+              m.membership === 'leave' && m.events.member?.getContent().reason !== ARCHIVED_REASON
+          );
         if (hasLeftMember && room.getJoinedMemberCount() <= 1) {
           mx.leave(roomId);
           navigate(getDirectPath());

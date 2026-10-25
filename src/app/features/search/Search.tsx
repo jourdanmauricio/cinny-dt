@@ -59,6 +59,7 @@ import { useKeyDown } from '../../hooks/useKeyDown';
 import { useMediaAuthentication } from '../../hooks/useMediaAuthentication';
 import { KeySymbol } from '../../utils/key-symbol';
 import { isMacOS } from '../../utils/user-agent';
+import { getDtRoomName } from '../dt-archive/archivedDms';
 
 enum SearchRoomType {
   Rooms = '#',
@@ -159,7 +160,8 @@ export function Search({ requestClose }: SearchProps) {
 
   const getTargetStr: SearchItemStrGetter<string> = useCallback(
     (roomId: string) => {
-      const roomName = getRoom(roomId)?.name ?? roomId;
+      const targetRoom = getRoom(roomId);
+      const roomName = targetRoom ? getDtRoomName(targetRoom) : roomId;
       if (mDirects.has(roomId)) {
         const targetUserId = getDmUserId(roomId, getRoom, mx.getSafeUserId());
         const targetUsername = targetUserId && getMxIdLocalPart(targetUserId);
@@ -318,6 +320,7 @@ export function Search({ requestClose }: SearchProps) {
                         exactParents && guessPerfectParent(mx, roomId, Array.from(exactParents));
 
                       const unread = roomToUnread.get(roomId);
+                      const roomName = getDtRoomName(room);
 
                       return (
                         <MenuItem
@@ -362,10 +365,10 @@ export function Search({ requestClose }: SearchProps) {
                                       ? getDirectRoomAvatarUrl(mx, room, 32, useAuthentication)
                                       : getRoomAvatarUrl(mx, room, 32, useAuthentication)
                                   }
-                                  alt={room.name}
+                                  alt={roomName}
                                   renderFallback={() => (
                                     <Text as="span" size="H6">
-                                      {nameInitials(room.name)}
+                                      {nameInitials(roomName)}
                                     </Text>
                                   )}
                                 />
@@ -382,8 +385,8 @@ export function Search({ requestClose }: SearchProps) {
                           <Box grow="Yes" alignItems="Center" gap="100">
                             <Text size="T400" truncate>
                               {queryHighlighRegex
-                                ? highlightText(queryHighlighRegex, [room.name])
-                                : room.name}
+                                ? highlightText(queryHighlighRegex, [roomName])
+                                : roomName}
                             </Text>
                             {dmUsername && (
                               <Text as="span" size="T200" priority="300" truncate>

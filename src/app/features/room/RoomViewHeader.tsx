@@ -79,6 +79,7 @@ import { useCallEmbed, useCallStart } from '../../hooks/useCallEmbed';
 import { useLivekitSupport } from '../../hooks/useLivekitSupport';
 import { webRTCSupported } from '../../utils/rtc';
 import { useRoomMarkedUnread } from '../../hooks/useMarkedUnread';
+import { ArchiveDmPrompt } from '../dt-archive/ArchiveDmPrompt';
 
 type RoomMenuProps = {
   room: Room;
@@ -272,6 +273,32 @@ const RoomMenu = forwardRef<HTMLDivElement, RoomMenuProps>(({ room, requestClose
         <>
           <Line variant="Surface" size="300" />
           <Box direction="Column" gap="100" style={{ padding: config.space.S100 }}>
+            {/* DT: Archivar DM (Oct-26 Req 6) */}
+            <UseStateProvider initial={false}>
+              {(promptArchive, setPromptArchive) => (
+                <>
+                  <MenuItem
+                    onClick={() => setPromptArchive(true)}
+                    fill="None"
+                    size="300"
+                    after={<Icon size="100" src={Icons.Inbox} />}
+                    radii="300"
+                    aria-pressed={promptArchive}
+                  >
+                    <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
+                      Archivar conversación
+                    </Text>
+                  </MenuItem>
+                  {promptArchive && (
+                    <ArchiveDmPrompt
+                      room={room}
+                      onDone={() => navigate(getDirectPath())}
+                      onCancel={() => setPromptArchive(false)}
+                    />
+                  )}
+                </>
+              )}
+            </UseStateProvider>
             <UseStateProvider initial={false}>
               {(promptLeave, setPromptLeave) => (
                 <>

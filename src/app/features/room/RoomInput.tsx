@@ -119,6 +119,7 @@ import { usePowerLevelTags } from '../../hooks/usePowerLevelTags';
 import { useComposingCheck } from '../../hooks/useComposingCheck';
 import { useMediaRecorder } from '../../hooks/useMediaRecorder';
 import * as css from './RoomInput.css';
+import { inviteBackArchivingAdmin, isDtAdminSession } from '../dt-archive/archivedDms';
 
 interface RoomInputProps {
   editor: Editor;
@@ -349,6 +350,8 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
               : {}),
           }
         : undefined;
+      // DT: si la admin archivó este DM, se la invita de nuevo para que vuelva
+      if (!isDtAdminSession()) inviteBackArchivingAdmin(mx, room);
       contents.forEach((content) =>
         mx.sendMessage(
           roomId,
@@ -434,12 +437,24 @@ export const RoomInput = forwardRef<HTMLDivElement, RoomInputProps>(
           content['m.relates_to'].is_falling_back = false;
         }
       }
+      // DT: si la admin archivó este DM, se la invita de nuevo para que vuelva
+      if (!isDtAdminSession()) inviteBackArchivingAdmin(mx, room);
       mx.sendMessage(roomId, content as any);
       resetEditor(editor);
       resetEditorHistory(editor);
       setReplyDraft(undefined);
       sendTypingStatus(false);
-    }, [mx, roomId, editor, replyDraft, sendTypingStatus, setReplyDraft, isMarkdown, commands]);
+    }, [
+      mx,
+      room,
+      roomId,
+      editor,
+      replyDraft,
+      sendTypingStatus,
+      setReplyDraft,
+      isMarkdown,
+      commands,
+    ]);
 
     const handleKeyDown: KeyboardEventHandler = useCallback(
       (evt) => {

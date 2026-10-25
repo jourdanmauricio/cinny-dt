@@ -18,6 +18,7 @@ import {
   SearchTab,
 } from './sidebar';
 // import { CreateTab } from './sidebar/CreateTab';
+import { ArchivedTab } from '../../features/dt-archive/ArchivedTab';
 
 export function SidebarNav() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -30,6 +31,7 @@ export function SidebarNav() {
             <SidebarStack>
               <HomeTab />
               <DirectTab />
+              <ArchivedTab />
             </SidebarStack>
             <SpaceTabs scrollRef={scrollRef} />
             {/* <SidebarStackSeparator />

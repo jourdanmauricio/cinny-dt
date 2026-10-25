@@ -27,6 +27,7 @@ import { Membership, StateEvent } from '../../types/matrix/room';
 import { getStateEvent } from '../utils/room';
 import { splitWithSpace } from '../utils/common';
 import { createRoomEncryptionState } from '../components/create-room';
+import { recoverArchivedDmWith } from '../features/dt-archive/archivedDms';
 
 export const SHRUG = '¯\\_(ツ)_/¯';
 export const TABLEFLIP = '(╯°□°)╯︵ ┻━┻';
@@ -211,6 +212,12 @@ export const useCommands = (mx: MatrixClient, room: Room): CommandRecord => {
             const dmRoomId = getDMRoomFor(mx, userIds[0])?.roomId;
             if (dmRoomId) {
               navigateRoom(dmRoomId);
+              return;
+            }
+            // DT: recuperar el DM archivado con esa persona antes de crear otro
+            const archivedRoomId = await recoverArchivedDmWith(mx, userIds[0]);
+            if (archivedRoomId) {
+              navigateRoom(archivedRoomId);
               return;
             }
           }

@@ -3,6 +3,7 @@ import { RoomJoinRulesEventContent } from 'matrix-js-sdk/lib/types';
 import { Room, RoomEvent, RoomEventHandlerMap } from 'matrix-js-sdk';
 import { StateEvent } from '../../types/matrix/room';
 import { useStateEvent } from './useStateEvent';
+import { getDtRoomName } from '../features/dt-archive/archivedDms';
 
 export const useRoomAvatar = (room: Room, dm?: boolean): string | undefined => {
   const avatarEvent = useStateEvent(room, StateEvent.RoomAvatar);
@@ -17,13 +18,14 @@ export const useRoomAvatar = (room: Room, dm?: boolean): string | undefined => {
 };
 
 export const useRoomName = (room: Room): string => {
-  const [name, setName] = useState(room.name);
+  // DT: getDtRoomName evita "Empty room (was …)" en DMs archivados por la admin
+  const [name, setName] = useState(() => getDtRoomName(room));
 
   useEffect(() => {
-    setName(room.name);
+    setName(getDtRoomName(room));
 
     const handleRoomNameChange: RoomEventHandlerMap[RoomEvent.Name] = () => {
-      setName(room.name);
+      setName(getDtRoomName(room));
     };
     room.on(RoomEvent.Name, handleRoomNameChange);
     return () => {
