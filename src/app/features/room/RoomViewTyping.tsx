@@ -58,7 +58,7 @@ export const RoomViewTyping = as<'div', RoomViewTypingProps>(
               <>
                 <b>{typingNames[0]}</b>
                 <Text as="span" size="Inherit" priority="300">
-                  {' is typing...'}
+                  {' está escribiendo...'}
                 </Text>
               </>
             )}
@@ -66,11 +66,11 @@ export const RoomViewTyping = as<'div', RoomViewTypingProps>(
               <>
                 <b>{typingNames[0]}</b>
                 <Text as="span" size="Inherit" priority="300">
-                  {' and '}
+                  {' y '}
                 </Text>
                 <b>{typingNames[1]}</b>
                 <Text as="span" size="Inherit" priority="300">
-                  {' are typing...'}
+                  {' están escribiendo...'}
                 </Text>
               </>
             )}
@@ -82,11 +82,11 @@ export const RoomViewTyping = as<'div', RoomViewTypingProps>(
                 </Text>
                 <b>{typingNames[1]}</b>
                 <Text as="span" size="Inherit" priority="300">
-                  {' and '}
+                  {' y '}
                 </Text>
                 <b>{typingNames[2]}</b>
                 <Text as="span" size="Inherit" priority="300">
-                  {' are typing...'}
+                  {' están escribiendo...'}
                 </Text>
               </>
             )}
@@ -102,16 +102,16 @@ export const RoomViewTyping = as<'div', RoomViewTypingProps>(
                 </Text>
                 <b>{typingNames[2]}</b>
                 <Text as="span" size="Inherit" priority="300">
-                  {' and '}
+                  {' y '}
                 </Text>
-                <b>{typingNames.length - 3} others</b>
+                <b>{typingNames.length - 3} más</b>
                 <Text as="span" size="Inherit" priority="300">
-                  {' are typing...'}
+                  {' están escribiendo...'}
                 </Text>
               </>
             )}
           </Text>
-          <IconButton title="Drop Typing Status" size="300" radii="Pill" onClick={handleDropAll}>
+          <IconButton title="Ocultar" size="300" radii="Pill" onClick={handleDropAll}>
             <Icon size="50" src={Icons.Cross} />
           </IconButton>
         </Box>

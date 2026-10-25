@@ -83,7 +83,7 @@ export const RoomViewFollowing = as<'div', RoomViewFollowingProps>(
                   <>
                     <b>{names[0]}</b>
                     <Text as="span" size="Inherit" priority="300">
-                      {' is following the conversation.'}
+                      {' está siguiendo la conversación.'}
                     </Text>
                   </>
                 )}
@@ -91,11 +91,11 @@ export const RoomViewFollowing = as<'div', RoomViewFollowingProps>(
                   <>
                     <b>{names[0]}</b>
                     <Text as="span" size="Inherit" priority="300">
-                      {' and '}
+                      {' y '}
                     </Text>
                     <b>{names[1]}</b>
                     <Text as="span" size="Inherit" priority="300">
-                      {' are following the conversation.'}
+                      {' están siguiendo la conversación.'}
                     </Text>
                   </>
                 )}
@@ -107,11 +107,11 @@ export const RoomViewFollowing = as<'div', RoomViewFollowingProps>(
                     </Text>
                     <b>{names[1]}</b>
                     <Text as="span" size="Inherit" priority="300">
-                      {' and '}
+                      {' y '}
                     </Text>
                     <b>{names[2]}</b>
                     <Text as="span" size="Inherit" priority="300">
-                      {' are following the conversation.'}
+                      {' están siguiendo la conversación.'}
                     </Text>
                   </>
                 )}
@@ -127,11 +127,11 @@ export const RoomViewFollowing = as<'div', RoomViewFollowingProps>(
                     </Text>
                     <b>{names[2]}</b>
                     <Text as="span" size="Inherit" priority="300">
-                      {' and '}
+                      {' y '}
                     </Text>
-                    <b>{names.length - 3} others</b>
+                    <b>{names.length - 3} más</b>
                     <Text as="span" size="Inherit" priority="300">
-                      {' are following the conversation.'}
+                      {' están siguiendo la conversación.'}
                     </Text>
                   </>
                 )}

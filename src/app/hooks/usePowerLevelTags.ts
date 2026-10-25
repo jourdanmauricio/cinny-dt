@@ -55,7 +55,7 @@ const DEFAULT_TAGS: PowerLevelTags = {
     color: '#ff6a7f',
   },
   101: {
-    name: 'Founder',
+    name: 'Fundador',
     color: '#0000ff',
   },
   100: {
@@ -63,15 +63,15 @@ const DEFAULT_TAGS: PowerLevelTags = {
     color: '#0088ff',
   },
   50: {
-    name: 'Moderator',
+    name: 'Moderador',
     color: '#1fd81f',
   },
   0: {
-    name: 'Member',
+    name: 'Miembro',
     color: '#91cfdf',
   },
   [-1]: {
-    name: 'Muted',
+    name: 'Silenciado',
     color: '#888888',
   },
 };
@@ -83,7 +83,7 @@ const generateFallbackTag = (powerLevelTags: PowerLevelTags, power: number): Mem
   const tag = typeof tagPower === 'number' ? powerLevelTags[tagPower] : undefined;
 
   return {
-    name: tag ? `${tag.name} ${power}` : `Team ${power}`,
+    name: tag ? `${tag.name} ${power}` : `Equipo ${power}`,
   };
 };
 

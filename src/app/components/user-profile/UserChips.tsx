@@ -187,7 +187,7 @@ export function ShareChip({ userId }: { userId: string }) {
                   close();
                 }}
               >
-                <Text size="B300">Copy User ID</Text>
+                <Text size="B300">Copiar ID de usuario</Text>
               </MenuItem>
               <MenuItem
                 variant="Surface"
@@ -200,7 +200,7 @@ export function ShareChip({ userId }: { userId: string }) {
                   close();
                 }}
               >
-                <Text size="B300">Copy User Link</Text>
+                <Text size="B300">Copiar link de usuario</Text>
               </MenuItem>
             </div>
           </Menu>
@@ -221,7 +221,7 @@ export function ShareChip({ userId }: { userId: string }) {
         aria-pressed={!!cords}
       >
         <Text size="B300" truncate>
-          Share
+          Compartir
         </Text>
       </Chip>
     </PopOut>
@@ -417,7 +417,7 @@ export function MutualRoomsChip({ userId }: { userId: string }) {
       >
         <Text size="B300">
           {mutualRoomsState.status === AsyncStatus.Success &&
-            `${mutualRoomsState.data.length} Mutual Rooms`}
+            `${mutualRoomsState.data.length} salas en común`}
           {mutualRoomsState.status === AsyncStatus.Loading && 'Mutual Rooms'}
         </Text>
       </Chip>
