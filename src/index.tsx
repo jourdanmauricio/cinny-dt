@@ -79,9 +79,10 @@ async function init() {
         const data = await res.json();
         // Limpiar datos de sesión anterior antes de guardar los nuevos tokens
         clearPreviousSessionData();
-        // Guardar el DT JWT si viene en la URL (flujo Google OAuth)
-        if (dtToken) {
-          localStorage.setItem('dt_access_token', dtToken);
+        // DT JWT: viene en el canje del código (o en la URL, flujo Google OAuth)
+        const dtAccessToken = dtToken ?? data.dtToken;
+        if (dtAccessToken) {
+          localStorage.setItem('dt_access_token', dtAccessToken);
         }
         localStorage.setItem('dt_is_admin', String(data.isAdmin === true));
         setFallbackSession(data.token, data.deviceId, data.userId, data.homeserver);
